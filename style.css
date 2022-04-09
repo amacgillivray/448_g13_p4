@@ -1,0 +1,281 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #7e7e7e;
+}
+
+svg {
+  display: block;
+  width: auto;
+} 
+#game {
+  max-width: 98%;
+  height: 89vh;
+  margin: auto;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+#mssvg {
+    margin: 0;
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    background-color: #999;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.top {
+  background-color: #3e3e3e;
+  color: #eee;
+  /* margin-bottom: 15px; */
+}
+
+#title {
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+  padding: 15px;
+  font-size: 1.32em;
+  padding-bottom: 3px;
+}
+
+#turn-indicator {
+  text-align: center;
+  margin: 0;
+}
+
+#turn-indicator.blufor {
+  background-color: #45f;
+}
+
+#turn-indicator.opfor {
+  background-color: #f54;
+}
+
+/* troopcount_hidden */
+.tc_h {
+  display: none
+}
+
+/* troop: not present */
+.t_np {
+  display: none;
+}
+
+/*.unit.blufor rect,*/
+.blufor_shape {
+  fill: #85d4ef !important;
+  opacity: 0.6;
+}
+
+/*.unit.opfor rect,*/
+.opfor_shape {
+  fill: #ef2444 !important;
+  opacity: 0.6;
+}
+
+.unit:hover {
+  cursor: pointer;
+}
+
+.unit:hover .blufor_shape,
+.unit:hover .opfor_shape {
+  opacity: 0.8;
+}
+
+.unit.selected .blufor_shape,
+.unit.selected .opfor_shape {
+  opacity: 0.9;
+  stroke: #00f;
+}
+
+.cls-7:hover {
+  fill: #d9dbee;
+  opacity: .45;
+  stroke: #444ea1;
+  stroke-width: 6px;
+}
+
+.regionname {
+  opacity: 0;
+}
+
+.region:hover .regionname {
+  opacity: .31;
+}
+
+.region.blufor polygon,
+.region.bf polygon {
+  fill: #91C0E855 !important;
+  stroke: #456EA1 !important;
+}
+
+.region.opfor polygon,
+.region.of polygon {
+  fill: #E3919255 !important;
+  stroke: #A14F48 !important;
+}
+
+.region.neutral polygon {
+  fill: #c3c3c355 !important;
+  stroke: #8885 !important;
+}
+
+.region.selected polygon {
+  cursor: pointer;
+  opacity: .85
+}
+
+.region.opfor.selected polygon,
+.s_cls-1.of {
+  fill: #f39192 !important;
+  stroke: #A14F48 !important;
+}
+
+.region.blufor.selected polygon,
+.s_cls-1.bf {
+  fill: #91C0E8 !important;
+  stroke: #456EA1 !important;
+}
+
+.region.selected .regionname,
+.region.validmove .regionname {
+  opacity: .85;
+  cursor: pointer;
+}
+
+.region.selected .regionname {
+  opacity: 0.35
+}
+
+.region.validmove polygon {
+  fill: #42efab55 !important;
+  stroke: #24cf8b !important;
+  cursor: pointer;
+}
+ 
+.region.validmove polygon:hover {
+  fill: #52ffbb !important;
+  stroke: #24cf8b !important;
+  cursor: pointer;
+}
+
+.region.cpt polygon {
+  opacity: 0.75;
+}
+
+.cpt polygon:hover {
+    cursor: pointer;
+}
+
+#container {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+#data-panel {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 400px;
+    overflow-y: scroll;
+    margin: 15px;
+    padding: 0px;
+    background-color: #3e3e3e;
+    font-family: 'courier new', monospace;
+    font-size: 9px;
+    color: #eee;
+}
+
+.date {
+    color: #999;
+    padding-right: 8px;
+}
+
+pre {
+    padding: 5px;
+    background: #1e1e1e;
+    margin-top: 0;
+    font-size: 8px;
+}
+
+p pre {
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+#data-panel p {
+    padding: 5px;
+}
+
+.bluetext {
+    color: #85d4ef; 
+}
+.redtext {
+    color: #f39192;
+}
+
+#progress,
+#p_bfof,
+#p_battle,
+.battle {
+    margin: 0;
+    padding: 0;
+    transform: translateZ(0);
+}
+
+#p_bfof,
+#p_battle,
+.battle {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 10px;
+    /* height: 2px; */
+    box-sizing: border-box;
+}
+
+progress[value]::-webkit-progress-bar {
+    background-color: #f39192;
+}
+
+progress[value]::-webkit-progress-value {
+    background-color: #85d4ef;
+}
+
+.battle[value]::-webkit-progress-bar {
+    background-color: #ff4142;
+}
+
+.battle[value]::-webkit-progress-value {
+    background-color: #4141ff;
+}
+
+#battle-box {
+    display: block;
+    background-color: #3e3e3eaa;
+    position: fixed;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+
+
+
+/* 
+#data-panel
+{
+    font-size: 8px;
+    order: 999;
+} */
