@@ -13,6 +13,7 @@ svg {
   max-width: 98%;
   height: 89vh;
   margin: auto;
+  margin-top: 15px;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -113,18 +114,30 @@ svg {
   /* stroke-width: 6px; */
 }
 
-.regionname {
-  opacity: 0;
+.region path {
+  opacity: .3;
 }
 
-.region:hover .regionname {
-  opacity: .31;
+.region:hover path {
+  opacity: .4;
 }
 
 .region.blufor polygon,
 .region.bf polygon {
-  fill: #91C0E855 !important;
+  fill: #91C0E8 !important;
   stroke: #456EA1 !important;
+  opacity: .45;
+}
+
+.region.blufor.occupied polygon
+.region.bf.occupied polygon {
+  opacity: 0.70;
+}
+
+.region.blufor polygon:hover,
+.region.bf polygon:hover {
+  opacity: .81;
+  stroke: #444ea1;
 }
 
 .t.bf rect,
@@ -143,7 +156,8 @@ svg {
 } */
 
 rect.bf {
-  fill: #91C0E855 !important;
+  /* fill: #91C0E855 !important; */
+  fill: #91C0E8 !important;
   stroke: #456EA1 !important;
 }
 line.bf {
@@ -152,8 +166,9 @@ line.bf {
 
 .region.opfor polygon,
 .region.of polygon {
-  fill: #E3919255 !important;
+  fill: #E39192 !important;
   stroke: #A14F48 !important;
+  opacity: 0.45
 }
 
 .t.of rect, 
@@ -172,7 +187,8 @@ line.bf {
 } */
 
 rect.of {
-  fill: #E3919255 !important;
+  /* fill: #E3919255 !important; */
+  fill: #E39192 !important;
   stroke: #A14F48 !important;
 }
 line.of {
@@ -189,25 +205,13 @@ line.of {
   opacity: .85
 }
 
-.region.opfor.selected polygon,
-.s_cls-1.of {
-  fill: #f39192 !important;
-  stroke: #A14F48 !important;
-}
-
-.region.blufor.selected polygon,
-.s_cls-1.bf {
-  fill: #91C0E8 !important;
-  stroke: #456EA1 !important;
-}
-
-.region.selected .regionname,
-.region.validmove .regionname {
+.region.selected path,
+.region.validmove path {
   opacity: .85;
   cursor: pointer;
 }
 
-.region.selected .regionname {
+.region.selected path {
   opacity: 0.35
 }
 
@@ -332,9 +336,36 @@ progress[value]::-webkit-progress-value {
     transform: translate(-50%, -50%);
 }
 
-.region {
-  fill: none !important;
-  stroke: #0004 !important;
+.region.blufor.oc polygon,
+.region.bf.oc polygon {
+  fill: #2147e3 !important;
+  stroke: #85d4ef;
+  /* opacity: 0.6 !important; */
+  cursor: pointer;
+}
+
+.region.opfor.oc polygon,
+.region.of.oc polygon {
+  fill: #e34721 !important;
+  stroke: #efd485;
+  /* opacity: 0.6 !important; */
+  cursor: pointer;
+}
+
+.region.oc polygon:hover {
+  opacity: 0.55 !important;
+}
+
+.region.opfor.selected polygon,
+.s_cls-1.of {
+  fill: #f39192 !important;
+  stroke: #A14F48 !important;
+}
+
+.region.blufor.selected polygon,
+.s_cls-1.bf {
+  fill: #91C0E8 !important;
+  stroke: #456EA1 !important;
 }
 
 /* 
