@@ -841,7 +841,7 @@ class Battle {
             "ROTORCRAFT:  " + -(this._defRefCt[1] - def_restored[1]).toString() + "\n" +
             "ARMOR:       " + -(this._defRefCt[2] - def_restored[2]).toString();
             if (this._defFb != null)
-                troopLossRecord += "\n\n" + (def_restored[0]+def_restored[1]+def_restored[2]).toString() + " SURVIVING DEFENDERS\nROUTED TO " + region_phonetic_key[ this._defFb.region[0] ].toUpperCase();
+                troopLossRecord += "\n\n" + (def_restored[0]+def_restored[1]+def_restored[2]).toString() + " SURVIVING DEFENDERS\nROUTED TO " + this._defFb.region.toUpperCase();
             troopLossRecord += "</pre>";
             
             // Update the owner of the cell to be the attacker, and move their troops there.
@@ -1240,7 +1240,7 @@ class Game{
         }
 
         //log.innerHTML += "<p>" + this._currentPlayerTurn.toUpperCase() + " moved from " + srcForce.region_phonetic + " to " + dstForce.region_phonetic + "</p>\n";
-        gameLog( team_key[this._currentPlayerTurn] + " moves from " + srcForce.region_phonetic + " to " + dstForce.region_phonetic );
+        gameLog( team_key[this._currentPlayerTurn] + " moves from " + srcForce.region + " to " + dstForce.region );
 
         dstForce.alterForce([
             srcForce.infantryCount, 
