@@ -1,7 +1,7 @@
 # 448_g13_p4 - "North Atlantic"
 **KU EECS 448, Group 13, Project 4**
 
-![demo-2r](https://user-images.githubusercontent.com/40438470/160699786-9af2a8b4-62f1-4ea7-ab64-c57cb734e1af.png)
+![p4_v1](https://github.com/amacgillivray/448_g13_p4/blob/master/p4_v1.png?raw=true)
 
 
 This project shows the prototype of a "milsim" style strategy game, where 2 players compete for control over a map.
