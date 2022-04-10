@@ -338,7 +338,8 @@ progress[value]::-webkit-progress-value {
 
 .region.blufor.oc polygon,
 .region.bf.oc polygon {
-  fill: #2147e3 !important;
+  /* fill: #2147e3 !important; */
+  fill: #6187e3 !important;
   stroke: #85d4ef;
   /* opacity: 0.6 !important; */
   cursor: pointer;
@@ -346,7 +347,8 @@ progress[value]::-webkit-progress-value {
 
 .region.opfor.oc polygon,
 .region.of.oc polygon {
-  fill: #e34721 !important;
+  /* fill: #e34721 !important; */
+  fill: #e38761 !important;
   stroke: #efd485;
   /* opacity: 0.6 !important; */
   cursor: pointer;
