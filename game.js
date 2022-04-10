@@ -321,6 +321,7 @@ class GameMap {
         troop_type_names.forEach((unitType) => {
             // node id format: [teamprefix]_[regionletter]_[trooptype]
             let selector = team + "_" + region_letter + "_" + unitType;
+            // console.log(selector);
             let node = document.getElementById(selector);
             if (node.classList.contains("t"))
             {
@@ -559,12 +560,12 @@ class Force{
             document.getElementById(this._region).setAttribute("class", "region " + this._side);
         }
 
-        if (prev_side != "neutral")
-            document.getElementById("s-" + prev_side + "-" + this._region).classList.toggle("sh", true);
-        if (this._side != "neutral") {
-            console.log("s-" + this._side + "-" + this._region);
-           document.getElementById("s-" + this._side + "-" + this._region).classList.toggle("sh", false);
-        }
+        // if (prev_side != "neutral")
+        //     document.getElementById("s-" + prev_side + "-" + this._region).classList.toggle("sh", true);
+        // if (this._side != "neutral") {
+        //     console.log("s-" + this._side + "-" + this._region);
+        //    document.getElementById("s-" + this._side + "-" + this._region).classList.toggle("sh", false);
+        // }
     }
 }
 
@@ -1099,7 +1100,7 @@ class Game{
         // was clicked to the node that is the group with the region-letter
         // as the id.
         let realtarget = e.currentTarget;
-        while (realtarget.id.length != 1 && realtarget.nodeName != "svg")
+        while (realtarget.id.length != 2 && realtarget.nodeName != "svg")
             realtarget = realtarget.parentElement;
 
         // validate that the region is for the current player;
