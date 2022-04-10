@@ -122,7 +122,7 @@ const region_connections = {
     d0: ["c1", "c9", "c8", "d5", "d2", "d1", "b2"],
     d1: ["b0", "b2", "d0", "d5", "d2", "e0", "e4"],
     d2: ["d0", "d1", "d3", "d4", "d5", "e4", "e5"],
-    d3: ["d2", "e4", "e5", "e8", "e9", "d2", "d3"],
+    d3: ["d2", "d3", "d4", "e4", "e5", "e8", "e9"],
     d4: ["d2", "d3", "e8", "e9", "d8", "d6", "d5"],
     d5: ["d0", "d2", "d4", "d6", "c7", "c8"],
     d6: ["d4", "d5", "d7", "d8", "c7", "c8"],
@@ -130,7 +130,7 @@ const region_connections = {
     d8: ["d4", "d6", "d7", "d9", "e9"],
     d9: ["d7", "d8", "e9", "f2"],
     e0: ["j0", "e1", "e3", "e4", "d1", "b0", "a8", "a9"],
-    e1: ["a7", "a8", "e0", "e2", "e3", "j0", "j7", "j8"],
+    e1: ["a7", "a8", "e0", "e2", "e3", "e4", "j0", "j7", "j8"],
     e2: ["e1", "e3", "e5", "e6", "j7", "j8", "i0", "i1", "i2"], 
     e3: ["e0", "e1", "e2", "e4", "e5", "e6"],
     e4: ["e0", "e1", "e3", "e5", "d3", "d2", "d1"],
@@ -338,7 +338,7 @@ class GameMap {
     static updateUnitDisplay(unit)
     {
         let node = unit.side + "_" + unit.region + "_" + unit.type;
-        //console.log(node);
+        console.log(node);
         // node = document.getElementById(node);
 
         //console.log("Troop count: " + unit.count);
@@ -358,7 +358,7 @@ class GameMap {
         }
         else if (unit.count > 0){
             // console.log("Revealing unit.");
-            document.getElementById(node).setAttribute("class", "t");
+            document.getElementById(node).setAttribute("class", "t " + unit.side);
 
             // console.log(".tc_h." + getBestTroopCountSymbol(unit.count));
 
@@ -738,8 +738,8 @@ class Battle {
 
         gameLog( 
             team_key[this._off.side] + 
-            " attacks " + this._def.region_phonetic + 
-            " from " + this._off.region_phonetic + 
+            " attacks " + this._def.region + 
+            " from " + this._off.region + 
             "<br/><progress id=\"p_battle_" + battle_ct + "\" class=\"battle\" max=\"100\" value=\"50\"></progress>"); 
         // document.getElementById("p_bfof").setAttribute("class", "battle");
         
@@ -867,7 +867,7 @@ class Battle {
         }
 
         
-        gameLog( winside + " " + verb + " control of " + this._def.region_phonetic + "." + troopLossRecord);
+        gameLog( winside + " " + verb + " control of " + this._def.region + "." + troopLossRecord);
 
         battle_ct++;
         game.battleEndCb();
