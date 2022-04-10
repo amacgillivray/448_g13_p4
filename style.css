@@ -370,6 +370,12 @@ progress[value]::-webkit-progress-value {
   stroke: #456EA1 !important;
 }
 
+.tc path,
+.tc path {
+  stroke: none !important;
+  stroke-width: .2pt;
+}
+
 /* 
 #data-panel
 {
