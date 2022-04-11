@@ -450,81 +450,28 @@ class GameMap {
         let dc = [(d.x + (d.width/2)), (d.y + (d.height/2))];
         
         // Now, modify these values to make the arrow start/end closer to the intermediate border
-        // First, find the minor-axis length so that we can ensure that the major-axis is no more than 
-        // 4x that.
-        if (0) {
-        let length_factor = (major_axis == 0) ? (Math.abs(dc[1]-oc[1])) : (Math.abs(dc[0]-oc[0]));
-            length_factor = length_factor*4;
-
-        if (length_factor < 15)
-            length_factor = 15;
-
         if (major_axis == 0) {
-            while (Math.abs(dc[0]-oc[0]) > length_factor)
+            let fo = Math.abs(oc[1]-(o.y+o.height))/4;
+            let fd = Math.abs(dc[1]-(d.y+d.height))/4;
+            if (orient_x == 0)
             {
-                // let f = Math.abs(dc[1]-oc[1])/8;
-                // dx - ox is negative or 0
-
-                let fo = Math.abs(oc[1]-(o.y+o.height))/10;
-                let fd = Math.abs(dc[1]-(d.y+d.height))/10;
-
-                if (orient_x == 0)
-                {
-                    oc[0] -= fo;
-                    dc[0] += fd;
-                } else {
-                    oc[0] += fo;
-                    dc[0] -= fd;
-                }
-            }
-        }
-        else
-        {
-            while (Math.abs(dc[1]-oc[1]) > length_factor)
-            {
-                // let f = Math.abs(dc[1]-oc[1])/8;
-
-                let fo = Math.abs(oc[0]-(o.x+o.width))/10;
-                let fd = Math.abs(dc[0]-(d.x+d.width))/10;
-
-                // dy - oy is negative or 0 
-                if (orient_y == 0)
-                { 
-                    oc[1] -= fo;
-                    dc[1] += fd;
-                } else {
-                    oc[1] += fo;
-                    dc[1] -= fd;
-                }
-            }
-        }
-        } else {
-
-            if (major_axis == 0) {
-                let fo = Math.abs(oc[1]-(o.y+o.height))/4;
-                let fd = Math.abs(dc[1]-(d.y+d.height))/4;
-                if (orient_x == 0)
-                {
-                    oc[0] -= fo;
-                    dc[0] += fd;
-                } else {
-                    oc[0] += fo;
-                    dc[0] -= fd;
-                }
+                oc[0] -= fo;
+                dc[0] += fd;
             } else {
-                let fo = Math.abs(oc[0]-(o.x+o.width))/4;
-                let fd = Math.abs(dc[0]-(d.x+d.width))/4;
-                if (orient_y == 0)
-                { 
-                    oc[1] -= fo;
-                    dc[1] += fd;
-                } else {
-                    oc[1] += fo;
-                    dc[1] -= fd;
-                }
+                oc[0] += fo;
+                dc[0] -= fd;
             }
-
-
+        } else {
+            let fo = Math.abs(oc[0]-(o.x+o.width))/4;
+            let fd = Math.abs(dc[0]-(d.x+d.width))/4;
+            if (orient_y == 0)
+            { 
+                oc[1] -= fo;
+                dc[1] += fd;
+            } else {
+                oc[1] += fo;
+                dc[1] -= fd;
+            }
         }
     
         // width and height of the arrow being drawn
@@ -584,10 +531,12 @@ class GameMap {
             ];
 
             let mf = cw/h;
+
+            // mv is the dy between the origin and the end
             let mv = Math.abs(ecm[1]-eco[1]);
 
             // Modify each endcap point with a horizontal offset
-            if (orient_y == 0) {
+            if (orient_y == 1) {
                 // left-right arrow, moving left
                 // so the axis of the endcap is vertical
                 eco1[0] -= (mf/2)*mv;
