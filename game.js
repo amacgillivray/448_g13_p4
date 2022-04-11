@@ -405,6 +405,225 @@ class GameMap {
             //document.getElementById(node).querySelector("." + getBestTroopCountSymbol(unit.count)).setAttribute("class", "tc");
         }
     }
+
+    /**
+     * @brief Adds an arrow to the map indicating pending movement by a force from one region
+     *        to another. Returns the ID of the arrow so that it can be removed later.
+     * @todo Add global counter for # arrows and use it to determine unique IDs?
+     * @param {string} side 
+     *        Which team owns the force
+     * @param {string} origin 
+     *        The ID of the origin cell
+     * @param {string} destination 
+     *        The ID of the destination cell
+     */
+    static drawMovementArrow(side, origin, destination)
+    {
+        let container = document.getElementById("arrow-container");
+        let o = document.getElementById(origin).getBBox();
+        let d = document.getElementById(destination).getBBox();
+
+        let fy = 0.75;
+        let fx = 0.08;
+
+        // 0 if left, 1 if right
+        let orient_x = (d.x <= o.x) ? 0 : 1;
+
+
+        // 0 if up, 1 if down
+        let orient_y = (d.y <= o.y) ? 0 : 1; 
+
+        // whether the biggest move is horizontal or vertical
+        // 0 if horizontal, 1 if vertical
+        let major_axis = (Math.abs(d.y-o.y) <= Math.abs(d.x-o.x)) ? 0 : 1; 
+
+        // Center of origin and destination rectangles
+        let oc = [(o.x + (o.width/2)), (o.y + (o.height/2))];
+        let dc = [(d.x + (d.width/2)), (d.y + (d.height/2))];
+        
+        // Now, modify these values to make the arrow start/end closer to the intermediate border
+        // First, find the minor-axis length so that we can ensure that the major-axis is no more than 
+        // 4x that.
+        let length_factor = (major_axis == 0) ? (Math.abs(dc[1]-oc[1])) : (Math.abs(dc[0]-oc[0]));
+            length_factor = length_factor*4;
+
+        if (major_axis == 0) {
+            while (Math.abs(dc[0]-oc[0]) > length_factor)
+            {
+                let f = Math.abs(dc[1]-oc[1])/8;
+                // dx - ox is negative or 0
+                if (orient_x == 0)
+                {
+                    oc[0] -= f;
+                    dc[0] += f;
+                } else {
+                    oc[0] += f;
+                    dc[0] -= f;
+                }
+            }
+        }
+        else
+        {
+            while (Math.abs(dc[1]-oc[1]) > length_factor)
+            {
+                let f = Math.abs(dc[1]-oc[1])/8;
+                // dy - oy is negative or 0 
+                if (orient_y == 0)
+                { 
+                    oc[1] -= f;
+                    dc[1] += f;
+                } else {
+                    oc[1] += f;
+                    dc[1] -= f;
+                }
+            }
+        }
+    
+        // width and height of the arrow being drawn
+        let w = Math.abs(dc[0]-oc[0]);
+        let h = Math.abs(dc[1]-oc[1]);
+
+        // endcap points
+        let ecf = 0.25
+        let cw = 8;
+        // let ch = 12;
+        // eco should be dc[1] - (length * 0.75)
+        //               dc[0] - (width  * 0.75)
+        // let eco = [
+        //     ecf*dc[0], ecf*dc[1]
+        // ];
+        let eco, ec1, ec2, ecm;
+
+        eco = [0,0];
+            // left:  eco is to the right (+)
+            // right: eco -  
+        eco[0] = (orient_x == 0) ? (dc[0]+(ecf*w)) : (dc[0]-(ecf*w));
+        eco[1] = (orient_y == 0) ? (dc[1]+(ecf*h)) : (dc[1]-(ecf*h));
+
+        let eco1, eco2;
+
+        if (major_axis==0){
+            // if (orient_x == 0) {
+                // left-right arrow, moving left
+                // so the axis of the endcap is vertical
+            // } else {
+            //     // left-right arrow, moving right
+            // }
+
+            // axis of the endcap is vertical
+            eco1 = [
+                eco[0],
+                eco[1]+cw/2
+            ];
+            eco2 = [
+                eco[0],
+                eco[1]-cw/2
+            ];
+            
+            ec1 = [
+                eco[0],
+                eco[1]+cw
+            ];
+            ec2 = [
+                eco[0],
+                eco[1]-cw
+            ];
+
+            ecm = [
+                dc[0],
+                eco[1]-cw
+            ];
+
+            let mf = cw/h;
+
+            // eco1[0] += (mf/2)*(Math.abs(ecm[0]-eco[0]));
+            // eco2[0] -= (mf/2)*(Math.abs(ecm[0]-eco[0]));
+            // ec1[0] += (mf)*(Math.abs(ecm[0]-eco[0]));
+            // ec2[0] -= (mf)*(Math.abs(ecm[0]-eco[0]));
+
+            // if (orient_x == 0) {
+            //     // left-right arrow, moving left
+            //     // so the axis of the endcap is vertical
+            //     eco1[0] -= (mf/2)*(Math.abs(ecm[0]-eco[0]));
+            //     eco2[0] += (mf/2)*(Math.abs(ecm[0]-eco[0]));
+            //     ec1[0] -= (mf)*(Math.abs(ecm[0]-eco[0]));
+            //     ec2[0] += (mf)*(Math.abs(ecm[0]-eco[0]));
+            // } else {
+            //     // left-right arrow, moving right
+            //     eco1[0] += (mf/2)*(Math.abs(ecm[0]-eco[0]));
+            //     eco2[0] -= (mf/2)*(Math.abs(ecm[0]-eco[0]));
+            //     ec1[0] += (mf)*(Math.abs(ecm[0]-eco[0]));
+            //     ec2[0] -= (mf)*(Math.abs(ecm[0]-eco[0]));
+            // }
+
+            // eco1[0] -= (mf/2)*(Math.abs(ecm[0]-eco[0]));
+            // eco2[0] += (mf/2)*(Math.abs(ecm[0]-eco[0]));
+            // ec1[0] -= (mf)*(Math.abs(ecm[0]-eco[0]));
+            // ec2[0] += (mf)*(Math.abs(ecm[0]-eco[0]));
+        }
+        else {
+            // if (orient_y == 0)
+            // {
+            //     // up-down arrow, moving up
+            // } else {
+            //     // up-down arrow, moving up
+            // }
+
+            // axis of the endcap is horizontal
+            // y-axis: should move up and down based
+            eco1 = [
+                eco[0]+cw/2,
+                eco[1]
+            ];
+            eco2 = [
+                eco[0]-cw/2,
+                eco[1]
+            ];
+
+            ec1 = [
+                eco[0]+cw,
+                eco[1]
+            ];
+            ec2 = [
+                eco[0]-cw,
+                eco[1]
+            ];
+            ecm = [
+                eco[0],
+                dc[1]
+            ];
+        }
+
+
+        let arrow = document.createElement("path");
+
+        arrow.setAttribute("d", 
+        // move to origin center
+                'M ' + oc[0] + ' ' 
+                     + oc[1] + ' ' +
+        // Line to the endcap origin 1
+                'L ' + eco1[0] + ' '
+                     + eco1[1] + ' ' +
+        // Line to endcap pt 1
+                'L ' + ec1[0] + ' '
+                     + ec1[1] + ' ' +
+        // Line to endcap middle
+                'L ' + ecm[0] + ' ' 
+                     + ecm[1] + ' ' + 
+        // Line to endcap pt 2
+                'L ' + ec2[0] + ' ' 
+                     + ec2[1] + ' ' + 
+        // Line to the endcap origin
+                'L ' + eco2[0] + ' '
+                     + eco2[1] + ' ' +
+        // Line to origin center
+                'Z'
+        );
+
+        arrow.setAttribute("class", "arrow " + side);
+        container.innerHTML += arrow.outerHTML + "\n";
+    }
+
 }
 
 /**
@@ -1258,6 +1477,9 @@ class Game{
         console.log("src: " + e.currentTarget.oc);
         let srcForce = this.getRegionForce(e.currentTarget.oc);
 
+        // draw mvmt arrow: 
+        GameMap.drawMovementArrow(srcForce.side, e.currentTarget.oc, e.currentTarget.id);
+
         // Allow transfer of troops if the target region is 
         // neutral or already owned by the current player.
         // Otherwise, start a battle and return
@@ -1304,3 +1526,5 @@ class Game{
 let game = new Game;
 let log_entries = 0;
 let battle_ct = 0;
+
+// GameMap.drawMovementArrow("bf", "d0", "d1");
