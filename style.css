@@ -250,7 +250,7 @@ line.of {
     flex-grow: 0.8;
     width: 250px;
     /* height: 1; */
-    max-height: 100%;
+    max-height: 85vh;
     overflow-y: scroll;
     margin: 15px;
     padding: 0px;
