@@ -450,9 +450,11 @@ class GameMap {
         let dc = [(d.x + (d.width/2)), (d.y + (d.height/2))];
         
         // Now, modify these values to make the arrow start/end closer to the intermediate border
+        // todo - clean up this logic 
+        // this works okay in most situations but isn't quite right
         if (major_axis == 0) {
-            let fo = Math.abs(oc[1]-(o.y+o.height))/4;
-            let fd = Math.abs(dc[1]-(d.y+d.height))/4;
+            let fo = Math.abs(oc[1]-(o.y+o.height))/6;
+            let fd = Math.abs(dc[1]-(d.y+d.height))/6;
             if (orient_x == 0)
             {
                 oc[0] -= fo;
@@ -462,15 +464,15 @@ class GameMap {
                 dc[0] -= fd;
             }
         } else {
-            let fo = Math.abs(oc[0]-(o.x+o.width))/4;
-            let fd = Math.abs(dc[0]-(d.x+d.width))/4;
+            let fo = Math.abs(oc[0]-(o.x+o.width))/6;
+            let fd = Math.abs(dc[0]-(d.x+d.width))/6;
             if (orient_y == 0)
             { 
                 oc[1] -= fo;
-                dc[1] += fd;
+                dc[1] += fo;
             } else {
                 oc[1] += fo;
-                dc[1] -= fd;
+                dc[1] -= fo;
             }
         }
     
