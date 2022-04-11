@@ -67,6 +67,19 @@ const region_phonetic_key = {
     h: "hotel"
 };
 
+const regions_capitals = {
+    a: "a6",
+    b: "b5",
+    c: "c4",
+    d: "d2",
+    e: "e3",
+    f: "f4",
+    g: "g4",
+    h: "h1",
+    i: "i5",
+    j: "j2"
+};
+
 /**
  * @brief use these ids to select the entire region group node (including its name). 
  *        These are also used in troop node names 
@@ -279,6 +292,17 @@ function gameSelectedRegionClickCallback( e )
 function gameMoveRegionClickCallback( e )
 {
     e.currentTarget.obj._moveHandler(e);
+}
+
+/**
+ * @brief Determines if the given region is the capital
+ * @param {string} region_id 
+ *        The ID of the region as a two-character string, e.g. "A0".
+ * @returns bool
+ */
+function isCapitalRegion( region_id )
+{
+    return (region_id == regions_capitals[region_id[0]]);
 }
 
 /**
@@ -560,12 +584,20 @@ class Force{
             document.getElementById(this._region).setAttribute("class", "region " + this._side);
         }
 
-        // if (prev_side != "neutral")
-        //     document.getElementById("s-" + prev_side + "-" + this._region).classList.toggle("sh", true);
-        // if (this._side != "neutral") {
-        //     console.log("s-" + this._side + "-" + this._region);
-        //    document.getElementById("s-" + this._side + "-" + this._region).classList.toggle("sh", false);
-        // }
+        // Remove previous icons if the zone was owned by the other team
+        if (prev_side != "neutral") {
+            document.getElementById("s-" + prev_side + "-" + this._region).classList.toggle("sh", true);
+            if (isCapitalRegion(this._region))
+                document.getElementById("s-" + prev_side + "-" + this._region[0]).classList.toggle("sh", true);
+        }
+
+        // Update status indicator if the zone is now owned by a team.
+        if (this._side != "neutral") {
+            console.log("s-" + this._side + "-" + this._region);
+            document.getElementById("s-" + this._side + "-" + this._region).classList.toggle("sh", false);
+            if (isCapitalRegion(this._region))
+                document.getElementById("s-" + this._side + "-" + this._region[0]).classList.toggle("sh", false);
+        }
     }
 }
 

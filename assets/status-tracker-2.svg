@@ -1,0 +1,511 @@
+<svg id="mssvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 731.92874 90.34449">
+  <defs>
+    <style>
+      .cls-stat-1 {
+        fill: none;
+        stroke: #000;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-stat-2 {
+        fill: #f7ec2a;
+      }
+
+      .cls-stat-3 {
+        fill: #231f20;
+      }
+
+      .sh {
+        display: none;
+      }
+    </style>
+  </defs>
+  <g id="macro-labels">
+    <path class="cls-stat-3" d="M20.37489,77.51832l-1.40283,4.47559h-5.44434l7.78271-22.27881h6.24609l7.08105,22.27881h-5.67822l-1.20264-4.47559h-7.38184Zm3.94141-12.82617l-2.70557,8.71777h5.04395l-2.33838-8.71777Z"/>
+    <path class="cls-stat-3" d="M91.55555,59.7151h9.05176c2.80566,0,4.40918,.30078,5.84521,1.13574,1.56982,.93506,2.53857,2.67188,2.53857,4.54248,0,2.1377-1.00195,3.64062-3.13965,4.67627,2.57178,1.23584,3.67383,2.87256,3.67383,5.44434,0,2.10449-.83496,3.9082-2.30469,5.01025-1.43604,1.10254-3.00586,1.46973-6.1792,1.46973h-9.48584v-22.27881Zm9.68652,8.65088c1.80371,0,2.73877-.73486,2.73877-2.20459,0-1.43604-.93506-2.1709-2.73877-2.1709h-4.77637v4.37549h4.77637Zm-.06689,9.35254c2.104,0,3.23975-.93506,3.23975-2.70557,0-1.77002-1.13574-2.70557-3.23975-2.70557h-4.70947v5.41113h4.70947Z"/>
+    <path class="cls-stat-3" d="M181.25721,66.82984c-.50146-2.1377-2.1377-3.37354-4.50928-3.37354-3.67432,0-5.77881,2.70508-5.77881,7.38135,0,4.64307,2.10449,7.41504,5.64502,7.41504,2.57178,0,4.1084-1.26904,4.70947-3.94092h5.31104c-.60107,5.04346-4.37549,8.18311-9.88672,8.18311-6.58008,0-10.78906-4.54248-10.78906-11.65723,0-7.14795,4.14209-11.62354,10.75537-11.62354,5.37793,0,9.05176,2.87256,9.65332,7.61572h-5.11035Z"/>
+    <path class="cls-stat-3" d="M242.88563,59.7151h7.54883c4.50928,0,6.88037,.80176,8.88477,3.07275,1.77002,2.00439,2.73877,4.81006,2.73877,7.94971,0,3.27344-1.06885,6.31299-2.90576,8.31689-1.9375,2.0708-4.40918,2.93945-8.55078,2.93945h-7.71582v-22.27881Zm8.38379,18.00342c2.271,0,3.64062-.63477,4.57568-2.1709,.73486-1.23584,1.10254-2.77246,1.10254-4.70996,0-1.87012-.33398-3.33984-1.06885-4.60938-.86865-1.53613-2.23779-2.23779-4.27539-2.23779h-3.70752v13.72803h3.37354Z"/>
+    <path class="cls-stat-3" d="M336.71131,63.99049h-11.58984v4.34229h10.12012v3.94141h-10.12012v5.44434h11.79102v4.27539h-16.80176v-22.27881h16.60059v4.27539Z"/>
+    <path class="cls-stat-3" d="M412.88709,63.99049h-11.35645v4.97705h9.95312v4.1084h-9.95312v8.91797h-5.01074v-22.27881h16.36719v4.27539Z"/>
+    <path class="cls-stat-3" d="M489.97889,69.66871v12.3252h-3.00586l-.70215-2.83936c-1.53613,2.40527-3.44043,3.34033-6.67969,3.34033-6.31348,0-10.1875-4.37549-10.1875-11.49023,0-7.14795,4.27539-11.79053,10.82227-11.79053,4.87598,0,8.55078,2.77246,9.58594,7.24805l-4.84375,.30078c-.53418-2.0708-2.27051-3.30664-4.70898-3.30664-3.60742,0-5.8457,2.73877-5.8457,7.21436,0,4.81006,2.1709,7.68262,5.8125,7.68262,2.83887,0,4.97656-1.77051,5.47754-4.57617h-5.44434v-4.1084h9.71973Z"/>
+    <path class="cls-stat-3" d="M551.80799,72.37427v9.61963h-5.01074v-22.27881h5.01074v8.38379h8.18359v-8.38379h5.00977v22.27881h-5.00977v-9.61963h-8.18359Z"/>
+    <path class="cls-stat-3" d="M634.39491,81.77467h-5.01074v-22.27881h5.01074v22.27881Z"/>
+    <path class="cls-stat-3" d="M714.14198,59.22633v16.06592c0,2.33838-.60156,3.80811-2.03711,5.01025-1.37012,1.13574-3.13965,1.70361-5.37793,1.70361-4.3418,0-7.21484-2.37158-7.21484-5.979v-3.03955h4.74316v2.27148c0,1.63672,.83496,2.50537,2.43848,2.50537,1.60254,0,2.43848-.86865,2.43848-2.50537v-16.03271h5.00977Z"/>
+  </g>
+  <g id="micro-hq-ind">
+    <circle id="ind_hq_a" class="cls-stat-2" cx="31.38609" cy="48.79627" r="1.6316"/>
+    <circle id="ind_hq_b" class="cls-stat-2" cx="102.49063" cy="48.79627" r="1.6316"/>
+    <circle id="ind_hq_c" class="cls-stat-2" cx="173.59516" cy="48.79627" r="1.6316"/>
+    <circle id="ind_hq_d" class="cls-stat-2" cx="239.83041" cy="48.79627" r="1.6316"/>
+    <circle id="ind_hq_e" class="cls-stat-2" cx="320.67352" cy="48.79627" r="1.6316"/>
+    <circle id="ind_hq_f" class="cls-stat-2" cx="401.51664" cy="48.79627" r="1.6316"/>
+    <circle id="ind_hq_g" class="cls-stat-2" cx="477.49046" cy="48.79627" r="1.6316"/>
+    <circle id="ind_hq_h" class="cls-stat-2" cx="538.85642" cy="48.79627" r="1.6316"/>
+    <circle id="ind_hq_i" class="cls-stat-2" cx="634.51505" cy="48.68663" r="1.6316"/>
+    <circle id="ind_hq_j" class="cls-stat-2" cx="695.67336" cy="48.55182" r="1.6316"/>
+  </g>
+  <g id="micro-icons">
+    <g id="m_a">
+      <g id="s_a0">
+        <rect id="s-of-a0" class="sh of cls-stat-1" x="1.13568" y="51.77782" width="2.06936" height="2.06936" transform="translate(-36.70839 17.0031) rotate(-45)"/>
+        <rect id="s-bf-a0" class="sh bf cls-stat-1" x=".68585" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_a1">
+        <rect id="s-of-a1" class="sh of cls-stat-1" x="6.00497" y="51.77782" width="2.06936" height="2.06936" transform="translate(-35.28221 20.44621) rotate(-45)"/>
+        <rect id="s-bf-a1" class="sh bf cls-stat-1" x="5.55513" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_a2">
+        <rect id="s-of-a2" class="sh of cls-stat-1" x="10.87426" y="51.77782" width="2.06936" height="2.06936" transform="translate(-33.85603 23.88931) rotate(-45)"/>
+        <rect id="s-bf-a2" class="sh bf cls-stat-1" x="10.42442" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_a3">
+        <rect id="s-of-a3" class="sh of cls-stat-1" x="15.74355" y="51.77782" width="2.06936" height="2.06936" transform="translate(-32.42985 27.33242) rotate(-45)"/>
+        <rect id="s-bf-a3" class="sh bf cls-stat-1" x="15.29371" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_a4">
+        <rect id="s-of-a4" class="sh of cls-stat-1" x="20.61284" y="51.77782" width="2.06936" height="2.06936" transform="translate(-31.00367 30.77553) rotate(-45)"/>
+        <rect id="s-bf-a4" class="sh bf cls-stat-1" x="20.163" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_a5">
+        <rect id="s-of-a5" class="sh of cls-stat-1" x="25.48213" y="51.77782" width="2.06936" height="2.06936" transform="translate(-29.57748 34.21863) rotate(-45)"/>
+        <rect id="s-bf-a5" class="sh bf cls-stat-1" x="25.03229" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_a6">
+        <rect id="s-of-a6" class="sh of cls-stat-1" x="30.35141" y="51.77782" width="2.06936" height="2.06936" transform="translate(-28.1513 37.66174) rotate(-45)"/>
+        <rect id="s-bf-a6" class="sh bf cls-stat-1" x="29.90158" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_a7">
+        <rect id="s-of-a7" class="sh of cls-stat-1" x="35.2207" y="51.77782" width="2.06936" height="2.06936" transform="translate(-26.72512 41.10485) rotate(-45)"/>
+        <rect id="s-bf-a7" class="sh bf cls-stat-1" x="34.77086" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_a8">
+        <rect id="s-of-a8" class="sh of cls-stat-1" x="40.08999" y="51.77782" width="2.06936" height="2.06936" transform="translate(-25.29894 44.54795) rotate(-45)"/>
+        <rect id="s-bf-a8" class="sh bf cls-stat-1" x="39.64015" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_a9">
+        <rect id="s-of-a9" class="sh of cls-stat-1" x="44.95928" y="51.77782" width="2.06936" height="2.06936" transform="translate(-23.87276 47.99106) rotate(-45)"/>
+        <rect id="s-bf-a9" class="sh bf cls-stat-1" x="44.50944" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+    </g>
+    <g id="m_b">
+      <g id="s_b0">
+        <rect id="s-of-b0" class="sh of cls-stat-1" x="77.10951" y="51.77782" width="2.06936" height="2.06936" transform="translate(-14.45617 70.72471) rotate(-45)"/>
+        <rect id="s-bf-b0" class="sh bf cls-stat-1" x="76.65967" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_b1">
+        <rect id="s-of-b1" class="sh of cls-stat-1" x="81.9788" y="51.77782" width="2.06936" height="2.06936" transform="translate(-13.02999 74.16781) rotate(-45)"/>
+        <rect id="s-bf-b1" class="sh bf cls-stat-1" x="81.52896" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_b2">
+        <rect id="s-of-b2" class="sh of cls-stat-1" x="86.84809" y="51.77782" width="2.06936" height="2.06936" transform="translate(-11.60381 77.61092) rotate(-45)"/>
+        <rect id="s-bf-b2" class="sh bf cls-stat-1" x="86.39825" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_b3">
+        <rect id="s-of-b3" class="sh of cls-stat-1" x="91.71737" y="51.77782" width="2.06936" height="2.06936" transform="translate(-10.17763 81.05403) rotate(-45)"/>
+        <rect id="s-bf-b3" class="sh bf cls-stat-1" x="91.26753" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_b4">
+        <rect id="s-of-b4" class="sh of cls-stat-1" x="96.58666" y="51.77782" width="2.06936" height="2.06936" transform="translate(-8.75145 84.49713) rotate(-45)"/>
+        <rect id="s-bf-b4" class="sh bf cls-stat-1" x="96.13682" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_b5">
+        <rect id="s-of-b5" class="sh of cls-stat-1" x="101.45595" y="51.77782" width="2.06936" height="2.06936" transform="translate(-7.32527 87.94024) rotate(-45)"/>
+        <rect id="s-bf-b5" class="sh bf cls-stat-1" x="101.00611" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_b6">
+        <rect id="s-of-b6" class="sh of cls-stat-1" x="106.32524" y="51.77782" width="2.06936" height="2.06936" transform="translate(-5.89909 91.38335) rotate(-45)"/>
+        <rect id="s-bf-b6" class="sh bf cls-stat-1" x="105.8754" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_b7">
+        <rect id="s-of-b7" class="sh of cls-stat-1" x="111.19453" y="51.77782" width="2.06936" height="2.06936" transform="translate(-4.4729 94.82645) rotate(-45)"/>
+        <rect id="s-bf-b7" class="sh bf cls-stat-1" x="110.74469" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_b8">
+        <rect id="s-of-b8" class="sh of cls-stat-1" x="116.06381" y="51.77782" width="2.06936" height="2.06936" transform="translate(-3.04672 98.26956) rotate(-45)"/>
+        <rect id="s-bf-b8" class="sh bf cls-stat-1" x="115.61398" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_b9">
+        <rect id="s-of-b9" class="sh of cls-stat-1" x="120.9331" y="51.77782" width="2.06936" height="2.06936" transform="translate(-1.62054 101.71267) rotate(-45)"/>
+        <rect id="s-bf-b9" class="sh bf cls-stat-1" x="120.48326" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+    </g>
+    <g id="m_c">
+      <g id="s_c0">
+        <rect id="s-of-c0" class="sh of cls-stat-1" x="153.08333" y="51.77782" width="2.06936" height="2.06936" transform="translate(7.79604 124.44631) rotate(-45)"/>
+        <rect id="s-bf-c0" class="sh bf cls-stat-1" x="152.63349" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_c1">
+        <rect id="s-of-c1" class="sh of cls-stat-1" x="157.95262" y="51.77782" width="2.06936" height="2.06936" transform="translate(9.22223 127.88942) rotate(-45)"/>
+        <rect id="s-bf-c1" class="sh bf cls-stat-1" x="157.50278" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_c2">
+        <rect id="s-of-c2" class="sh of cls-stat-1" x="162.82191" y="51.77782" width="2.06936" height="2.06936" transform="translate(10.64841 131.33253) rotate(-45)"/>
+        <rect id="s-bf-c2" class="sh bf cls-stat-1" x="162.37207" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_c3">
+        <rect id="s-of-c3" class="sh of cls-stat-1" x="167.6912" y="51.77782" width="2.06936" height="2.06936" transform="translate(12.07459 134.77563) rotate(-45)"/>
+        <rect id="s-bf-c3" class="sh bf cls-stat-1" x="167.24136" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_c4">
+        <rect id="s-of-c4" class="sh of cls-stat-1" x="172.56049" y="51.77782" width="2.06936" height="2.06936" transform="translate(13.50077 138.21874) rotate(-45)"/>
+        <rect id="s-bf-c4" class="sh bf cls-stat-1" x="172.11065" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_c5">
+        <rect id="s-of-c5" class="sh of cls-stat-1" x="177.42977" y="51.77782" width="2.06936" height="2.06936" transform="translate(14.92695 141.66185) rotate(-45)"/>
+        <rect id="s-bf-c5" class="sh bf cls-stat-1" x="176.97994" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_c6">
+        <rect id="s-of-c6" class="sh of cls-stat-1" x="182.29906" y="51.77782" width="2.06936" height="2.06936" transform="translate(16.35313 145.10495) rotate(-45)"/>
+        <rect id="s-bf-c6" class="sh bf cls-stat-1" x="181.84922" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_c7">
+        <rect id="s-of-c7" class="sh of cls-stat-1" x="187.16835" y="51.77782" width="2.06936" height="2.06936" transform="translate(17.77931 148.54806) rotate(-45)"/>
+        <rect id="s-bf-c7" class="sh bf cls-stat-1" x="186.71851" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_c8">
+        <rect id="s-of-c8" class="sh of cls-stat-1" x="192.03764" y="51.77782" width="2.06936" height="2.06936" transform="translate(19.2055 151.99117) rotate(-45)"/>
+        <rect id="s-bf-c8" class="sh bf cls-stat-1" x="191.5878" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_c9">
+        <rect id="s-of-c9" class="sh of cls-stat-1" x="196.90693" y="51.77782" width="2.06936" height="2.06936" transform="translate(20.63168 155.43427) rotate(-45)"/>
+        <rect id="s-bf-c9" class="sh bf cls-stat-1" x="196.45709" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+    </g>
+    <g id="m_d">
+      <g id="s_d0">
+        <rect id="s-of-d0" class="sh of cls-stat-1" x="229.05716" y="51.77782" width="2.06936" height="2.06936" transform="translate(30.04826 178.16792) rotate(-45)"/>
+        <rect id="s-bf-d0" class="sh bf cls-stat-1" x="228.60732" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_d1">
+        <rect id="s-of-d1" class="sh of cls-stat-1" x="233.92645" y="51.77782" width="2.06936" height="2.06936" transform="translate(31.47444 181.61103) rotate(-45)"/>
+        <rect id="s-bf-d1" class="sh bf cls-stat-1" x="233.47661" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_d2">
+        <rect id="s-of-d2" class="sh of cls-stat-1" x="238.79573" y="51.77782" width="2.06936" height="2.06936" transform="translate(32.90062 185.05413) rotate(-45)"/>
+        <rect id="s-bf-d2" class="sh bf cls-stat-1" x="238.3459" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_d3">
+        <rect id="s-of-d3" class="sh of cls-stat-1" x="243.66502" y="51.77782" width="2.06936" height="2.06936" transform="translate(34.32681 188.49724) rotate(-45)"/>
+        <rect id="s-bf-d3" class="sh bf cls-stat-1" x="243.21518" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_d4">
+        <rect id="s-of-d4" class="sh of cls-stat-1" x="248.53431" y="51.77782" width="2.06936" height="2.06936" transform="translate(35.75299 191.94035) rotate(-45)"/>
+        <rect id="s-bf-d4" class="sh bf cls-stat-1" x="248.08447" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_d5">
+        <rect id="s-of-d5" class="sh of cls-stat-1" x="253.4036" y="51.77782" width="2.06936" height="2.06936" transform="translate(37.17917 195.38345) rotate(-45)"/>
+        <rect id="s-bf-d5" class="sh bf cls-stat-1" x="252.95376" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_d6">
+        <rect id="s-of-d6" class="sh of cls-stat-1" x="258.27289" y="51.77782" width="2.06936" height="2.06936" transform="translate(38.60535 198.82656) rotate(-45)"/>
+        <rect id="s-bf-d6" class="sh bf cls-stat-1" x="257.82305" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_d7">
+        <rect id="s-of-d7" class="sh of cls-stat-1" x="263.14217" y="51.77782" width="2.06936" height="2.06936" transform="translate(40.03153 202.26967) rotate(-45)"/>
+        <rect id="s-bf-d7" class="sh bf cls-stat-1" x="262.69234" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_d8">
+        <rect id="s-of-d8" class="sh of cls-stat-1" x="268.01146" y="51.77782" width="2.06936" height="2.06936" transform="translate(41.45771 205.71277) rotate(-45)"/>
+        <rect id="s-bf-d8" class="sh bf cls-stat-1" x="267.56162" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_d9">
+        <rect id="s-of-d9" class="sh of cls-stat-1" x="272.88075" y="51.77782" width="2.06936" height="2.06936" transform="translate(42.88389 209.15588) rotate(-45)"/>
+        <rect id="s-bf-d9" class="sh bf cls-stat-1" x="272.43091" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+    </g>
+    <g id="m_e">
+      <g id="s_e0">
+        <rect id="s-of-e0" class="sh of cls-stat-1" x="305.03098" y="51.77782" width="2.06936" height="2.06936" transform="translate(52.30048 231.88953) rotate(-45)"/>
+        <rect id="s-bf-e0" class="sh bf cls-stat-1" x="304.58114" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_e1">
+        <rect id="s-of-e1" class="sh of cls-stat-1" x="309.90027" y="51.77782" width="2.06936" height="2.06936" transform="translate(53.72666 235.33263) rotate(-45)"/>
+        <rect id="s-bf-e1" class="sh bf cls-stat-1" x="309.45043" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_e2">
+        <rect id="s-of-e2" class="sh of cls-stat-1" x="314.76956" y="51.77782" width="2.06936" height="2.06936" transform="translate(55.15284 238.77574) rotate(-45)"/>
+        <rect id="s-bf-e2" class="sh bf cls-stat-1" x="314.31972" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_e3">
+        <rect id="s-of-e3" class="sh of cls-stat-1" x="319.63885" y="51.77782" width="2.06936" height="2.06936" transform="translate(56.57902 242.21885) rotate(-45)"/>
+        <rect id="s-bf-e3" class="sh bf cls-stat-1" x="319.18901" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_e4">
+        <rect id="s-of-e4" class="sh of cls-stat-1" x="324.50813" y="51.77782" width="2.06936" height="2.06936" transform="translate(58.00521 245.66195) rotate(-45)"/>
+        <rect id="s-bf-e4" class="sh bf cls-stat-1" x="324.0583" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_e5">
+        <rect id="s-of-e5" class="sh of cls-stat-1" x="329.37742" y="51.77782" width="2.06936" height="2.06936" transform="translate(59.43139 249.10506) rotate(-45)"/>
+        <rect id="s-bf-e5" class="sh bf cls-stat-1" x="328.92758" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_e6">
+        <rect id="s-of-e6" class="sh of cls-stat-1" x="334.24671" y="51.77782" width="2.06936" height="2.06936" transform="translate(60.85757 252.54817) rotate(-45)"/>
+        <rect id="s-bf-e6" class="sh bf cls-stat-1" x="333.79687" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_e7">
+        <rect id="s-of-e7" class="sh of cls-stat-1" x="339.116" y="51.77782" width="2.06936" height="2.06936" transform="translate(62.28375 255.99127) rotate(-45)"/>
+        <rect id="s-bf-e7" class="sh bf cls-stat-1" x="338.66616" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_e8">
+        <rect id="s-of-e8" class="sh of cls-stat-1" x="343.98529" y="51.77782" width="2.06936" height="2.06936" transform="translate(63.70993 259.43438) rotate(-45)"/>
+        <rect id="s-bf-e8" class="sh bf cls-stat-1" x="343.53545" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_e9">
+        <rect id="s-of-e9" class="sh of cls-stat-1" x="348.85457" y="51.77782" width="2.06936" height="2.06936" transform="translate(65.13611 262.87749) rotate(-45)"/>
+        <rect id="s-bf-e9" class="sh bf cls-stat-1" x="348.40474" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+    </g>
+    <g id="m_f">
+      <g id="s_f0">
+        <rect id="s-of-f0" class="sh of cls-stat-1" x="381.00481" y="51.77782" width="2.06936" height="2.06936" transform="translate(74.5527 285.61113) rotate(-45)"/>
+        <rect id="s-bf-f0" class="sh bf cls-stat-1" x="380.55497" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_f1">
+        <rect id="s-of-f1" class="sh of cls-stat-1" x="385.87409" y="51.77782" width="2.06936" height="2.06936" transform="translate(75.97888 289.05424) rotate(-45)"/>
+        <rect id="s-bf-f1" class="sh bf cls-stat-1" x="385.42426" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_f2">
+        <rect id="s-of-f2" class="sh of cls-stat-1" x="390.74338" y="51.77782" width="2.06936" height="2.06936" transform="translate(77.40506 292.49735) rotate(-45)"/>
+        <rect id="s-bf-f2" class="sh bf cls-stat-1" x="390.29354" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_f3">
+        <rect id="s-of-f3" class="sh of cls-stat-1" x="395.61267" y="51.77782" width="2.06936" height="2.06936" transform="translate(78.83124 295.94045) rotate(-45)"/>
+        <rect id="s-bf-f3" class="sh bf cls-stat-1" x="395.16283" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_f4">
+        <rect id="s-of-f4" class="sh of cls-stat-1" x="400.48196" y="51.77782" width="2.06936" height="2.06936" transform="translate(80.25742 299.38356) rotate(-45)"/>
+        <rect id="s-bf-f4" class="sh bf cls-stat-1" x="400.03212" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_f5">
+        <rect id="s-of-f5" class="sh of cls-stat-1" x="405.35125" y="51.77782" width="2.06936" height="2.06936" transform="translate(81.6836 302.82667) rotate(-45)"/>
+        <rect id="s-bf-f5" class="sh bf cls-stat-1" x="404.90141" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_f6">
+        <rect id="s-of-f6" class="sh of cls-stat-1" x="410.22053" y="51.77782" width="2.06936" height="2.06936" transform="translate(83.10979 306.26977) rotate(-45)"/>
+        <rect id="s-bf-f6" class="sh bf cls-stat-1" x="409.7707" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_f7">
+        <rect id="s-of-f7" class="sh of cls-stat-1" x="415.08982" y="51.77782" width="2.06936" height="2.06936" transform="translate(84.53597 309.71288) rotate(-45)"/>
+        <rect id="s-bf-f7" class="sh bf cls-stat-1" x="414.63998" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_f8">
+        <rect id="s-of-f8" class="sh of cls-stat-1" x="419.95911" y="51.77782" width="2.06936" height="2.06936" transform="translate(85.96215 313.15599) rotate(-45)"/>
+        <rect id="s-bf-f8" class="sh bf cls-stat-1" x="419.50927" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_f9">
+        <rect id="s-of-f9" class="sh of cls-stat-1" x="424.8284" y="51.77782" width="2.06936" height="2.06936" transform="translate(87.38833 316.59909) rotate(-45)"/>
+        <rect id="s-bf-f9" class="sh bf cls-stat-1" x="424.37856" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+    </g>
+    <g id="m_g">
+      <g id="s_g0">
+        <rect id="s-of-g0" class="sh of cls-stat-1" x="456.97863" y="51.77782" width="2.06936" height="2.06936" transform="translate(96.80492 339.33274) rotate(-45)"/>
+        <rect id="s-bf-g0" class="sh bf cls-stat-1" x="456.52879" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_g1">
+        <rect id="s-of-g1" class="sh of cls-stat-1" x="461.84792" y="51.77782" width="2.06936" height="2.06936" transform="translate(98.2311 342.77585) rotate(-45)"/>
+        <rect id="s-bf-g1" class="sh bf cls-stat-1" x="461.39808" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_g2">
+        <rect id="s-of-g2" class="sh of cls-stat-1" x="466.71721" y="51.77782" width="2.06936" height="2.06936" transform="translate(99.65728 346.21895) rotate(-45)"/>
+        <rect id="s-bf-g2" class="sh bf cls-stat-1" x="466.26737" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_g3">
+        <rect id="s-of-g3" class="sh of cls-stat-1" x="471.58649" y="51.77782" width="2.06936" height="2.06936" transform="translate(101.08346 349.66206) rotate(-45)"/>
+        <rect id="s-bf-g3" class="sh bf cls-stat-1" x="471.13666" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_g4">
+        <rect id="s-of-g4" class="sh of cls-stat-1" x="476.45578" y="51.77782" width="2.06936" height="2.06936" transform="translate(102.50964 353.10517) rotate(-45)"/>
+        <rect id="s-bf-g4" class="sh bf cls-stat-1" x="476.00594" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_g5">
+        <rect id="s-of-g5" class="sh of cls-stat-1" x="481.32507" y="51.77782" width="2.06936" height="2.06936" transform="translate(103.93582 356.54827) rotate(-45)"/>
+        <rect id="s-bf-g5" class="sh bf cls-stat-1" x="480.87523" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_g6">
+        <rect id="s-of-g6" class="sh of cls-stat-1" x="486.19436" y="51.77782" width="2.06936" height="2.06936" transform="translate(105.362 359.99138) rotate(-45)"/>
+        <rect id="s-bf-g6" class="sh bf cls-stat-1" x="485.74452" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_g7">
+        <rect id="s-of-g7" class="sh of cls-stat-1" x="491.06365" y="51.77782" width="2.06936" height="2.06936" transform="translate(106.78819 363.43449) rotate(-45)"/>
+        <rect id="s-bf-g7" class="sh bf cls-stat-1" x="490.61381" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_g8">
+        <rect id="s-of-g8" class="sh of cls-stat-1" x="495.93293" y="51.77782" width="2.06936" height="2.06936" transform="translate(108.21437 366.87759) rotate(-45)"/>
+        <rect id="s-bf-g8" class="sh bf cls-stat-1" x="495.4831" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_g9">
+        <rect id="s-of-g9" class="sh of cls-stat-1" x="500.80222" y="51.77782" width="2.06936" height="2.06936" transform="translate(109.64055 370.3207) rotate(-45)"/>
+        <rect id="s-bf-g9" class="sh bf cls-stat-1" x="500.35238" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+    </g>
+    <g id="m_h">
+      <g id="s_h0">
+        <rect id="s-of-h0" class="sh of cls-stat-1" x="532.95245" y="51.77782" width="2.06936" height="2.06936" transform="translate(119.05713 393.05435) rotate(-45)"/>
+        <rect id="s-bf-h0" class="sh bf cls-stat-1" x="532.50262" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_h1">
+        <rect id="s-of-h1" class="sh of cls-stat-1" x="537.82174" y="51.77782" width="2.06936" height="2.06936" transform="translate(120.48331 396.49745) rotate(-45)"/>
+        <rect id="s-bf-h1" class="sh bf cls-stat-1" x="537.3719" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_h2">
+        <rect id="s-of-h2" class="sh of cls-stat-1" x="542.69103" y="51.77782" width="2.06936" height="2.06936" transform="translate(121.9095 399.94056) rotate(-45)"/>
+        <rect id="s-bf-h2" class="sh bf cls-stat-1" x="542.24119" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_h3">
+        <rect id="s-of-h3" class="sh of cls-stat-1" x="547.56032" y="51.77782" width="2.06936" height="2.06936" transform="translate(123.33568 403.38367) rotate(-45)"/>
+        <rect id="s-bf-h3" class="sh bf cls-stat-1" x="547.11048" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_h4">
+        <rect id="s-of-h4" class="sh of cls-stat-1" x="552.42961" y="51.77782" width="2.06936" height="2.06936" transform="translate(124.76186 406.82677) rotate(-45)"/>
+        <rect id="s-bf-h4" class="sh bf cls-stat-1" x="551.97977" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_h5">
+        <rect id="s-of-h5" class="sh of cls-stat-1" x="557.29889" y="51.77782" width="2.06936" height="2.06936" transform="translate(126.18804 410.26988) rotate(-45)"/>
+        <rect id="s-bf-h5" class="sh bf cls-stat-1" x="556.84906" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_h6">
+        <rect id="s-of-h6" class="sh of cls-stat-1" x="562.16818" y="51.77782" width="2.06936" height="2.06936" transform="translate(127.61422 413.71299) rotate(-45)"/>
+        <rect id="s-bf-h6" class="sh bf cls-stat-1" x="561.71834" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_h7">
+        <rect id="s-of-h7" class="sh of cls-stat-1" x="567.03747" y="51.77782" width="2.06936" height="2.06936" transform="translate(129.0404 417.15609) rotate(-45)"/>
+        <rect id="s-bf-h7" class="sh bf cls-stat-1" x="566.58763" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_h8">
+        <rect id="s-of-h8" class="sh of cls-stat-1" x="571.90676" y="51.77782" width="2.06936" height="2.06936" transform="translate(130.46658 420.5992) rotate(-45)"/>
+        <rect id="s-bf-h8" class="sh bf cls-stat-1" x="571.45692" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_h9">
+        <rect id="s-of-h9" class="sh of cls-stat-1" x="576.77605" y="51.77782" width="2.06936" height="2.06936" transform="translate(131.89277 424.0423) rotate(-45)"/>
+        <rect id="s-bf-h9" class="sh bf cls-stat-1" x="576.32621" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+    </g>
+    <g id="m_i">
+      <g id="s_i0">
+        <rect id="s-of-i0" class="sh of cls-stat-1" x="609.13393" y="51.77782" width="2.06936" height="2.06936" transform="translate(141.37017 446.92279) rotate(-45)"/>
+        <rect id="s-bf-i0" class="sh bf cls-stat-1" x="608.68409" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_i1">
+        <rect id="s-of-i1" class="sh of cls-stat-1" x="614.00322" y="51.77782" width="2.06936" height="2.06936" transform="translate(142.79635 450.36589) rotate(-45)"/>
+        <rect id="s-bf-i1" class="sh bf cls-stat-1" x="613.55338" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_i2">
+        <rect id="s-of-i2" class="sh of cls-stat-1" x="618.87251" y="51.77782" width="2.06936" height="2.06936" transform="translate(144.22253 453.809) rotate(-45)"/>
+        <rect id="s-bf-i2" class="sh bf cls-stat-1" x="618.42267" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_i3">
+        <rect id="s-of-i3" class="sh of cls-stat-1" x="623.7418" y="51.77782" width="2.06936" height="2.06936" transform="translate(145.64872 457.25211) rotate(-45)"/>
+        <rect id="s-bf-i3" class="sh bf cls-stat-1" x="623.29196" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_i4">
+        <rect id="s-of-i4" class="sh of cls-stat-1" x="628.61109" y="51.77782" width="2.06936" height="2.06936" transform="translate(147.0749 460.69521) rotate(-45)"/>
+        <rect id="s-bf-i4" class="sh bf cls-stat-1" x="628.16125" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_i5">
+        <rect id="s-of-i5" class="sh of cls-stat-1" x="633.48037" y="51.77782" width="2.06936" height="2.06936" transform="translate(148.50108 464.13832) rotate(-45)"/>
+        <rect id="s-bf-i5" class="sh bf cls-stat-1" x="633.03054" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_i6">
+        <rect id="s-of-i6" class="sh of cls-stat-1" x="638.34966" y="51.77782" width="2.06936" height="2.06936" transform="translate(149.92726 467.58143) rotate(-45)"/>
+        <rect id="s-bf-i6" class="sh bf cls-stat-1" x="637.89982" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_i7">
+        <rect id="s-of-i7" class="sh of cls-stat-1" x="643.21895" y="51.77782" width="2.06936" height="2.06936" transform="translate(151.35344 471.02453) rotate(-45)"/>
+        <rect id="s-bf-i7" class="sh bf cls-stat-1" x="642.76911" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_i8">
+        <rect id="s-of-i8" class="sh of cls-stat-1" x="648.08824" y="51.77782" width="2.06936" height="2.06936" transform="translate(152.77962 474.46764) rotate(-45)"/>
+        <rect id="s-bf-i8" class="sh bf cls-stat-1" x="647.6384" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_i9">
+        <rect id="s-of-i9" class="sh of cls-stat-1" x="652.95753" y="51.77782" width="2.06936" height="2.06936" transform="translate(154.2058 477.91075) rotate(-45)"/>
+        <rect id="s-bf-i9" class="sh bf cls-stat-1" x="652.50769" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+    </g>
+    <g id="m_j">
+      <g id="s_j0">
+        <rect id="s-of-j0" class="sh of cls-stat-1" x="684.9001" y="51.77782" width="2.06936" height="2.06936" transform="translate(163.56157 500.49756) rotate(-45)"/>
+        <rect id="s-bf-j0" class="sh bf cls-stat-1" x="684.45026" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_j1">
+        <rect id="s-of-j1" class="sh of cls-stat-1" x="689.76939" y="51.77782" width="2.06936" height="2.06936" transform="translate(164.98775 503.94066) rotate(-45)"/>
+        <rect id="s-bf-j1" class="sh bf cls-stat-1" x="689.31955" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_j2">
+        <rect id="s-of-j2" class="sh of cls-stat-1" x="694.63868" y="51.77782" width="2.06936" height="2.06936" transform="translate(166.41393 507.38377) rotate(-45)"/>
+        <rect id="s-bf-j2" class="sh bf cls-stat-1" x="694.18884" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_j3">
+        <rect id="s-of-j3" class="sh of cls-stat-1" x="699.50797" y="51.77782" width="2.06936" height="2.06936" transform="translate(167.84011 510.82688) rotate(-45)"/>
+        <rect id="s-bf-j3" class="sh bf cls-stat-1" x="699.05813" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_j4">
+        <rect id="s-of-j4" class="sh of cls-stat-1" x="704.37725" y="51.77782" width="2.06936" height="2.06936" transform="translate(169.26629 514.26998) rotate(-45)"/>
+        <rect id="s-bf-j4" class="sh bf cls-stat-1" x="703.92742" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_j5">
+        <rect id="s-of-j5" class="sh of cls-stat-1" x="709.24654" y="51.77782" width="2.06936" height="2.06936" transform="translate(170.69248 517.71309) rotate(-45)"/>
+        <rect id="s-bf-j5" class="sh bf cls-stat-1" x="708.7967" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_j6">
+        <rect id="s-of-j6" class="sh of cls-stat-1" x="714.11583" y="51.77782" width="2.06936" height="2.06936" transform="translate(172.11866 521.1562) rotate(-45)"/>
+        <rect id="s-bf-j6" class="sh bf cls-stat-1" x="713.66599" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_j7">
+        <rect id="s-of-j7" class="sh of cls-stat-1" x="718.98512" y="51.77782" width="2.06936" height="2.06936" transform="translate(173.54484 524.5993) rotate(-45)"/>
+        <rect id="s-bf-j7" class="sh bf cls-stat-1" x="718.53528" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_j8">
+        <rect id="s-of-j8" class="sh of cls-stat-1" x="723.85441" y="51.77782" width="2.06936" height="2.06936" transform="translate(174.97102 528.04241) rotate(-45)"/>
+        <rect id="s-bf-j8" class="sh bf cls-stat-1" x="723.40457" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+      <g id="s_j9">
+        <rect id="s-of-j9" class="sh of cls-stat-1" x="728.72369" y="51.77782" width="2.06936" height="2.06936" transform="translate(176.3972 531.48552) rotate(-45)"/>
+        <rect id="s-bf-j9" class="sh bf cls-stat-1" x="728.27386" y="51.97873" width="2.96903" height="1.66754"/>
+      </g>
+    </g>
+  </g>
+  <g id="macro-icons">
+    <g id="s_a">
+      <rect id="s-of-a" class="sh of cls-stat-1" x="8.15554" y="7.79304" width="31.85324" height="31.85324" transform="translate(-9.71883 23.97599) rotate(-45)"/>
+      <rect id="s-bf-a" class="sh bf cls-stat-1" x="1.23126" y="10.8856" width="45.70179" height="25.66813"/>
+    </g>
+    <g id="s_b">
+      <rect id="s-of-b" class="sh of cls-stat-1" x="84.12936" y="7.79304" width="31.85324" height="31.85324" transform="translate(12.53338 77.69759) rotate(-45)"/>
+      <rect id="s-bf-b" class="sh bf cls-stat-1" x="77.20509" y="10.8856" width="45.70179" height="25.66813"/>
+    </g>
+    <g id="s_c">
+      <rect id="s-of-c" class="sh of cls-stat-1" x="160.10319" y="7.79304" width="31.85324" height="31.85324" transform="translate(34.7856 131.4192) rotate(-45)"/>
+      <rect id="s-bf-c" class="sh bf cls-stat-1" x="153.17891" y="10.8856" width="45.70179" height="25.66813"/>
+    </g>
+    <g id="s_d">
+      <rect id="s-of-d" class="sh of cls-stat-1" x="236.07701" y="7.79304" width="31.85324" height="31.85324" transform="translate(57.03782 185.14081) rotate(-45)"/>
+      <rect id="s-bf-d" class="sh bf cls-stat-1" x="229.15273" y="10.8856" width="45.70179" height="25.66813"/>
+    </g>
+    <g id="s_e">
+      <rect id="s-of-e" class="sh of cls-stat-1" x="312.05084" y="7.79304" width="31.85324" height="31.85324" transform="translate(79.29004 238.86241) rotate(-45)"/>
+      <rect id="s-bf-e" class="sh bf cls-stat-1" x="305.12656" y="10.8856" width="45.70179" height="25.66813"/>
+    </g>
+    <g id="s_f">
+      <rect id="s-of-f" class="sh of cls-stat-1" x="388.02466" y="7.79304" width="31.85324" height="31.85324" transform="translate(101.54226 292.58402) rotate(-45)"/>
+      <rect id="s-bf-f" class="sh bf cls-stat-1" x="381.10038" y="10.8856" width="45.70179" height="25.66813"/>
+    </g>
+    <g id="s_g">
+      <rect id="s-of-g" class="sh of cls-stat-1" x="463.99849" y="7.79304" width="31.85324" height="31.85324" transform="translate(123.79447 346.30562) rotate(-45)"/>
+      <rect id="s-bf-g" class="sh bf cls-stat-1" x="457.07421" y="10.8856" width="45.70179" height="25.66813"/>
+    </g>
+    <g id="s_h">
+      <rect id="s-of-h" class="sh of cls-stat-1" x="539.97231" y="7.79304" width="31.85324" height="31.85324" transform="translate(146.04669 400.02723) rotate(-45)"/>
+      <rect id="s-bf-h" class="sh bf cls-stat-1" x="533.04803" y="10.8856" width="45.70179" height="25.66813"/>
+    </g>
+    <g id="s_h-2" data-name="s_h">
+      <rect id="s-of-i" class="sh of cls-stat-1" x="615.94613" y="7.57376" width="31.85324" height="31.85324" transform="translate(168.45397 453.68461) rotate(-45)"/>
+      <rect id="s-bf-i" class="sh bf cls-stat-1" x="609.02186" y="10.66631" width="45.70179" height="25.66813"/>
+    </g>
+    <g id="s_h-3" data-name="s_h">
+      <rect id="s-of-j" class="sh of cls-stat-1" x="691.91996" y="7.30413" width="31.85324" height="31.85324" transform="translate(190.89684 507.32724) rotate(-45)"/>
+      <rect id="s-bf-j" class="sh bf cls-stat-1" x="684.99568" y="10.39668" width="45.70179" height="25.66813"/>
+    </g>
+  </g>
+</svg>
