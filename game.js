@@ -415,6 +415,73 @@ class GameMap {
     }
 
     /**
+     * @brief WIP function to generate an animation showing the movement of troops from the src region to the dst region.
+     * @warning not finished
+     * @param {*} originForce 
+     * @param {*} destinationForce 
+     */
+    static animateUnitMove( originForce, destinationForce )
+    {
+
+        if (0) {
+        troop_type_names.forEach((unit) => {
+            let node = originForce.side + "_" + originForce.region + "_" + unit;
+                node = document.getElementById(node);
+
+            // if the troop is present, add the animation to move it to the target region
+            if (!(node.classList.contains("t_np")))
+            {
+                let target = destinationForce.side + "_" + destinationForce.region + "_" + unit;
+                console.log("Target: " + target);
+                    target = document.getElementById(target);
+                    target = target.getBBox();
+
+                let animation = document.createElement("animateTransform");
+                    animation.setAttribute("attributeName", "transform");
+                    animation.setAttribute("attributeType", "XML");
+                    animation.setAttribute("type", "translate");
+                    // animation.setAttribute("from", node.getBBox().x + " " + node.getBBox().y);
+                    // animation.setAttribute("to", target.getBBox().x + " " + target.getBBox().y);
+                    animation.setAttribute("from", "0 0");
+                    animation.setAttribute("to", ((-1)*(node.getBBox().x - target.x)).toString() + " " + ((-1)*(node.getBBox().y - target.y)).toString());
+                    animation.setAttribute("dur", "1s");
+                    // animation.setAttribute("repeatCount", "indefinite");
+                node.innerHTML += animation.outerHTML;
+                // node.addEventListener("animation")
+            }
+        });
+        } else {
+
+        troop_type_names.forEach((unit) => {
+            let node = destinationForce.side + "_" + destinationForce.region + "_" + unit;
+                node = document.getElementById(node);
+
+            // if the troop is present, add the animation to move it to the target region
+            if (!(node.classList.contains("t_np")))
+            {
+                let target = originForce.side + "_" + originForce.region + "_" + unit;
+                console.log("Target: " + target);
+                    target = document.getElementById(target);
+                    target = target.getBBox();
+
+                let animation = document.createElement("animateTransform");
+                    animation.setAttribute("attributeName", "transform");
+                    animation.setAttribute("attributeType", "XML");
+                    animation.setAttribute("type", "translate");
+                    // animation.setAttribute("from", node.getBBox().x + " " + node.getBBox().y);
+                    // animation.setAttribute("to", target.getBBox().x + " " + target.getBBox().y);
+                    animation.setAttribute("from", ((-1)*(node.getBBox().x - target.x)).toString() + " " + ((-1)*(node.getBBox().y - target.y)).toString());
+                    animation.setAttribute("to", "0 0");
+                    animation.setAttribute("dur", "1s");
+                    // animation.setAttribute("repeatCount", "i");
+                
+                node.innerHTML += animation.outerHTML;
+            }
+        });
+        }
+    }
+
+    /**
      * @brief Adds an arrow to the map indicating pending movement by a force from one region
      *        to another. Returns the ID of the arrow so that it can be removed later.
      * @todo Add global counter for # arrows and use it to determine unique IDs?
@@ -1513,12 +1580,13 @@ class Game{
             ]
         );
 
+        // GameMap.animateUnitMove(srcForce, dstForce);
+
         srcForce.alterForce(
             (-1)*srcForce.infantryCount, 
             (-1)*srcForce.helicopterCount,
             (-1)*srcForce.armorCount
         );
-
 
         this._changeTurn();
 
