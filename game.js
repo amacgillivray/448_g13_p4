@@ -313,6 +313,21 @@ function dist( a, b )
     return Math.sqrt(dx^2+dy^2);
 }
 
+function crater_s_cb( e )
+{
+    // let c = document.getElementById(e.target.id);
+    // c.setAttribute("class", "crater");
+    // c.addEventListener("animationend", crater_cb);
+
+    c.target.classList.remove("crater_h");
+}
+
+function crater_cb( e )
+{
+    
+    document.getElementById(e.target.id).setAttribute("class", "crater_filled");
+}
+
 /**
  * @brief Class containing static methods to interact with the map
  */
@@ -479,6 +494,182 @@ class GameMap {
             }
         });
         }
+    }
+
+    /**
+     * 
+     * @param {Unit}  source 
+     * @param {array} targets
+     *        Array of Unit objects that the source is firing at. 
+     * @param {number} tick
+     *        The tick # of the combat generating the animation. Used so that old animations can be removed.
+     */
+    static animateUnitCombat( source, targets, tick )
+    {
+        // let unitType = source._type;
+        let container = document.getElementById("combat-layer");
+        let craterctn = document.getElementById("crater-layer");
+
+        let sbb = document.getElementById(source.id).getBBox();
+
+        if (source._count == 0)
+            return;
+        
+        let sx = sbb.x + (Math.random()*sbb.width);
+        let sy = sbb.y + (Math.random()*sbb.height);
+
+        // Remove old animations
+        if (tick > 0)
+        {
+            let old_anims = document.getElementsByClassName("cbt_t_" + (tick-1).toString());
+            for (let i = old_anims.length-1; i >= 0; i--)
+                old_anims[i].remove();
+        }
+
+        let craters = [];
+        let cl = 0;
+        let reftgt = null;
+        let refbb;
+        let refx, refy, refw, refh;
+        let cg = document.createElement('g');
+            cg.setAttribute("id", 'craters_' + battle_ct + '_' + tick + '_' + source.side + '_' + source._type);
+        //     cg.setAttribute("id", cgid);
+        //     craterctn.innerHTML+=cg.outerHTML;
+        // craterctn = document.getElementById(cgid);
+
+
+        // Add firing animations for the source unit towards the enemy units
+        for (let i = 0; i < 3; i++)
+        {
+            let tx, ty;
+
+            if (targets[i] != null && targets[i].count > 0 && Math.random() > 0.5)
+            {
+                if (reftgt == null)
+                {
+                    reftgt = targets[i];
+                    refbb = document.getElementById(reftgt.region + "r").getBBox();
+                    refx = refbb.x; 
+                    refy = refbb.y;
+                    refw = refbb.width;
+                    refh = refbb.height;
+                }
+                // console.log(targets[i].id);
+                let  tbb = document.getElementById(targets[i].id).getBBox();
+                tx = tbb.x + (Math.random() * tbb.width);
+                ty = tbb.y + (Math.random() * tbb.height);
+
+                let fire = document.createElement("path");
+                fire.setAttribute("d", 
+                "M " + sx.toString() + " " + sy.toString() + " " + 
+                "L " + tx.toString() + " " + ty.toString());
+                // fire.setAttribute("stroke", "#efab45");
+                // fire.setAttribute("fill", "#0000");
+                fire.setAttribute("class", "cbtFire " + source._type + " " + source._side + " cbt_no_" + battle_ct + " cbt_t_" + tick);
+                
+                container.innerHTML += fire.outerHTML;
+            }
+
+            // Add craters to enemy region if the type is armor or helicopter
+            // Note that craters are not removed at the end of combat
+            if (reftgt != null && troop_type_names.indexOf(source._type) > 0)
+            {
+                let ct = Math.floor(2*Math.random());
+
+                if (ct == 0) return;
+
+                // create unique element to contain craters from this battle tick
+                let cgid = "crater_c" + battle_ct + "_t" + tick + "_" + source._side + "_" + source.type;
+
+                // let cg = document.createElement("g");
+                //     cg.setAttribute("id", cgid);
+                //     craterctn.innerHTML+=cg.outerHTML;
+                // craterctn = document.getElementById(cgid);
+
+                for (let i = 0; i < ct; i++)
+                {
+                    let circle = document.createElement("circle");
+                    // let i = (craters.length )
+                    // let refbb = document.getElementById(reftgt.region + "r").getBBox();
+                    circle.setAttribute("cx", (refx + (Math.random() * refw)).toString());
+                    circle.setAttribute("cy", (refy + (Math.random() * refh)).toString());
+                    circle.setAttribute("r", (Math.random() * 6));
+                    circle.setAttribute("class", "crater_h");
+                    circle.setAttribute("style", "animation-delay: " + (Math.random()) + "s");
+                    circle.setAttribute("id", cgid + "_" + i);
+                    // craterctn.innerHTML += circle.outerHTML;
+                    cg.appendChild(circle);
+
+                    // craters[cl] = cgid + "_" + i;
+                    cl++;
+
+                    // circle = null;
+                    // while (circle==null)
+                    // {
+                    //     circle = document.getElementById(cgid + "_" + i);
+                    // }
+
+                    // circle.addEventListener("animationend", crater_cb);//, [true, false]);
+                    // circle.addEventListener("animationstart", crater_cb, true);
+                    // circle.id = cgid + "_" + i;
+
+                    // craterctn.appendChild( circle );
+                }
+            }
+        }
+
+        // craterctn.appendChild(cg);
+        if (cl > 0) {
+            craterctn.innerHTML += cg.innerHTML;
+        }
+
+        let cc = document.getElementsByClassName("crater_h");
+        for (let e = cc.length-1; e >= 0; e--)
+        {
+            // cc[e].setAttribute("class", "crater");
+            // cc[e].classList.add("crater");
+            cc[e].addEventListener("animationstart", crater_s_cb, true);
+            cc[e].addEventListener("animationend", crater_cb, true);
+            cc[e].addEventListener("animationiteration", crater_cb, true);
+            cc[e].id = cc[e].getAttribute("id");
+            // cc[e].setAttribute("class", "crater");
+            cc[e].classList.add("crater");
+        }
+
+        // for (let i = 0; i < craters.length; i++)
+        // {
+            // let cc = document.getElementsByClassName("crater_h");
+            // for (let e = 0; e < cc.length; e++)
+            // {
+            //     cc[e].setAttribute("class", "crater");
+            //     cc.addEventListener("animationend", crater_cb);
+            // }
+
+            // let c = document.getElementById(craters[i]);
+            // c.setAttribute("class", "crater");
+        //     // document.getElementById(craters[i]).addEventListener("animationend", crater_s_cb, [true, true]);
+        //     c.addEventListener("animationend", crater_cb, false);
+        //     c.true_id = cgid + "_" + i;
+        // }
+    }
+
+    static craterFix()
+    {
+        let cc = document.getElementsByClassName("crater_h");
+        for (let e = cc.length-1; e >= 0; e--)
+        {
+            cc[e].addEventListener("animationstart", crater_s_cb, true);
+            cc[e].addEventListener("animationend", crater_cb, true);
+            cc[e].id = cc[e].getAttribute("id");
+            // cc[e].classList.remove("crater_h");
+        }
+    }
+
+    static removeCombatAnimations( battle_no ) 
+    {
+        let old_anims = document.getElementsByClassName("cbt_no_" + battle_no );
+        for (let i = old_anims.length-1; i >= 0; i--)
+            old_anims[i].remove();
     }
 
     /**
@@ -996,13 +1187,6 @@ class Unit{
 	}
 }
 
-// let test = new Unit("Inf", 1, 100, "A");
-// console.log(test.type);
-// console.log(test.health);
-// console.log(test.hpMod);
-// console.log(test.count);
-// console.log(test.side);
-
 /**
  * @brief todo
  */
@@ -1060,21 +1244,16 @@ class Battle {
             }
         }
 
+        // Set tick counter
         this._ticks = 0;
 
-        //log.innerHTML += "<p>" + this._off.side.toUpperCase() + " attacked " + this._def.region_phonetic + " from " + this._off.region_phonetic + "</p>\n";
-
+        // Put information about the battle in the game log
         gameLog( 
             team_key[this._off.side] + 
             " attacks " + this._def.region + 
             " from " + this._off.region + 
-            "<br/><progress id=\"p_battle_" + battle_ct + "\" class=\"battle\" max=\"100\" value=\"50\"></progress>"); 
-        // document.getElementById("p_bfof").setAttribute("class", "battle");
-        
-        // this._interval = null
-        // document.getElementById("battleind").innerHTML = " - IN BATTLE AT " + defending_force.region_phonetic.toUpperCase();
-        
-        //document.getElementById("s-" + this._off._side + "-" + this._def._region).classList.toggle("sh", false);
+            "<br/><progress id=\"p_battle_" + battle_ct + "\" class=\"battle\" max=\"100\" value=\"50\"></progress>"
+        ); 
     }
 
     start()
@@ -1239,6 +1418,8 @@ class Battle {
         if (this._def.armor != null)
             dmgd += this._def.armorCount * this._def.armor.dmgMod * Math.random();
 
+        this._animateCombat();
+
         // Deal damage to offense
         this._off.distributeDamage(dmgd);
 
@@ -1246,12 +1427,36 @@ class Battle {
         this._def.distributeDamage(dmgo);
 
         if ( this._off.totalCount <= 0 || this._def.totalCount <= 0 )
-        {        
+        {
+            GameMap.removeCombatAnimations( battle_ct );
             this._drawProgress();
             this.end();
         }
 
         return;
+    }
+
+    _animateCombat()
+    {
+        let off_target = [
+            this._def.infantry,
+            this._def.helicopter, 
+            this._def.armor
+        ];
+
+        let def_target = [
+            this._off.infantry,
+            this._off.helicopter, 
+            this._off.armor
+        ];
+
+        [this._off, this._def].forEach((side) => {
+            troop_type_names.forEach((type) => {
+                let tlist = (side == this._off) ? off_target : def_target;
+                if (side[type] != null) 
+                    GameMap.animateUnitCombat(side[type], tlist, this._ticks);
+            });
+        });
     }
 
     _drawProgress()
@@ -1594,6 +1799,7 @@ class Game{
 
     battleEndCb()
     {
+        GameMap.craterFix();
         if (this._state != "battle")
             return;
         this._state = "initial";
