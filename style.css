@@ -396,7 +396,7 @@ progress[value]::-webkit-progress-value {
   fill: #efab45;
   stroke: #efab45;
   stroke-width: 2px;
-  animation: explode .1s ease-in forwards;
+  animation: explode .24s ease-in forwards;
   /* animation-iteration-count: 1; */
   /* animation-delay: ; */
 }
