@@ -428,52 +428,70 @@ progress[value]::-webkit-progress-value {
 }
 
 .cbtFire {
-  stroke-dasharray: 6px;
-  stroke-dashoffset: 10px;
+  /* stroke-dasharray: 6px;
+  stroke-dashoffset: 10px; */
   fill: #0000;
-  opacity: 0.7
+  opacity: 0.95
 }
-.cbtFire.infantry {
-  stroke: #efe485; /*#efab45;*/
+.cbtFire.infantry.bf {
+  stroke: #ff8182; /*#efab45;*/
+  stroke-dasharray: 40px;
+  stroke-dashoffset: 5px;
   animation: dash_i .16s ease-out forwards;
+  animation-iteration-count: infinite;
 }
 .cbtFire.infantry.of {
   stroke: #a2efbb;
+  stroke-dasharray: 40px;
+  stroke-dashoffset: 5px;
+  animation: dash_i .06s ease-out forwards;
+  animation-iteration-count: infinite;
 }
 
 .cbtFire.helicopter {
   /* stroke: #efefef; */
   stroke: #efab45;
   stroke-width: 3px;
-  stroke-dasharray: 25px;
-  stroke-dashoffset: 25px;
-  animation: dash_h .16s ease-in forwards;
+  /* stroke-dasharray: 25px; */
+  /* stroke-dashoffset: 25px; */
+  stroke-dasharray: 500px;
+  stroke-dashoffset: 500px;
+  animation: dash_h .18s ease-in forwards;
+  /* animation-iteration-count: infinite; */
 }
 .cbtFire.armor {
-  stroke: #ff4142;
-  stroke-width: 2px;
-  stroke-dasharray: 12px;
-  stroke-dashoffset: 12px;
+  /* stroke: #ff4142; */
+  stroke: #efab45;
+  stroke-width: 5px;
+  stroke-dasharray: 120px;
+  stroke-dashoffset: 120px;
+  /* animation: dash_a .16s ease-out forwards; */
   animation: dash_a .16s ease-out forwards;
 }
 @keyframes dash_i {
   to {
-    stroke-dashoffset: 20;
+    /* stroke: #efff85; */
+    stroke-width: 0.5px;
+    stroke-dashoffset: 200px;
+    opacity: 0.1;
   }
 }
 @keyframes dash_h {
   to {
     stroke: #efefef;
-    stroke-dasharray: 15px;
-    stroke-dashoffset: 1;
-    stroke-width: 2px;
+    /* stroke-dasharray: 15px; */
+    stroke-dashoffset: 425px;
+    stroke-width: 1px;
+    opacity: .1;
   }
 }
 @keyframes dash_a {
   to {
-    stroke-dasharray: 10px;
-    stroke-dashoffset: 15px;
+    stroke: #ff4142;
+    stroke-dasharray: 120px;
+    stroke-dashoffset: 50px;
     stroke-width: 1px;
+    opacity: .1;
   }
 }
 
