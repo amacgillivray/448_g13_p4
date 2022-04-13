@@ -23,6 +23,20 @@ const troop_type_names = [
 ];
 
 /**
+ * @brief The maximum # of units that can be fighting in a zone at one time.
+ * @note  Indices correspond to troop_type_names
+ */
+const troop_combat_width = [
+    1000,
+    20,
+    40
+    // useful for debugging combat 
+    // 100,
+    // 2,
+    // 2
+];
+
+/**
  * @brief list of troop size names and the respective maximum troop count
  */
 const troop_sizes = {
@@ -541,8 +555,20 @@ class GameMap {
                     refh = refbb.height;
                 }
                 let  tbb = document.getElementById(targets[i].id).getBBox();
+
                 tx = tbb.x + (Math.random() * tbb.width);
                 ty = tbb.y + (Math.random() * tbb.height);
+
+                // on rare occasions, make the animation visibly miss its target
+                if (Math.random() < 0.2)
+                {
+                    let xs = (Math.random() > 0.5) ? (-1) : (1);
+                    let ys = (Math.random() > 0.5) ? (-1) : (1);
+                    let df = (Math.random() < 0.05) ? 2 : 6;
+
+                    tx += (2*Math.random()*xs*tbb.width);
+                    ty += (2*Math.random()*ys*tbb.height);
+                }
 
                 let fire = document.createElement("path");
                 fire.setAttribute("d", 
@@ -1158,6 +1184,7 @@ class Battle {
             this._def.helicopterCount,
             this._def.armorCount
         ];
+        this._defRefTotal = this._def.totalCount;
 
         this._refSides = [
             this._off.side, 
@@ -1179,6 +1206,10 @@ class Battle {
 
         // Set tick counter
         this._ticks = 0;
+
+        this._off_mod = Math.random()/2;
+        this._def_mod = Math.random()/2 + 0.05;
+
 
         // Put information about the battle in the game log
         gameLog( 
@@ -1329,6 +1360,14 @@ class Battle {
         this._ticks++;
         this._drawProgress();
 
+
+        // give defenders a small bonus if they are losing badly and have no fallback
+        if (this._defFb == null && this._def.totalCount / this._defRefTotal < 0.3 )
+            this._def_mod += 0.03;
+
+        // let off_mod = Math.random();
+        // let def_mod = Math.random();
+
         // Damage by attackers
         let dmgo = 0;
 
@@ -1337,19 +1376,19 @@ class Battle {
 
         // Calculate dmgo
         if (this._off.infantry != null)
-            dmgo += this._off.infantryCount * this._off.infantry.dmgMod * Math.random();
+            dmgo += Math.min( this._off.infantryCount, troop_combat_width[0] ) * this._off.infantry.dmgMod * (Math.random()/2 + this._off_mod);
         if (this._off.helicopter != null)
-            dmgo += this._off.helicopterCount * this._off.helicopter.dmgMod * Math.random();
+            dmgo += Math.min( this._off.helicopterCount, troop_combat_width[1] ) * this._off.helicopter.dmgMod * (Math.random()/2 + this._off_mod);
         if (this._off.armor != null)
-            dmgo += this._off.armorCount * this._off.armor.dmgMod * Math.random();
+            dmgo += Math.min( this._off.armorCount, troop_combat_width[2] ) * this._off.armor.dmgMod * (Math.random()/2 + this._off_mod);
 
         // Calculate dmgd
         if (this._def.infantry != null)
-            dmgd += this._def.infantryCount * this._def.infantry.dmgMod * Math.random();
+            dmgd += Math.min( this._def.infantryCount, troop_combat_width[0] ) * this._def.infantry.dmgMod * (Math.random()/2 + this._def_mod);
         if (this._def.helicopter != null)
-            dmgd += this._def.helicopterCount * this._def.helicopter.dmgMod * Math.random();
+            dmgd += Math.min( this._def.helicopterCount, troop_combat_width[1] ) * this._def.helicopter.dmgMod * (Math.random()/2 + this._def_mod);
         if (this._def.armor != null)
-            dmgd += this._def.armorCount * this._def.armor.dmgMod * Math.random();
+            dmgd += Math.min( this._def.armorCount, troop_combat_width[2] ) * this._def.armor.dmgMod * (Math.random()/2 + this._def_mod);
 
         this._animateCombat();
 
