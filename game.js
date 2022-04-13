@@ -482,6 +482,66 @@ class GameMap {
     }
 
     /**
+     * 
+     * @param {Unit}  source 
+     * @param {array} targets
+     *        Array of Unit objects that the source is firing at. 
+     * @param {number} tick
+     *        The tick # of the combat generating the animation. Used so that old animations can be removed.
+     */
+    static animateUnitCombat( source, targets, tick )
+    {
+        // let unitType = source._type;
+        let container = document.getElementById("combat-layer");
+
+        let sbb = document.getElementById(source.id).getBBox();
+
+        if (source._count == 0)
+            return;
+        
+        let sx = sbb.x + (Math.random()*sbb.width);
+        let sy = sbb.y + (Math.random()*sbb.height);
+
+        // Remove old animations
+        if (tick > 0)
+        {
+            let old_anims = document.getElementsByClassName("cbt_t_" + (tick-1).toString());
+            for (let i = old_anims.length-1; i >= 0; i--)
+                old_anims[i].remove();
+        }
+
+        for (let i = 0; i < 3; i++)
+        {
+            let tx, ty;
+
+            if (targets[i] != null && targets[i].count > 0 && Math.random() > 0.5)
+            {
+                console.log(targets[i].id);
+                let  tbb = document.getElementById(targets[i].id).getBBox();
+                tx = tbb.x + (Math.random() * tbb.width);
+                ty = tbb.y + (Math.random() * tbb.height);
+
+                let fire = document.createElement("path");
+                fire.setAttribute("d", 
+                "M " + sx.toString() + " " + sy.toString() + " " + 
+                "L " + tx.toString() + " " + ty.toString());
+                // fire.setAttribute("stroke", "#efab45");
+                // fire.setAttribute("fill", "#0000");
+                fire.setAttribute("class", "cbtFire " + source._type + " " + source._side + " cbt_no_" + battle_ct + " cbt_t_" + tick);
+
+                container.innerHTML += fire.outerHTML;
+            }
+        }
+    }
+
+    static removeCombatAnimations( battle_no ) 
+    {
+        let old_anims = document.getElementsByClassName("cbt_no_" + battle_no );
+        for (let i = old_anims.length-1; i >= 0; i--)
+            old_anims[i].remove();
+    }
+
+    /**
      * @brief Adds an arrow to the map indicating pending movement by a force from one region
      *        to another. Returns the ID of the arrow so that it can be removed later.
      * @todo Add global counter for # arrows and use it to determine unique IDs?
@@ -996,13 +1056,6 @@ class Unit{
 	}
 }
 
-// let test = new Unit("Inf", 1, 100, "A");
-// console.log(test.type);
-// console.log(test.health);
-// console.log(test.hpMod);
-// console.log(test.count);
-// console.log(test.side);
-
 /**
  * @brief todo
  */
@@ -1060,21 +1113,16 @@ class Battle {
             }
         }
 
+        // Set tick counter
         this._ticks = 0;
 
-        //log.innerHTML += "<p>" + this._off.side.toUpperCase() + " attacked " + this._def.region_phonetic + " from " + this._off.region_phonetic + "</p>\n";
-
+        // Put information about the battle in the game log
         gameLog( 
             team_key[this._off.side] + 
             " attacks " + this._def.region + 
             " from " + this._off.region + 
-            "<br/><progress id=\"p_battle_" + battle_ct + "\" class=\"battle\" max=\"100\" value=\"50\"></progress>"); 
-        // document.getElementById("p_bfof").setAttribute("class", "battle");
-        
-        // this._interval = null
-        // document.getElementById("battleind").innerHTML = " - IN BATTLE AT " + defending_force.region_phonetic.toUpperCase();
-        
-        //document.getElementById("s-" + this._off._side + "-" + this._def._region).classList.toggle("sh", false);
+            "<br/><progress id=\"p_battle_" + battle_ct + "\" class=\"battle\" max=\"100\" value=\"50\"></progress>"
+        ); 
     }
 
     start()
@@ -1239,6 +1287,8 @@ class Battle {
         if (this._def.armor != null)
             dmgd += this._def.armorCount * this._def.armor.dmgMod * Math.random();
 
+        this._animateCombat();
+
         // Deal damage to offense
         this._off.distributeDamage(dmgd);
 
@@ -1246,12 +1296,36 @@ class Battle {
         this._def.distributeDamage(dmgo);
 
         if ( this._off.totalCount <= 0 || this._def.totalCount <= 0 )
-        {        
+        {
+            GameMap.removeCombatAnimations( battle_ct );
             this._drawProgress();
             this.end();
         }
 
         return;
+    }
+
+    _animateCombat()
+    {
+        let off_target = [
+            this._def.infantry,
+            this._def.helicopter, 
+            this._def.armor
+        ];
+
+        let def_target = [
+            this._off.infantry,
+            this._off.helicopter, 
+            this._off.armor
+        ];
+
+        [this._off, this._def].forEach((side) => {
+            troop_type_names.forEach((type) => {
+                let tlist = (side == this._off) ? off_target : def_target;
+                if (side[type] != null) 
+                    GameMap.animateUnitCombat(side[type], tlist, this._ticks);
+            });
+        });
     }
 
     _drawProgress()
