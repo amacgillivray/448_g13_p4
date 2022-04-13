@@ -313,15 +313,6 @@ function dist( a, b )
     return Math.sqrt(dx^2+dy^2);
 }
 
-function crater_s_cb( e )
-{
-    // let c = document.getElementById(e.target.id);
-    // c.setAttribute("class", "crater");
-    // c.addEventListener("animationend", crater_cb);
-
-    c.target.classList.remove("crater_h");
-}
-
 function crater_cb( e )
 {
     
@@ -526,17 +517,12 @@ class GameMap {
                 old_anims[i].remove();
         }
 
-        let craters = [];
         let cl = 0;
         let reftgt = null;
         let refbb;
-        let refx, refy, refw, refh;
+        let refx, refy, refw, refh; // this allows us to get the width and heigh just once, avoiding a reflow/repaint event
         let cg = document.createElement('g');
             cg.setAttribute("id", 'craters_' + battle_ct + '_' + tick + '_' + source.side + '_' + source._type);
-        //     cg.setAttribute("id", cgid);
-        //     craterctn.innerHTML+=cg.outerHTML;
-        // craterctn = document.getElementById(cgid);
-
 
         // Add firing animations for the source unit towards the enemy units
         for (let i = 0; i < 3; i++)
@@ -554,7 +540,6 @@ class GameMap {
                     refw = refbb.width;
                     refh = refbb.height;
                 }
-                // console.log(targets[i].id);
                 let  tbb = document.getElementById(targets[i].id).getBBox();
                 tx = tbb.x + (Math.random() * tbb.width);
                 ty = tbb.y + (Math.random() * tbb.height);
@@ -563,8 +548,6 @@ class GameMap {
                 fire.setAttribute("d", 
                 "M " + sx.toString() + " " + sy.toString() + " " + 
                 "L " + tx.toString() + " " + ty.toString());
-                // fire.setAttribute("stroke", "#efab45");
-                // fire.setAttribute("fill", "#0000");
                 fire.setAttribute("class", "cbtFire " + source._type + " " + source._side + " cbt_no_" + battle_ct + " cbt_t_" + tick);
                 
                 container.innerHTML += fire.outerHTML;
@@ -575,93 +558,41 @@ class GameMap {
             if (reftgt != null && troop_type_names.indexOf(source._type) > 0)
             {
                 let ct = Math.floor(2*Math.random());
-
                 if (ct == 0) return;
-
-                // create unique element to contain craters from this battle tick
                 let cgid = "crater_c" + battle_ct + "_t" + tick + "_" + source._side + "_" + source.type;
-
-                // let cg = document.createElement("g");
-                //     cg.setAttribute("id", cgid);
-                //     craterctn.innerHTML+=cg.outerHTML;
-                // craterctn = document.getElementById(cgid);
-
                 for (let i = 0; i < ct; i++)
                 {
                     let circle = document.createElement("circle");
-                    // let i = (craters.length )
-                    // let refbb = document.getElementById(reftgt.region + "r").getBBox();
                     circle.setAttribute("cx", (refx + (Math.random() * refw)).toString());
                     circle.setAttribute("cy", (refy + (Math.random() * refh)).toString());
                     circle.setAttribute("r", (Math.random() * 6));
-                    circle.setAttribute("class", "crater_h");
-                    circle.setAttribute("style", "animation-delay: " + (Math.random()) + "s");
+                    circle.setAttribute("class", "crater");
+                    circle.setAttribute("style", "animation-delay: " + (0.5*Math.random()) + "s");
                     circle.setAttribute("id", cgid + "_" + i);
-                    // craterctn.innerHTML += circle.outerHTML;
                     cg.appendChild(circle);
-
-                    // craters[cl] = cgid + "_" + i;
                     cl++;
-
-                    // circle = null;
-                    // while (circle==null)
-                    // {
-                    //     circle = document.getElementById(cgid + "_" + i);
-                    // }
-
-                    // circle.addEventListener("animationend", crater_cb);//, [true, false]);
-                    // circle.addEventListener("animationstart", crater_cb, true);
-                    // circle.id = cgid + "_" + i;
-
-                    // craterctn.appendChild( circle );
                 }
             }
         }
 
-        // craterctn.appendChild(cg);
         if (cl > 0) {
             craterctn.innerHTML += cg.innerHTML;
         }
 
-        let cc = document.getElementsByClassName("crater_h");
+        let cc = document.getElementsByClassName("crater");
         for (let e = cc.length-1; e >= 0; e--)
         {
-            // cc[e].setAttribute("class", "crater");
-            // cc[e].classList.add("crater");
-            cc[e].addEventListener("animationstart", crater_s_cb, true);
             cc[e].addEventListener("animationend", crater_cb, true);
             cc[e].addEventListener("animationiteration", crater_cb, true);
-            cc[e].id = cc[e].getAttribute("id");
-            // cc[e].setAttribute("class", "crater");
-            cc[e].classList.add("crater");
         }
-
-        // for (let i = 0; i < craters.length; i++)
-        // {
-            // let cc = document.getElementsByClassName("crater_h");
-            // for (let e = 0; e < cc.length; e++)
-            // {
-            //     cc[e].setAttribute("class", "crater");
-            //     cc.addEventListener("animationend", crater_cb);
-            // }
-
-            // let c = document.getElementById(craters[i]);
-            // c.setAttribute("class", "crater");
-        //     // document.getElementById(craters[i]).addEventListener("animationend", crater_s_cb, [true, true]);
-        //     c.addEventListener("animationend", crater_cb, false);
-        //     c.true_id = cgid + "_" + i;
-        // }
     }
 
     static craterFix()
     {
-        let cc = document.getElementsByClassName("crater_h");
+        let cc = document.getElementsByClassName("crater");
         for (let e = cc.length-1; e >= 0; e--)
         {
-            cc[e].addEventListener("animationstart", crater_s_cb, true);
-            cc[e].addEventListener("animationend", crater_cb, true);
-            cc[e].id = cc[e].getAttribute("id");
-            // cc[e].classList.remove("crater_h");
+            cc[e].setAttribute("class", "crater_filled");
         }
     }
 
@@ -1799,11 +1730,11 @@ class Game{
 
     battleEndCb()
     {
-        GameMap.craterFix();
         if (this._state != "battle")
             return;
         this._state = "initial";
         this._changeTurn();
+        GameMap.craterFix();
     }
 }
 

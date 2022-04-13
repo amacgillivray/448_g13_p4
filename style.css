@@ -389,10 +389,6 @@ progress[value]::-webkit-progress-value {
   fill: #A14F48;
 }
 
-.crater_h {
-  opacity: 0;
-}
-
 .crater {
   /* fill: #6e5622;
   stroke: none; */
@@ -406,8 +402,8 @@ progress[value]::-webkit-progress-value {
 }
 
 .crater_filled {
-  /* fill: #6e5622; */
-  fill: #fff;
+  fill: #6e5622;
+  /* fill: #fff; */
   stroke: #6e5622;
   stroke-width: 0;
   opacity: 1;
