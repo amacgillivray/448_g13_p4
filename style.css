@@ -389,9 +389,46 @@ progress[value]::-webkit-progress-value {
   fill: #A14F48;
 }
 
+.crater_h {
+  opacity: 0;
+}
+
 .crater {
-  fill: #6e5622;
-  stroke: none;
+  /* fill: #6e5622;
+  stroke: none; */
+  opacity: 0;
+  fill: #efab45;
+  stroke: #efab45;
+  stroke-width: 2px;
+  animation: explode .1s ease-in forwards;
+  /* animation-iteration-count: 1; */
+  /* animation-delay: ; */
+}
+
+.crater_filled {
+  /* fill: #6e5622; */
+  fill: #fff;
+  stroke: #6e5622;
+  stroke-width: 0;
+  opacity: 1;
+}
+
+@keyframes explode {
+  5% {
+    opacity: 1;
+  }
+  20% {
+    fill: #ff4142;
+    stroke: #ff4142;
+    stroke-width: 3px;
+    opacity: 1;
+  }
+  to {
+    fill: #6e5622;
+    stroke: #6e5622;
+    stroke-width: 0;
+    opacity: 1;
+  }
 }
 
 .cbtFire {
