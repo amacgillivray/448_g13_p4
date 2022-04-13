@@ -493,6 +493,7 @@ class GameMap {
     {
         // let unitType = source._type;
         let container = document.getElementById("combat-layer");
+        let craterctn = document.getElementById("crater-layer");
 
         let sbb = document.getElementById(source.id).getBBox();
 
@@ -510,12 +511,15 @@ class GameMap {
                 old_anims[i].remove();
         }
 
+        // Add firing animations for the source unit towards the enemy units
         for (let i = 0; i < 3; i++)
         {
             let tx, ty;
+            let reftgt = null;
 
             if (targets[i] != null && targets[i].count > 0 && Math.random() > 0.5)
             {
+                reftgt = targets[i];
                 console.log(targets[i].id);
                 let  tbb = document.getElementById(targets[i].id).getBBox();
                 tx = tbb.x + (Math.random() * tbb.width);
@@ -531,6 +535,25 @@ class GameMap {
 
                 container.innerHTML += fire.outerHTML;
             }
+
+            // Add craters to enemy region if the type is armor or helicopter
+            // Note that craters are not removed at the end of combat
+            if (reftgt != null && troop_type_names.indexOf(source._type) > 0)
+            {
+                let ct = Math.floor(2*Math.random());
+                for (let i = 0; i < ct; i++)
+                {
+                    let circle = document.createElement("circle");
+                    let refbb = document.getElementById(reftgt.region + "r").getBBox();
+                    circle.setAttribute("cx", (refbb.x + (Math.random() * refbb.width)).toString());
+                    circle.setAttribute("cy", (refbb.y + (Math.random() * refbb.height)).toString());
+                    circle.setAttribute("r", (Math.random() * 6));
+                    circle.setAttribute("class", "crater");
+
+                    craterctn.innerHTML += circle.outerHTML;
+                }
+            }
+
         }
     }
 

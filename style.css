@@ -389,6 +389,11 @@ progress[value]::-webkit-progress-value {
   fill: #A14F48;
 }
 
+.crater {
+  fill: #6e5622;
+  stroke: none;
+}
+
 .cbtFire {
   stroke-dasharray: 6px;
   stroke-dashoffset: 10px;
