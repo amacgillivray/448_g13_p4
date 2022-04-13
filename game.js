@@ -1143,6 +1143,8 @@ class Battle {
      */
     constructor( defending_force, attacking_force )
     {
+        GameMap.craterFix();
+
         this._off = attacking_force;
         this._offRefCt = [
             this._off.infantryCount,
@@ -1734,7 +1736,6 @@ class Game{
             return;
         this._state = "initial";
         this._changeTurn();
-        GameMap.craterFix();
     }
 }
 
