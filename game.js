@@ -94,6 +94,19 @@ const regions_capitals_key = {
     j: "j2"
 };
 
+const regions_capitals = [
+    "a6",
+    "b5",
+    "c4",
+    "d2",
+    "e3",
+    "f4",
+    "g4",
+    "h1", 
+    "i5",
+    "j2"
+];
+
 /**
  * @brief use these ids to select the entire region group node (including its name). 
  *        These are also used in troop node names 
@@ -1512,7 +1525,11 @@ class Game{
                 }
         });
 
+        // this._bfqmv = [];
+        // this._ofqmv = [];
+
         GameMap.drawClouds();
+        this._applyFogOfWar();
     }
 
     getRegionForce(region_letter)
@@ -1557,6 +1574,15 @@ class Game{
         console.log(this.forces);
     }
 
+    _initializeHeadquarters()
+    {
+        for (let i = 0; i < regions_capitals.length; i++)
+        {
+            let cap = regions_capitals[i];
+            let side = this.getRegionForce(cap).side;
+        }
+    }
+
     _initialize_listeners()
     {
         // ADD LISTENER FOR REGION CLICK BY CURRENT PLAYER
@@ -1579,9 +1605,13 @@ class Game{
             GameMap.drawClouds();
 
         this.forces.forEach((force) => {
-            if (force.side == this._currentPlayerTurn) 
+            if (force.side == this._currentPlayerTurn) {
                 document.getElementById(force.region).classList.toggle("cpt", false);
+            }
         });
+                
+        //     }
+        // });
 
         // troop counts
         let bf_tc = 0;
@@ -1617,6 +1647,8 @@ class Game{
             return;
         }
 
+
+        // Rotate turns
         if(this._currentPlayerTurn == "bf"){
     		this._currentPlayerTurn = "of";
             document.getElementById("turn-indicator").setAttribute("class", "opfor");
@@ -1627,12 +1659,50 @@ class Game{
             document.getElementById("team").innerHTML = "BLUFOR (NATO)";
     	}
 
+        // Highlight current player's own forces
         this.forces.forEach((force) => {
             if (force.side == this._currentPlayerTurn)
                 {
                     document.getElementById(force.region).classList.toggle("cpt", true);
                 }
         });
+
+        this._applyFogOfWar();
+
+    }
+
+    _applyFogOfWar()
+    {
+        // Handle fog of war
+        let fow = document.getElementsByClassName("fow");
+        for (let i = fow.length-1; i >= 0; i--)
+            fow[i].classList.toggle("fow", false);
+
+        let visible_cells = [];
+        for ( let i = 0; i < this.forces.length; i++)
+        {
+            let force = this.forces[i];
+            if (force.side == this._currentPlayerTurn) {
+                document.getElementById(force.region).classList.toggle("cpt", false);
+                visible_cells.push(force.region);
+                for (let e = 0; e < region_connections[force.region].length; e++)
+                {
+                    visible_cells.push(region_connections[force.region][e]);
+                }
+            }
+        }
+        for ( let i = 0; i < region_group_ids.length; i++)
+        {
+            if (!(visible_cells.includes(region_group_ids[i])))
+            {
+                document.getElementById(region_group_ids[i]).classList.toggle("fow", true);
+                GameMap.getUnitsInRegion(region_group_ids[i]).forEach((unit) => {
+                    if (unit != null)
+                       document.getElementById(unit.id).classList.add("fow");
+                });
+            }
+        }
+
     }
 
     _handleWin( winteam )
@@ -1832,6 +1902,7 @@ class Game{
         this._state = "initial";
         this._changeTurn();
     }
+
 }
 
 let game = new Game;
