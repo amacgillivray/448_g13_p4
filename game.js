@@ -81,7 +81,7 @@ const region_phonetic_key = {
     h: "hotel"
 };
 
-const regions_capitals = {
+const regions_capitals_key = {
     a: "a6",
     b: "b5",
     c: "c4",
@@ -316,7 +316,7 @@ function gameMoveRegionClickCallback( e )
  */
 function isCapitalRegion( region_id )
 {
-    return (region_id == regions_capitals[region_id[0]]);
+    return (region_id == regions_capitals_key[region_id[0]]);
 }
 
 function dist( a, b )
@@ -849,6 +849,55 @@ class GameMap {
         container.innerHTML += arrow.outerHTML + "\n";
     }
 
+    // todo - take array of cells to draw clouds in
+    // tie into combat system; helicopters less effective in clouds
+    static drawClouds()
+    {
+        // let max = 
+        // todo - make a persistent max cloud variable and increase / decrease it 
+        // every time the function is called, to effectively "weight" how many clouds
+        // are drawn so that transitions from very cloudy to clear are smooth
+        let ct = Math.floor(Math.random() * 23);
+        let refbb = document.getElementById("game-area").getBBox();
+        let rx = refbb.x;
+        let ry = refbb.y;
+        let rw = refbb.width;
+        let rh = refbb.height;
+
+        let max_dim = 25;
+
+        let cloud_container = document.getElementById("clouds");
+
+        // remove any old clouds
+        cloud_container.innerHTML = "";
+
+        // Generate new clouds
+        for (let i = 0; i < ct; i++)
+        {
+            let nodect =  Math.floor(Math.random() * 15);
+            let cx = rx + ( Math.random() * rw );
+            let cy = ry + ( Math.random() * rh );
+            let cw = Math.random() * max_dim; 
+            let ch = Math.random() * max_dim;
+            for ( let e = 0; e < nodect; e++ )
+            {
+                let xs = (Math.random() > 0.5) ? (-1) : (1);
+                let ys = (Math.random() > 0.5) ? (-1) : (1);
+                let node = document.createElement("ellipse");
+                    node.setAttribute("cx", (cx + (xs * Math.random() * cw/4 * e)).toString());
+                    node.setAttribute("cy", (cy + (ys * Math.random() * ch/4 * e)).toString());
+                    // cw-=e;
+                    // ch-=e;
+                    node.setAttribute("rx", ((cw * Math.random())).toString());
+                    node.setAttribute("ry", ((ch * Math.random())).toString());
+                    node.setAttribute("transform", 
+                                      'rotate(' + (360 * Math.random()).toString() + ')' );
+                    node.setAttribute("fill", "#dedede55");
+                    node.setAttribute("stroke", "none");
+                cloud_container.innerHTML+=node.outerHTML;
+            }
+        }
+    }
 }
 
 /**
@@ -1462,6 +1511,8 @@ class Game{
                     document.getElementById(force.region).classList.toggle("cpt", true);
                 }
         });
+
+        GameMap.drawClouds();
     }
 
     getRegionForce(region_letter)
@@ -1522,6 +1573,11 @@ class Game{
 
     _changeTurn()
     {
+        turn_ct++;
+
+        if (turn_ct % 2 == 0)
+            GameMap.drawClouds();
+
         this.forces.forEach((force) => {
             if (force.side == this._currentPlayerTurn) 
                 document.getElementById(force.region).classList.toggle("cpt", false);
@@ -1781,5 +1837,6 @@ class Game{
 let game = new Game;
 let log_entries = 0;
 let battle_ct = 0;
+let turn_ct = 0;
 
 // GameMap.drawMovementArrow("bf", "d0", "d1");
