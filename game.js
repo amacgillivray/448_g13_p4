@@ -1756,18 +1756,53 @@ class Game{
                 + "</pre>"
         );
 
-        let rc = document.getElementsByClassName("cpt");
+        let rc = document.getElementsByClassName("region " + this._currentPlayerTurn);
         for (let i = 0; i < rc.length; i++)
         {
             rc[i].classList.add("reinforcable");
-            rc[i].addEventListener("click", reinforcements_cb, [false, true]);
+            rc[i].addEventListener("click", reinforcements_cb, [false, false]);
         }
     }
 
     reinforcement_handler( e )
     {
-        console.log(e.target);
+        let node = e.target;
+        while (node.id.length != 2)
+        {
+            node = node.parentElement;
+        }
 
+        // Todo - modal now to set the number of reinforcements to apply to the region.
+        let appliedReinforcements = this._cptReinforcements;
+        let haveMoreReinforcements = false;
+        
+        if (this.getRegionForce(node.id).side == this._currentPlayerTurn)
+        {
+           this.getRegionForce(node.id).alterForce(appliedReinforcements);
+        } else {
+            return;
+        }
+
+        for (let i = 0; i < troop_type_names.length; i++)
+        {
+            this._cptReinforcements[i] -= appliedReinforcements[i];
+            if (this._cptReinforcements[i] > 0)
+                haveMoreReinforcements = true;
+        }
+
+        if (!haveMoreReinforcements)
+        {
+            let rc = document.getElementsByClassName("reinforcable");
+            for (let i = rc.length-1; i >= 0; i--)
+            {
+                rc[i].removeEventListener("click", reinforcements_cb, [false, false]);
+                rc[i].classList.remove("reinforcable");
+            }
+        }
+
+
+        // console.log(node);
+        // console.log(e.target);
     }
 
     _applyFogOfWar()
