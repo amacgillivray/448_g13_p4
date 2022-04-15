@@ -372,6 +372,11 @@ function reinforcements_cb( e )
     game.reinforcement_handler(e);
 }
 
+function changeTurn_cb( e )
+{
+    game._changeTurn();
+}
+
 /**
  * @brief Class containing static methods to interact with the map
  */
@@ -1294,6 +1299,9 @@ class Battle {
     {
         GameMap.craterFix();
 
+        this._battle_number = battle_ct;
+        battle_ct++;
+
         this._off = attacking_force;
         this._offRefCt = [
             this._off.infantryCount,
@@ -1339,7 +1347,7 @@ class Battle {
             team_key[this._off.side] + 
             " attacks " + this._def.region + 
             " from " + this._off.region + 
-            "<br/><progress id=\"p_battle_" + battle_ct + "\" class=\"battle\" max=\"100\" value=\"50\"></progress>"
+            "<br/><progress id=\"p_battle_" + this._battle_number + "\" class=\"battle\" max=\"100\" value=\"50\"></progress>"
         ); 
     }
 
@@ -1463,7 +1471,7 @@ class Battle {
         
         gameLog( winside + " " + verb + " control of " + this._def.region + "." + troopLossRecord);
 
-        battle_ct++;
+        //battle_ct++;
         game.battleEndCb();
 
     	return;
@@ -1523,7 +1531,7 @@ class Battle {
 
         if ( this._off.totalCount <= 0 || this._def.totalCount <= 0 )
         {
-            GameMap.removeCombatAnimations( battle_ct );
+            GameMap.removeCombatAnimations( this._battle_number );
             this._drawProgress();
             this.end();
         }
@@ -1558,9 +1566,9 @@ class Battle {
     {
         if (this._off.side == "of")
         {
-            document.getElementById("p_battle_" + battle_ct).setAttribute("value", (this._def.totalCount/(this._def.totalCount+this._off.totalCount+1))*100);
+            document.getElementById("p_battle_" + this._battle_number).setAttribute("value", (this._def.totalCount/(this._def.totalCount+this._off.totalCount+1))*100);
         } else {
-            document.getElementById("p_battle_" + battle_ct).setAttribute("value", (this._off.totalCount/(this._off.totalCount+this._def.totalCount+1))*100);
+            document.getElementById("p_battle_" + this._battle_number).setAttribute("value", (this._off.totalCount/(this._off.totalCount+this._def.totalCount+1))*100);
         }
     }
 
@@ -1589,9 +1597,15 @@ class Game{
         // this._bfqmv = [];
         // this._ofqmv = [];
 
+        this._queuedMoves_bf = [];
+        this._queuedMoves_of = [];
+        this._battlect = 0;
+
         GameMap.drawClouds();
         this._applyFogOfWar();
         this._applyReinforcements();
+
+        document.getElementById("turn-indicator").addEventListener("click", changeTurn_cb, [false, false]);
     }
 
     getRegionForce(region_letter)
@@ -1728,7 +1742,14 @@ class Game{
                     document.getElementById(force.region).classList.toggle("cpt", true);
                 }
         });
+
+        // Apply queued moves from previous turn
+        this._handlePlayerMoves();
+
+        // Apply fog-of-war
         this._applyFogOfWar();
+
+        // Apply reinforcements
         this._applyReinforcements();
     }
 
@@ -1977,7 +1998,7 @@ class Game{
         region_connections[e.currentTarget.oc].forEach((validMove) => {
             let node = document.getElementById(validMove);
             node.classList.remove("validmove");
-            console.log("Removed OTU event listener for " + node.id + " move from " + e.currentTarget.oc);
+            // console.log("Removed OTU event listener for " + node.id + " move from " + e.currentTarget.oc);
             node.removeEventListener(
                 "click",
                 gameMoveRegionClickCallback,
@@ -1985,7 +2006,7 @@ class Game{
             );
         });
 
-        console.log("Removed OTU event listener for " + e.currentTarget.oc + " click-to-cancel");
+        // console.log("Removed OTU event listener for " + e.currentTarget.oc + " click-to-cancel");
         document.getElementById(e.currentTarget.oc).removeEventListener(
             "click",
             gameSelectedRegionClickCallback,
@@ -1999,49 +2020,86 @@ class Game{
         let srcForce = this.getRegionForce(e.currentTarget.oc);
 
         // draw mvmt arrow: 
+        // todo - add id to movement arrow so it can be removed
         GameMap.drawMovementArrow(srcForce.side, e.currentTarget.oc, e.currentTarget.id);
 
-        // Allow transfer of troops if the target region is 
-        // neutral or already owned by the current player.
-        // Otherwise, start a battle and return
-        if (dstForce.side == "neutral")
-            dstForce._side = srcForce.side;
-        else if (dstForce.side != this._currentPlayerTurn)
+        let l = this["_queuedMoves_" + this._currentPlayerTurn].length;
+        this["_queuedMoves_" + this._currentPlayerTurn][l] = [srcForce.side, srcForce, dstForce];
+    }
+
+    
+    _handlePlayerMoves()
+    {
+        let move_list = this["_queuedMoves_" + this._currentPlayerTurn];
+        for (let i = 0; i < move_list.length; i++)
         {
-            this._state = "battle";
-            let battle = new Battle(dstForce, srcForce);
-            battle.start();
-            return;
+            // Ensure that the move is still valid
+            if (move_list[i][0] != move_list[i][1].side)
+                continue;
+
+            let srcForce = move_list[i][1];
+            let dstForce = move_list[i][2];
+
+            // Allow transfer of troops if the target region is 
+            // neutral or already owned by the current player.
+            // Otherwise, start a battle and return
+            if (dstForce.side == "neutral")
+                dstForce._side = srcForce.side;
+            else if (dstForce.side != this._currentPlayerTurn)
+            {
+                this._state = "battle";
+                this._battlect++;
+                let battle = new Battle(dstForce, srcForce);
+                battle.start();
+                continue;
+            }
+
+            //log.innerHTML += "<p>" + this._currentPlayerTurn.toUpperCase() + " moved from " + srcForce.region_phonetic + " to " + dstForce.region_phonetic + "</p>\n";
+            gameLog( team_key[this._currentPlayerTurn] + " moves from " + srcForce.region + " to " + dstForce.region );
+
+            dstForce.alterForce([
+                srcForce.infantryCount, 
+                srcForce.helicopterCount,
+                srcForce.armorCount
+                ]
+            );
+
+            // GameMap.animateUnitMove(srcForce, dstForce);
+
+            srcForce.alterForce(
+                (-1)*srcForce.infantryCount, 
+                (-1)*srcForce.helicopterCount,
+                (-1)*srcForce.armorCount
+            );
+
         }
 
-        //log.innerHTML += "<p>" + this._currentPlayerTurn.toUpperCase() + " moved from " + srcForce.region_phonetic + " to " + dstForce.region_phonetic + "</p>\n";
-        gameLog( team_key[this._currentPlayerTurn] + " moves from " + srcForce.region + " to " + dstForce.region );
+        // Reset move list
+        while (this["_queuedMoves_" + this._currentPlayerTurn].length > 0)
+        {
+            this["_queuedMoves_" + this._currentPlayerTurn].pop();
+        }
 
-        dstForce.alterForce([
-            srcForce.infantryCount, 
-            srcForce.helicopterCount,
-            srcForce.armorCount
-            ]
-        );
+        // Remove arrows 
+        let ac = document.getElementsByClassName("arrow " + this._currentPlayerTurn);
+        while (ac.length > 0)
+        {
+            ac[0].remove();
+        }
 
-        // GameMap.animateUnitMove(srcForce, dstForce);
-
-        srcForce.alterForce(
-            (-1)*srcForce.infantryCount, 
-            (-1)*srcForce.helicopterCount,
-            (-1)*srcForce.armorCount
-        );
-
-        this._changeTurn();
-
+        // this["_queuedMoves_" + this._currentPlayerTurn] = [];
     }
+
 
     battleEndCb()
     {
         if (this._state != "battle")
             return;
-        this._state = "initial";
-        this._changeTurn();
+        this._battlect--;
+
+        if (this._battlect <= 0)
+           this._state = "initial";
+        // this._changeTurn();
     }
 
 }
