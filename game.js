@@ -107,6 +107,23 @@ const regions_capitals = [
     "j2"
 ];
 
+const capitals_reinforcements = 
+{
+    // Each index is an array of numbers for how many troops the player is granted
+    // each turn for controlling the region. Each index of the array pertains to the
+    // same index of the troop_type_names array.
+    a6: [40, 0, 1],
+    b5: [20, 0, 0],
+    c4: [0, 2, 0],
+    d2: [40, 2, 1],
+    e3: [40, 2, 1],
+    f4: [40, 2, 0],
+    g4: [40, 0, 1],
+    h1: [20, 0, 0],
+    i5: [0, 2, 0],
+    j2: [40, 2, 0]
+};
+
 /**
  * @brief use these ids to select the entire region group node (including its name). 
  *        These are also used in troop node names 
@@ -341,9 +358,17 @@ function dist( a, b )
 }
 
 function crater_cb( e )
-{
-    
+{    
     document.getElementById(e.target.id).setAttribute("class", "crater_filled");
+}
+
+/**
+ * @brief 
+ * @param {*} e 
+ */
+function reinforcements_cb( e )
+{
+    game.reinforcement_handler(e);
 }
 
 /**
@@ -1530,6 +1555,7 @@ class Game{
 
         GameMap.drawClouds();
         this._applyFogOfWar();
+        this._applyReinforcements();
     }
 
     getRegionForce(region_letter)
@@ -1659,6 +1685,8 @@ class Game{
             document.getElementById("team").innerHTML = "BLUFOR (NATO)";
     	}
 
+        this._applyReinforcements();
+
         // Highlight current player's own forces
         this.forces.forEach((force) => {
             if (force.side == this._currentPlayerTurn)
@@ -1669,6 +1697,38 @@ class Game{
 
         this._applyFogOfWar();
 
+    }
+
+    _applyReinforcements()
+    {
+        let reinforcements = [0,0,0];
+
+        for (let i = 0; i < regions_capitals.length; i++)
+        {
+            let capital = regions_capitals[i];
+            if (this.getRegionForce(capital).side == this._currentPlayerTurn)
+            {
+                for (let e = 0; e < troop_type_names.length; e++)
+                {
+                    reinforcements[e] += capitals_reinforcements[capital][e];
+                }
+            }
+        }
+
+        gameLog(team_key[this._currentPlayerTurn] + " has reinforcements: " +
+                "<pre>" 
+                + troop_type_names[0].toUpperCase() + ":\t" + reinforcements[0] + "\n"
+                + troop_type_names[1].toUpperCase() + ":\t" + reinforcements[1] + "\n"
+                + troop_type_names[2].toUpperCase() + ":\t\t" + reinforcements[2] + "\n"
+                + "</pre>"
+        );
+
+        let rc = document.getElementsByClassName("cpt");
+        for (let i = 0; i < rc.length; i++)
+        {
+            rc[i].classList.add("reinforcable");
+            rc.addEventListener("click", )
+        }
     }
 
     _applyFogOfWar()
@@ -1696,17 +1756,29 @@ class Game{
             if (!(visible_cells.includes(region_group_ids[i])))
             {
                 document.getElementById(region_group_ids[i]).classList.toggle("fow", true);
-                GameMap.getUnitsInRegion(region_group_ids[i]).forEach((unit) => {
-                    if (unit != null)
-                       document.getElementById(unit.id).classList.add("fow");
+                let force = this.getRegionForce(region_group_ids[i]);
+
+                troop_type_names.forEach((troop_type) => {
+                    if (force[troop_type] != null)
+                    {
+                        document.getElementById(force[troop_type].id).classList.add("fow");
+                    }
                 });
+                
+                // GameMap.getUnitsInRegion(region_group_ids[i]).forEach((unit) => {
+                //     if (unit != null)
+                //        document.getElementById(unit.id).classList.add("fow");
+                // });
             }
         }
-
     }
 
     _handleWin( winteam )
     {
+        let fow = document.getElementsByClassName("fow");
+        for (let i = fow.length-1; i >= 0; i--)
+            fow[i].classList.toggle("fow", false);
+
         this.forces.forEach((force) => { 
             document.getElementById(force.region).classList.toggle("neutral", false);
             document.getElementById(force.region).classList.toggle(winteam, true);
@@ -1905,9 +1977,7 @@ class Game{
 
 }
 
-let game = new Game;
 let log_entries = 0;
 let battle_ct = 0;
 let turn_ct = 0;
-
-// GameMap.drawMovementArrow("bf", "d0", "d1");
+let game = new Game;
