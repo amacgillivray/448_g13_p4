@@ -346,6 +346,7 @@ function gameMoveRegionClickCallback( e )
  */
 function isCapitalRegion( region_id )
 {
+    region_id = region_id.toLowerCase();
     return (region_id == regions_capitals_key[region_id[0]]);
 }
 
@@ -376,18 +377,61 @@ function reinforcements_cb( e )
  */
 class GameMap {
 
-
     /**
      * @brief update the ownership of a region
      * @note could replace parameters with just a force object, since force knows region and owner
      * @todo if kept this way, replace owner type with enum
      * @param {string} region_phonetic
      * @param {string} owner 
-     *                 Should be "opfor", "blufor", or "neutral"
+     *                 Should be "of", "bf", or "neutral"
      */
     static setRegionOwner( region_phonetic, owner )
     {
-        document.getElementById(region_phonetic).className = "region " + owner;
+        // If the owner isn't neutral, set the owner class
+        // Forcibly prevent neutral HQ regions
+        if (!isCapitalRegion(region_phonetic) || owner != "neutral")
+           document.getElementById(region_phonetic).setAttribute("class", "region " + owner);
+
+        // Update the micro-icon for the region
+        if (owner != "neutral") 
+        {
+            let os = (owner == "bf") ? "of" : "bf";
+
+            // hide other-side ownership indicator
+            document.getElementById("s-" + os + "-" + region_phonetic).classList.toggle("sh", true);
+            
+            // show current-side ownership indicator
+            document.getElementById("s-" + owner + "-" + region_phonetic).classList.toggle("sh", false);
+        } else {
+            document.getElementById("s-bf-" + region_phonetic).classList.toggle("sh", true);
+            document.getElementById("s-of-" + region_phonetic).classList.toggle("sh", true);
+        }
+
+        // Update the macro-icon if the region is a capital
+        if (isCapitalRegion(region_phonetic)) 
+        {
+            let os = (owner == "bf") ? "of" : "bf";
+            document.getElementById("s-" + os + "-" + region_phonetic[0]).classList.toggle("sh", true);
+            document.getElementById("s-" + owner + "-" + region_phonetic[0]).classList.toggle("sh", false);
+        }
+        
+        // If the region is a capital, update the HQ unit display
+        if (isCapitalRegion(region_phonetic) && owner != "neutral")
+        {
+            let os = (owner == "bf") ? "of" : "bf";
+            let hq = document.getElementById("hq_" + os + "_" + region_phonetic[0]);
+            if (hq.classList.contains("hq"))
+            {
+                hq.classList.remove("hq");
+                hq.classList.add("hq_np");
+            }
+            hq = document.getElementById("hq_" + owner + "_" + region_phonetic[0]);
+            if (hq.classList.contains("hq_np"))
+            {
+                hq.classList.remove("hq_np");
+                hq.classList.add("hq");
+            }
+        }
     }
 
     /**
@@ -1094,41 +1138,33 @@ class Force{
         this.alterForce(af);
     }
 
-    _determineSide()
+    /**
+     * @brief Determines which team the force belongs to. Optionally updates the region display.
+     * @param {bool} updateRegionOwner = true
+     *        When true, updates the region display to match the current owner using GameMap
+     *        setRegionOwner(). When false, no changes are made to the map when the function is
+     *        called.
+     */
+    _determineSide( updateRegionOwner = true )
     {
-        let prev_side = this._side; 
+        // Track the previous side value
+        let prev_side = this._side;
 
+        // Default to "neutral"
         this._side = "neutral";
+        
+        // Determine the side based on the units in the region
         for (let i = 0; i < troop_type_names.length; i++)
-        {
             if (this._unitList[i] != null)
-            {
                 this._side = this._unitList[i].side;
-                break;
-            }
-        }
-        // troop_type_names.forEach((name, i) => {
-        //});
 
-        if (!document.getElementById(this._region).classList.contains(this._side))
-        {
-            document.getElementById(this._region).setAttribute("class", "region " + this._side);
-        }
-
-        // Remove previous icons if the zone was owned by the other team
-        if (prev_side != "neutral") {
-            document.getElementById("s-" + prev_side + "-" + this._region).classList.toggle("sh", true);
-            if (isCapitalRegion(this._region))
-                document.getElementById("s-" + prev_side + "-" + this._region[0]).classList.toggle("sh", true);
-        }
-
-        // Update status indicator if the zone is now owned by a team.
-        if (this._side != "neutral") {
-            console.log("s-" + this._side + "-" + this._region);
-            document.getElementById("s-" + this._side + "-" + this._region).classList.toggle("sh", false);
-            if (isCapitalRegion(this._region))
-                document.getElementById("s-" + this._side + "-" + this._region[0]).classList.toggle("sh", false);
-        }
+        // Preserve ownership of capitals even when they become empty
+        if (this._side == "neutral" && isCapitalRegion(this._region) && prev_side != "neutral")
+            this._side = prev_side;
+        
+        // Conditionally update the map display based on argument
+        if (updateRegionOwner)
+            GameMap.setRegionOwner(this._region, this._side);
     }
 }
 
@@ -1685,8 +1721,6 @@ class Game{
             document.getElementById("team").innerHTML = "BLUFOR (NATO)";
     	}
 
-        this._applyReinforcements();
-
         // Highlight current player's own forces
         this.forces.forEach((force) => {
             if (force.side == this._currentPlayerTurn)
@@ -1694,14 +1728,13 @@ class Game{
                     document.getElementById(force.region).classList.toggle("cpt", true);
                 }
         });
-
         this._applyFogOfWar();
-
+        this._applyReinforcements();
     }
 
     _applyReinforcements()
     {
-        let reinforcements = [0,0,0];
+        this._cptReinforcements = [0,0,0];
 
         for (let i = 0; i < regions_capitals.length; i++)
         {
@@ -1710,16 +1743,16 @@ class Game{
             {
                 for (let e = 0; e < troop_type_names.length; e++)
                 {
-                    reinforcements[e] += capitals_reinforcements[capital][e];
+                    this._cptReinforcements[e] += capitals_reinforcements[capital][e];
                 }
             }
         }
 
         gameLog(team_key[this._currentPlayerTurn] + " has reinforcements: " +
                 "<pre>" 
-                + troop_type_names[0].toUpperCase() + ":\t" + reinforcements[0] + "\n"
-                + troop_type_names[1].toUpperCase() + ":\t" + reinforcements[1] + "\n"
-                + troop_type_names[2].toUpperCase() + ":\t\t" + reinforcements[2] + "\n"
+                + troop_type_names[0].toUpperCase() + ":\t" + this._cptReinforcements[0] + "\n"
+                + troop_type_names[1].toUpperCase() + ":\t" + this._cptReinforcements[1] + "\n"
+                + troop_type_names[2].toUpperCase() + ":\t\t" + this._cptReinforcements[2] + "\n"
                 + "</pre>"
         );
 
@@ -1727,8 +1760,14 @@ class Game{
         for (let i = 0; i < rc.length; i++)
         {
             rc[i].classList.add("reinforcable");
-            rc.addEventListener("click", )
+            rc[i].addEventListener("click", reinforcements_cb, [false, true]);
         }
+    }
+
+    reinforcement_handler( e )
+    {
+        console.log(e.target);
+
     }
 
     _applyFogOfWar()
@@ -1764,11 +1803,6 @@ class Game{
                         document.getElementById(force[troop_type].id).classList.add("fow");
                     }
                 });
-                
-                // GameMap.getUnitsInRegion(region_group_ids[i]).forEach((unit) => {
-                //     if (unit != null)
-                //        document.getElementById(unit.id).classList.add("fow");
-                // });
             }
         }
     }
