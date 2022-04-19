@@ -1606,6 +1606,7 @@ class Game{
         this._initialize_listeners();
         this._state = "initial";
         this._currentPlayerTurn = "bf";
+        this._currentPlayerForces = 0;
 
         this.forces.forEach((force) => {
             if (force.side == this._currentPlayerTurn)
@@ -1621,11 +1622,14 @@ class Game{
         this._queuedMoves_of = [];
         this._battlect = 0;
 
+        document.getElementById("turn-indicator").addEventListener("click", changeTurn_cb, [false, false]);
+
+        this._changeTurn();
+        this._changeTurn();
+
         GameMap.drawClouds();
         this._applyFogOfWar();
         this._applyReinforcements();
-
-        document.getElementById("turn-indicator").addEventListener("click", changeTurn_cb, [false, false]);
     }
 
     getRegionForce(region_letter)
@@ -1699,10 +1703,13 @@ class Game{
 
         if (turn_ct % 2 == 0)
             GameMap.drawClouds();
+        
+        this._currentPlayerForces = 0;
 
         this.forces.forEach((force) => {
             if (force.side == this._currentPlayerTurn) {
                 document.getElementById(force.region).classList.toggle("cpt", false);
+                this._currentPlayerForces++;
             }
         });
                 
@@ -2053,6 +2060,12 @@ class Game{
 
         let l = this["_queuedMoves_" + this._currentPlayerTurn].length;
         this["_queuedMoves_" + this._currentPlayerTurn][l] = [srcForce.side, srcForce, dstForce];
+
+        // After player has made 3 moves, end their turn
+        if (this["_queuedMoves_" + this._currentPlayerTurn].length > Math.min(2, this._currentPlayerForces))
+        {
+            this._changeTurn();
+        } 
     }
 
     
