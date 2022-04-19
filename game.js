@@ -945,7 +945,7 @@ class GameMap {
         // every time the function is called, to effectively "weight" how many clouds
         // are drawn so that transitions from very cloudy to clear are smooth
         let ct = Math.floor(Math.random() * 23);
-        let refbb = document.getElementById("game-area").getBBox();
+        let refbb = document.getElementById("countries-inert").getBBox();
         let rx = refbb.x;
         let ry = refbb.y;
         let rw = refbb.width;
@@ -978,7 +978,7 @@ class GameMap {
                     node.setAttribute("rx", ((cw * Math.random())).toString());
                     node.setAttribute("ry", ((ch * Math.random())).toString());
                     node.setAttribute("transform", 
-                                      'rotate(' + (360 * Math.random()).toString() + ')' );
+                                      'rotate(' + (360 * Math.random()).toString() + ' ' + cx + ' ' + cy + ')' );
                     node.setAttribute("fill", "#dedede55");
                     node.setAttribute("stroke", "none");
                 cloud_container.innerHTML+=node.outerHTML;
@@ -1491,6 +1491,13 @@ class Battle {
         this._ticks++;
         this._drawProgress();
 
+        if (this._off.side == this._def.side)
+        {
+            GameMap.removeCombatAnimations( this._battle_number );
+            this._drawProgress();
+            this.end();
+        }
+
 
         // give defenders a small bonus if they are losing badly and have no fallback
         if (this._defFb == null && this._def.totalCount / this._defRefTotal < 0.3 )
@@ -1574,10 +1581,23 @@ class Battle {
 
 }
 
+class Strike {
+
+    constructor(strikeForce, target)
+    {
+        this._sf = strikeForce;
+        this._tgt = target;
+    }
+
+    apply()
+    {
+        
+    }
+
+}
+
 
 class Game{
-
-
 
     constructor()
     {
@@ -1689,6 +1709,10 @@ class Game{
         //     }
         // });
 
+        
+        // Apply queued moves from previous turn
+        this._handlePlayerMoves();
+
         // troop counts
         let bf_tc = 0;
         let of_tc = 0;
@@ -1723,7 +1747,6 @@ class Game{
             return;
         }
 
-
         // Rotate turns
         if(this._currentPlayerTurn == "bf"){
     		this._currentPlayerTurn = "of";
@@ -1743,9 +1766,6 @@ class Game{
                 }
         });
 
-        // Apply queued moves from previous turn
-        this._handlePlayerMoves();
-
         // Apply fog-of-war
         this._applyFogOfWar();
 
@@ -1755,6 +1775,13 @@ class Game{
 
     _applyReinforcements()
     {
+        // while (this._state != "initial")
+        // {
+        //     // wait
+        // }
+
+        this._state = "reinforcing";
+
         this._cptReinforcements = [0,0,0];
 
         for (let i = 0; i < regions_capitals.length; i++)
@@ -1780,7 +1807,7 @@ class Game{
         let rc = document.getElementsByClassName("region " + this._currentPlayerTurn);
         for (let i = 0; i < rc.length; i++)
         {
-            rc[i].classList.add("reinforcable");
+            rc[i].classList.add("reinforceable");
             rc[i].addEventListener("click", reinforcements_cb, [false, false]);
         }
     }
@@ -1813,12 +1840,13 @@ class Game{
 
         if (!haveMoreReinforcements)
         {
-            let rc = document.getElementsByClassName("reinforcable");
+            let rc = document.getElementsByClassName("reinforceable");
             for (let i = rc.length-1; i >= 0; i--)
             {
                 rc[i].removeEventListener("click", reinforcements_cb, [false, false]);
-                rc[i].classList.remove("reinforcable");
+                rc[i].classList.remove("reinforceable");
             }
+            this._state = "waitForMoveSelect";
         }
 
 
@@ -2098,8 +2126,15 @@ class Game{
         this._battlect--;
 
         if (this._battlect <= 0)
-           this._state = "initial";
-        // this._changeTurn();
+        {
+            let bc = document.getElementsByClassName("cbtFire");
+            while (bc.length > 0)
+            {
+                bc[0].remove();
+            }
+            this._state = "initial";
+        }
+           // this._changeTurn();
     }
 
 }
