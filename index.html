@@ -27205,6 +27205,12 @@ I   - Company                - 41   to 250
   </div>
   <footer>
     <script type="text/javascript" src="./game.js"></script>
+    <script type="text/javascript" src="./deps/svg-pan-zoom.js"></script>
+    <script>
+      /* use 3rd-party pan-and-zoom lib to handle pan and zoom operations on the game map */
+      /* the source code for this is in deps/svg-pan-zoom.js */
+      let panZoom = svgPanZoom('#game'); 
+    </script>
   </footer>
 
 </body>

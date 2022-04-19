@@ -11,6 +11,7 @@ svg {
 } 
 #game {
   max-width: 98%;
+  min-width: 75%;
   height: 89vh;
   margin: auto;
   margin-top: 15px;
@@ -497,6 +498,16 @@ progress[value]::-webkit-progress-value {
 
 .fow {
   opacity: 0;
+}
+
+.reinforceable {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.reinforceable polygon:hover {
+  fill: #c1c1ff !important;
+  border: #4141ff !important;
 }
 
 /* 
