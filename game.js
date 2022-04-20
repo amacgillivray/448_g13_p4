@@ -248,6 +248,109 @@ const region_connections = {
     j9: ["j5", "j6", "j8", "i4", "i9", "i8"]
 };
 
+const region_terrain = {
+    a0: {plains: 0.9, forest: 0, water: 0, urban:0 },
+    a1: {plains: 0.6, forest: 0, water: 0, urban:0 },
+    a2: {plains: 0, forest: 0.5, water: 0, urban:0 },
+    a3: {plains: 0, forest: 0.3, water: 0, urban:0 },
+    a4: {plains: 0, forest: 0.5, water: 0, urban:0 },
+    a5: {plains: 0, forest: 0.5, water: 0, urban:0 },
+    a6: {plains: 0, forest: 0.3, water: 0, urban:0 },
+    a7: {plains: 0, forest: 0.5, water: 0.2, urban:0.5 },
+    a8: {plains: 0.4, forest: 0.3, water: 0, urban:0 },
+    a9: {plains: 0.5, forest: 0.4, water: 0, urban:0 },
+    b0: {plains: 0.9, forest: 0.1, water: 0, urban:0 },
+    b1: {plains: 0.5, forest: 0.1, water: 0, urban:0 },
+    b2: {plains: 0.7, forest: 0.1, water: 0.1, urban:0 },
+    b3: {plains: 0.8, forest: 0, water: 0, urban:0 },
+    b4: {plains: 0, forest: 0, water: 0.1, urban:0 },
+    b5: {plains: 0, forest: 0, water: 0.3, urban:0.6 },
+    b6: {plains: 0, forest: 0, water: 0.3, urban:0.5 },
+    b7: {plains: 0, forest: 0, water: 0.2, urban:0.8 },
+    b8: {plains: 0, forest: 0, water: 0.2, urban:0.5 },
+    b9: {plains: 0, forest: 0, water: 0.3, urban:0 },
+    c0: {plains: 0, forest: 0, water: 0.4, urban:0 },
+    c1: {plains: 0, forest: 0, water: 0.4, urban:0.5 },
+    c2: {plains: 0, forest: 0, water: 0.2, urban:0.8 },
+    c3: {plains: 0, forest: 0, water: 0.1, urban:0.9 },
+    c4: {plains: 0, forest: 0, water: 0.1, urban:0.8 },
+    c5: {plains: 0, forest: 0, water: 0.2, urban:0 },
+    c6: {plains: 0, forest: 0.2, water: 0.2, urban:0 },
+    c7: {plains: 0.3, forest: 0, water: 0, urban:0 },
+    c8: {plains: 0, forest: 0, water: 0, urban:0.1 },
+    c9: {plains: 0, forest: 0, water: 0.2, urban:0.2 },
+    d0: {plains: 0, forest: 0, water: 0.2, urban:0 },
+    d1: {plains: 0, forest: 0.3, water: 0, urban:0.2 },
+    d2: {plains: 0, forest: 0.2, water: 0.2, urban:0.6 },
+    d3: {plains: 0, forest: 0.2, water: 0.1, urban:0.5 },
+    d4: {plains: 0, forest: 0, water: 0.1, urban:0 },
+    d5: {plains: 0, forest: 0, water: 0, urban:0 },
+    d6: {plains: 0.5, forest: 0, water: 0, urban:0 },
+    d7: {plains: 0.8, forest: 0, water: 0, urban:0 },
+    d8: {plains: 0, forest: 0, water: 0, urban:0 },
+    d9: {plains: 0, forest: 0, water: 0, urban:0 },
+    e0: {plains: 0.5, forest: 0, water: 0.2, urban:0 },
+    e1: {plains: 0, forest: 0.5, water: 0.2, urban:0 },
+    e2: {plains: 0.5, forest: 0.3, water: 0, urban:0 },
+    e3: {plains: 0, forest: 0.2, water: 0, urban:0.5 },
+    e4: {plains: 0, forest: 0.2, water: 0.2, urban:0.5 },
+    e5: {plains: 0, forest: 0.2, water: 0.2, urban:0.5 },
+    e6: {plains: 0, forest: 0.9, water: 0, urban:0 },
+    e7: {plains: 0, forest: 0, water: 0, urban:0 },
+    e8: {plains: 0, forest: 0, water: 0, urban:0 },
+    e9: {plains: 0, forest: 0, water: 0, urban:0 },
+    f0: {plains: 1, forest: 0, water: 0, urban:0 },
+    f1: {plains: 0.7, forest: 0, water: 0.1, urban:0 },
+    f2: {plains: 0, forest: 0, water: 0.2, urban:0 },
+    f3: {plains: 0, forest: 0, water: 0.2, urban:0.4 },
+    f4: {plains: 0, forest: 0, water: 0.2, urban:0.8 },
+    f5: {plains: 0.3, forest: 0, water: 0.2, urban:0.3 },
+    f6: {plains: 0.3, forest: 0, water: 0, urban:0 },
+    f7: {plains: 0, forest: 0.3, water: 0.3, urban:0.4 },
+    f8: {plains: 0, forest: 0.3, water: 0, urban:0 },
+    f9: {plains: 0, forest: 0.6, water: 0.1, urban:0.3 },
+    g0: {plains: 0, forest: 0.5, water: 0, urban:0 },
+    g1: {plains: 0, forest: 0.3, water: 0, urban:0 },
+    g2: {plains: 0, forest: 0.3, water: 0, urban:0 },
+    g3: {plains: 0.7, forest: 0, water: 0, urban:0 },
+    g4: {plains: 0.1, forest: 0, water: 0.1, urban:0 },
+    g5: {plains: 0.2, forest: 0.1, water: 0, urban:0 },
+    g6: {plains: 0, forest: 0.4, water: 0, urban:0 },
+    g7: {plains: 0, forest: 1, water: 0, urban:0 },
+    g8: {plains: 0.4, forest: 0.3, water: 0, urban:0 },
+    g9: {plains: 0.7, forest: 0, water: 0.2, urban:0 },
+    h0: {plains: 0, forest: 0, water: 0, urban:0 },
+    h1: {plains: 0, forest: 0.3, water: 0, urban:0 },
+    h2: {plains: 0.3, forest: 0, water: 0, urban:0 },
+    h3: {plains: 0.5, forest: 0.1, water: 0, urban:0 },
+    h4: {plains: 0, forest: 0.6, water: 0, urban:0 },
+    h5: {plains: 0.2, forest: 0.5, water: 0, urban:0 },
+    h6: {plains: 0.8, forest: 0, water: 0, urban:0 },
+    h7: {plains: 0, forest: 1, water: 0, urban:0 },
+    h8: {plains: 0, forest: 0.4, water: 0, urban:0 },
+    h9: {plains: 0.5, forest: 0, water: 0, urban:0 },
+    i0: {plains: 0.5, forest: 0.2, water: 0, urban:0 },
+    i1: {plains: 0.5, forest: 0, water: 0.1, urban:0 },
+    i2: {plains: 0, forest: 0, water: 0.2, urban:0 },
+    i3: {plains: 0.3, forest: 0.4, water: 0.1, urban:0 },
+    i4: {plains: 0, forest: 0.9, water: 0, urban:0 },
+    i5: {plains: 0.5, forest: 0.2, water: 0, urban:0 },
+    i6: {plains: 0.2, forest: 0.4, water: 0, urban:0 },
+    i7: {plains: 0.3, forest: 0.5, water: 0, urban:0 },
+    i8: {plains: 0.3, forest: 0.3, water: 0, urban:0 },
+    i9: {plains: 0.4, forest: 0.5, water: 0, urban:0 },
+    j0: {plains: 0, forest: 0.2, water: 0.2, urban:0.6 },
+    j1: {plains: 0, forest: 0.5, water: 0, urban:0.2 },
+    j2: {plains: 0, forest: 0.4, water: 0, urban:0 },
+    j3: {plains: 0, forest: 0.4, water: 0, urban:0 },
+    j4: {plains: 0, forest: 0.3, water: 0, urban:0 },
+    j5: {plains: 0, forest: 0.7, water: 0, urban:0 },
+    j6: {plains: 0, forest: 0.8, water: 0, urban:0 },
+    j7: {plains: 0, forest: 0.6, water: 0, urban:0 },
+    j8: {plains: 0.3, forest: 0.7, water: 0, urban:0 },
+    j9: {plains: 0.2, forest: 0.8, water: 0, urban:0 },
+};
+
 /**
  * @brief Shorthand for "opfor" used in SVG node class names
  */
@@ -945,7 +1048,7 @@ class GameMap {
         // every time the function is called, to effectively "weight" how many clouds
         // are drawn so that transitions from very cloudy to clear are smooth
         let ct = Math.floor(Math.random() * 23);
-        let refbb = document.getElementById("countries-inert").getBBox();
+        let refbb = document.getElementById("game-area").getBBox();
         let rx = refbb.x;
         let ry = refbb.y;
         let rw = refbb.width;
@@ -978,7 +1081,7 @@ class GameMap {
                     node.setAttribute("rx", ((cw * Math.random())).toString());
                     node.setAttribute("ry", ((ch * Math.random())).toString());
                     node.setAttribute("transform", 
-                                      'rotate(' + (360 * Math.random()).toString() + ' ' + cx + ' ' + cy + ')' );
+                                      'rotate(' + (360 * Math.random()).toString() + ')' );
                     node.setAttribute("fill", "#dedede55");
                     node.setAttribute("stroke", "none");
                 cloud_container.innerHTML+=node.outerHTML;
@@ -1395,11 +1498,11 @@ class Battle {
             "-------\n" +
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
-            "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
+            "ROTORCRAFT:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
             "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + (this._def.infantryCount - this._defRefCt[0]).toString() + "\n" +
-            "HELICOPTER:  " + (this._def.helicopterCount - this._defRefCt[1]).toString() + "\n" +
+            "ROTORCRAFT:  " + (this._def.helicopterCount - this._defRefCt[1]).toString() + "\n" +
             "ARMOR:       " + (this._def.helicopterCount - this._defRefCt[2]).toString() +
             "</pre>";
 
@@ -1436,11 +1539,11 @@ class Battle {
             "-------\n" +
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
-            "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
+            "ROTORCRAFT:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
             "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + -(this._defRefCt[0] - def_restored[0]).toString() + "\n" +
-            "HELICOPTER:  " + -(this._defRefCt[1] - def_restored[1]).toString() + "\n" +
+            "ROTORCRAFT:  " + -(this._defRefCt[1] - def_restored[1]).toString() + "\n" +
             "ARMOR:       " + -(this._defRefCt[2] - def_restored[2]).toString();
             if (this._defFb != null)
                 troopLossRecord += "\n\n" + (def_restored[0]+def_restored[1]+def_restored[2]).toString() + " SURVIVING DEFENDERS\nROUTED TO " + this._defFb.region.toUpperCase();
@@ -1490,13 +1593,6 @@ class Battle {
         console.log("Tick #" + this._ticks);
         this._ticks++;
         this._drawProgress();
-
-        if (this._off.side == this._def.side)
-        {
-            GameMap.removeCombatAnimations( this._battle_number );
-            this._drawProgress();
-            this.end();
-        }
 
 
         // give defenders a small bonus if they are losing badly and have no fallback
@@ -1581,23 +1677,10 @@ class Battle {
 
 }
 
-class Strike {
-
-    constructor(strikeForce, target)
-    {
-        this._sf = strikeForce;
-        this._tgt = target;
-    }
-
-    apply()
-    {
-        
-    }
-
-}
-
 
 class Game{
+
+
 
     constructor()
     {
@@ -1606,7 +1689,6 @@ class Game{
         this._initialize_listeners();
         this._state = "initial";
         this._currentPlayerTurn = "bf";
-        this._currentPlayerForces = 0;
 
         this.forces.forEach((force) => {
             if (force.side == this._currentPlayerTurn)
@@ -1622,14 +1704,11 @@ class Game{
         this._queuedMoves_of = [];
         this._battlect = 0;
 
-        document.getElementById("turn-indicator").addEventListener("click", changeTurn_cb, [false, false]);
-
-        this._changeTurn();
-        this._changeTurn();
-
         GameMap.drawClouds();
         this._applyFogOfWar();
         this._applyReinforcements();
+
+        document.getElementById("turn-indicator").addEventListener("click", changeTurn_cb, [false, false]);
     }
 
     getRegionForce(region_letter)
@@ -1703,22 +1782,15 @@ class Game{
 
         if (turn_ct % 2 == 0)
             GameMap.drawClouds();
-        
-        this._currentPlayerForces = 0;
 
         this.forces.forEach((force) => {
             if (force.side == this._currentPlayerTurn) {
                 document.getElementById(force.region).classList.toggle("cpt", false);
-                this._currentPlayerForces++;
             }
         });
                 
         //     }
         // });
-
-        
-        // Apply queued moves from previous turn
-        this._handlePlayerMoves();
 
         // troop counts
         let bf_tc = 0;
@@ -1754,6 +1826,7 @@ class Game{
             return;
         }
 
+
         // Rotate turns
         if(this._currentPlayerTurn == "bf"){
     		this._currentPlayerTurn = "of";
@@ -1773,6 +1846,9 @@ class Game{
                 }
         });
 
+        // Apply queued moves from previous turn
+        this._handlePlayerMoves();
+
         // Apply fog-of-war
         this._applyFogOfWar();
 
@@ -1782,13 +1858,6 @@ class Game{
 
     _applyReinforcements()
     {
-        // while (this._state != "initial")
-        // {
-        //     // wait
-        // }
-
-        this._state = "reinforcing";
-
         this._cptReinforcements = [0,0,0];
 
         for (let i = 0; i < regions_capitals.length; i++)
@@ -1814,7 +1883,7 @@ class Game{
         let rc = document.getElementsByClassName("region " + this._currentPlayerTurn);
         for (let i = 0; i < rc.length; i++)
         {
-            rc[i].classList.add("reinforceable");
+            rc[i].classList.add("reinforcable");
             rc[i].addEventListener("click", reinforcements_cb, [false, false]);
         }
     }
@@ -1847,13 +1916,12 @@ class Game{
 
         if (!haveMoreReinforcements)
         {
-            let rc = document.getElementsByClassName("reinforceable");
+            let rc = document.getElementsByClassName("reinforcable");
             for (let i = rc.length-1; i >= 0; i--)
             {
                 rc[i].removeEventListener("click", reinforcements_cb, [false, false]);
-                rc[i].classList.remove("reinforceable");
+                rc[i].classList.remove("reinforcable");
             }
-            this._state = "waitForMoveSelect";
         }
 
 
@@ -2060,12 +2128,6 @@ class Game{
 
         let l = this["_queuedMoves_" + this._currentPlayerTurn].length;
         this["_queuedMoves_" + this._currentPlayerTurn][l] = [srcForce.side, srcForce, dstForce];
-
-        // After player has made 3 moves, end their turn
-        if (this["_queuedMoves_" + this._currentPlayerTurn].length > Math.min(2, this._currentPlayerForces))
-        {
-            this._changeTurn();
-        } 
     }
 
     
@@ -2139,15 +2201,8 @@ class Game{
         this._battlect--;
 
         if (this._battlect <= 0)
-        {
-            let bc = document.getElementsByClassName("cbtFire");
-            while (bc.length > 0)
-            {
-                bc[0].remove();
-            }
-            this._state = "initial";
-        }
-           // this._changeTurn();
+           this._state = "initial";
+        // this._changeTurn();
     }
 
 }
