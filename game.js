@@ -1353,6 +1353,7 @@ class Battle {
 
     start()
     {
+        game.battleIncrement();
         this._interval = setInterval(battleCb, [200], this);
     }
 
@@ -1362,6 +1363,7 @@ class Battle {
     end()
     {
         clearInterval(this._interval);
+        game.battleDecrement();
 
         let winside = "";
         let verb = "";
@@ -1472,6 +1474,7 @@ class Battle {
         gameLog( winside + " " + verb + " control of " + this._def.region + "." + troopLossRecord);
 
         //battle_ct++;
+        GameMap.removeCombatAnimations( this._battle_number );
         game.battleEndCb();
 
     	return;
@@ -1778,6 +1781,14 @@ class Game{
 
         // Apply reinforcements
         this._applyReinforcements();
+
+
+        // need to make sure that this only happens after battles end
+        let bc = document.getElementsByClassName("cbtFire");
+        while (bc.length > 0)
+        {
+            bc[0].remove();
+        }
     }
 
     _applyReinforcements()
@@ -2089,7 +2100,7 @@ class Game{
             else if (dstForce.side != this._currentPlayerTurn)
             {
                 this._state = "battle";
-                this._battlect++;
+                // this._battlect++;
                 let battle = new Battle(dstForce, srcForce);
                 battle.start();
                 continue;
@@ -2131,12 +2142,21 @@ class Game{
         // this["_queuedMoves_" + this._currentPlayerTurn] = [];
     }
 
+    battleIncrement()
+    {
+        this._battlect++;
+    }
+
+    battleDecrement()
+    {
+        this._battlect--;
+    }
+
 
     battleEndCb()
     {
         if (this._state != "battle")
             return;
-        this._battlect--;
 
         if (this._battlect <= 0)
         {
@@ -2146,8 +2166,8 @@ class Game{
                 bc[0].remove();
             }
             this._state = "initial";
+            this._changeTurn();
         }
-           // this._changeTurn();
     }
 
 }
