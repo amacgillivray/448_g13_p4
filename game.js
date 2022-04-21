@@ -1604,11 +1604,11 @@ class Battle {
             "-------\n" +
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
-            "ROTORCRAFT:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
+            "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
             "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + (this._def.infantryCount - this._defRefCt[0]).toString() + "\n" +
-            "ROTORCRAFT:  " + (this._def.helicopterCount - this._defRefCt[1]).toString() + "\n" +
+            "HELICOPTER:  " + (this._def.helicopterCount - this._defRefCt[1]).toString() + "\n" +
             "ARMOR:       " + (this._def.helicopterCount - this._defRefCt[2]).toString() +
             "</pre>";
 
@@ -1645,11 +1645,11 @@ class Battle {
             "-------\n" +
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
-            "ROTORCRAFT:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
+            "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
             "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + -(this._defRefCt[0] - def_restored[0]).toString() + "\n" +
-            "ROTORCRAFT:  " + -(this._defRefCt[1] - def_restored[1]).toString() + "\n" +
+            "HELICOPTER:  " + -(this._defRefCt[1] - def_restored[1]).toString() + "\n" +
             "ARMOR:       " + -(this._defRefCt[2] - def_restored[2]).toString();
             if (this._defFb != null)
                 troopLossRecord += "\n\n" + (def_restored[0]+def_restored[1]+def_restored[2]).toString() + " SURVIVING DEFENDERS\nROUTED TO " + this._defFb.region.toUpperCase();
@@ -1706,6 +1706,7 @@ class Battle {
             GameMap.removeCombatAnimations( this._battle_number );
             this._drawProgress();
             this.end();
+            return;
         }
 
 
@@ -1816,6 +1817,7 @@ class Game{
         this._initialize_listeners();
         this._state = "initial";
         this._currentPlayerTurn = "bf";
+        this._currentPlayerForces = 0;
 
         this.forces.forEach((force) => {
             if (force.side == this._currentPlayerTurn)
@@ -1831,11 +1833,13 @@ class Game{
         this._queuedMoves_of = [];
         this._battlect = 0;
 
+        document.getElementById("turn-indicator").addEventListener("click", changeTurn_cb, [false, false]);
+        this._changeTurn();
+        this._changeTurn();
+
         GameMap.drawClouds();
         this._applyFogOfWar();
         this._applyReinforcements();
-
-        document.getElementById("turn-indicator").addEventListener("click", changeTurn_cb, [false, false]);
     }
 
     getRegionForce(region_letter)
@@ -1910,15 +1914,14 @@ class Game{
         if (turn_ct % 2 == 0)
             GameMap.drawClouds();
 
+        this._currentPlayerForces = 0;
+
         this.forces.forEach((force) => {
             if (force.side == this._currentPlayerTurn) {
                 document.getElementById(force.region).classList.toggle("cpt", false);
+                this._currentPlayerForces++;
             }
         });
-                
-        //     }
-        // });
-
         
         // Apply queued moves from previous turn
         this._handlePlayerMoves();
@@ -1976,11 +1979,14 @@ class Game{
                 }
         });
 
+        
         // Apply fog-of-war
         this._applyFogOfWar();
 
         // Apply reinforcements
-        this._applyReinforcements();
+        // Skip first two turns used to initialize the game
+        if (turn_ct > 2)
+           this._applyReinforcements();
 
 
         // need to make sure that this only happens after battles end
@@ -2271,6 +2277,12 @@ class Game{
 
         let l = this["_queuedMoves_" + this._currentPlayerTurn].length;
         this["_queuedMoves_" + this._currentPlayerTurn][l] = [srcForce.side, srcForce, dstForce];
+
+        // After player has made 3 moves, end their turn
+        if (this["_queuedMoves_" + this._currentPlayerTurn].length > Math.min(2, this._currentPlayerForces))
+        {
+            this._changeTurn();
+        } 
     }
 
     
