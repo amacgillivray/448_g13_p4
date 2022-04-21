@@ -5,4 +5,4 @@ Andrew MacGillivray:
 
 Luke McCumber:
 2022-04-19 - 5 hours (working with team as a whole)
-2022-04-20 - ? hours (working with Andrew and Nhat)
+2022-04-20 - 3 hours (working with Andrew and Nhat)
