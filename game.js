@@ -1548,7 +1548,6 @@ class Battle {
         this._off_mod = Math.random()/2;
         this._def_mod = Math.random()/2 + 0.05;
 
-
         // Put information about the battle in the game log
         gameLog( 
             team_key[this._off.side] + 
@@ -1645,11 +1644,11 @@ class Battle {
             "-------\n" +
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
-            "ROTORCRAFT:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
+            "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
             "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + -(this._defRefCt[0] - def_restored[0]).toString() + "\n" +
-            "ROTORCRAFT:  " + -(this._defRefCt[1] - def_restored[1]).toString() + "\n" +
+            "HELICOPTER:  " + -(this._defRefCt[1] - def_restored[1]).toString() + "\n" +
             "ARMOR:       " + -(this._defRefCt[2] - def_restored[2]).toString();
             if (this._defFb != null)
                 troopLossRecord += "\n\n" + (def_restored[0]+def_restored[1]+def_restored[2]).toString() + " SURVIVING DEFENDERS\nROUTED TO " + this._defFb.region.toUpperCase();
