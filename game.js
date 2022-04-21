@@ -352,7 +352,7 @@ const region_terrain = {
 };
 
 const game_setup = {
-    //{side: bf/of, troop:[infantry, helicopter, a
+    //{side: bf/of, troop:[infantry, helicopter, armor]
     a0: {side: "", troop: [0, 0, 0]},
     a1: {side: "", troop: [0, 0, 0]},
     a2: {side: "", troop: [0, 0, 0]},
@@ -382,7 +382,7 @@ const game_setup = {
     c6: {side: "", troop: [0, 0, 0]},
     c7: {side: "", troop: [0, 0, 0]},
     c8: {side: "", troop: [0, 0, 0]},
-    c9: {side: "", troop: [40, 1, 0]},
+    c9: {side: "bf", troop: [40, 1, 0]},
     d0: {side: "", troop: [0, 0, 0]},
     d1: {side: "", troop: [0, 0, 0]},
     d2: {side: "bf", troop: [1850, 0, 38]},
@@ -454,6 +454,14 @@ const game_setup = {
     j8: {side: "", troop: [0, 0, 0]},
     j9: {side: "of", troop: [500, 0, 8]},
 };
+
+const terrain_mod = {
+    //terrain: [infantry, armor, helicopter]
+    plains: [0.5, 2.0, 1.0],
+    forest: [2.0, 0.5,0.5],
+    water: [0.5,0.5,1.0],
+    urban: [2.0, 1.5,1.0]
+}
 
 /**
  * @brief Shorthand for "opfor" used in SVG node class names
@@ -1604,11 +1612,11 @@ class Battle {
             "-------\n" +
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
-            "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
+            "ROTORCRAFT:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
             "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + (this._def.infantryCount - this._defRefCt[0]).toString() + "\n" +
-            "HELICOPTER:  " + (this._def.helicopterCount - this._defRefCt[1]).toString() + "\n" +
+            "ROTORCRAFT:  " + (this._def.helicopterCount - this._defRefCt[1]).toString() + "\n" +
             "ARMOR:       " + (this._def.helicopterCount - this._defRefCt[2]).toString() +
             "</pre>";
 
