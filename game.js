@@ -1979,9 +1979,7 @@ class Game{
                 }
         });
 
-
-        this.
-
+        
         // Apply fog-of-war
         this._applyFogOfWar();
 
