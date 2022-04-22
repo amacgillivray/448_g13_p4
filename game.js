@@ -1528,11 +1528,18 @@ class Battle {
         battle_ct++;
 
         this._off = attacking_force;
+
         this._offRefCt = [
-            this._off.infantryCount,
-            this._off.helicopterCount,
-            this._off.armorCount
+            0,
+            0,
+            0
         ];
+
+        for(var i=0; i<this._off.length; i++){
+            this._offRefCt[0] = this._offRefCt[0] + this._off[i].infantryCount,
+            this._offRefCt[1] = this._offRefCt[1] + this._off[i].helicopterCount,
+            this._offRefCt[2] = this._offRefCt[2] + this._off[i].armorCount  
+        }
 
         this._def = defending_force;
         this._defRefCt = [
@@ -1543,7 +1550,7 @@ class Battle {
         this._defRefTotal = this._def.totalCount;
 
         this._refSides = [
-            this._off.side, 
+            this._off[0].side, 
             this._def.side
         ];
 
@@ -1569,9 +1576,9 @@ class Battle {
 
         // Put information about the battle in the game log
         gameLog( 
-            team_key[this._off.side] + 
+            team_key[this._off[0].side] + 
             " attacks " + this._def.region + 
-            " from " + this._off.region + 
+            " from " + this._off[0].region + 
             "<br/><progress id=\"p_battle_" + this._battle_number + "\" class=\"battle\" max=\"100\" value=\"50\"></progress>"
         ); 
     }
@@ -1594,7 +1601,13 @@ class Battle {
         let verb = "";
         let troopLossRecord = "";
 
-        if (this._off.totalCount == 0)
+        let offCountRem = 0;
+
+        for(var i=0; i<this._off.length; i++){
+            offCountRem = offCountRem + this._off[i].totalCount;
+        }
+
+        if (offCountRem == 0)
         {
 
             // partially restore casualties
@@ -1605,14 +1618,17 @@ class Battle {
                     Math.floor((this._defRefCt[2]-this._def.armorCount)*Math.random())
                 ]
             );
-            this._off._side = this._refSides[0];
-            this._off.alterForce(
-                [
-                    Math.floor((this._offRefCt[0]-this._off.infantryCount)*Math.random()),
-                    Math.floor((this._offRefCt[1]-this._off.helicopterCount)*Math.random()),
-                    Math.floor((this._offRefCt[2]-this._off.armorCount)*Math.random())
-                ]
-            );
+
+            for(var i=0; i<this._off.length; i++){
+                this._off[i]._side = this._refSides[0];
+                this._off[i].alterForce(
+                    [
+                        Math.floor(this._offRefCt[0] / this._off.length),
+                        Math.floor(this._offRefCt[1] / this._off.length),
+                        Math.floor(this._offRefCt[2] / this._off.length)
+                    ]
+                );
+            }
 
             winside = team_key[this._def.side];
             verb = "maintains";
@@ -1631,14 +1647,14 @@ class Battle {
             "</pre>";
 
         } else {
-            winside = team_key[this._off.side];
+            winside = team_key[this._off[0].side];
             verb = "takes";
 
             // restore defender losses if a fallback position exists
             let def_restored = [
                 Math.floor((this._defRefCt[0])*Math.random()/2),
                 Math.floor((this._defRefCt[1])*Math.random()/2),
-                Math.floor((this._defRefCt[1])*Math.random()/2)
+                Math.floor((this._defRefCt[2])*Math.random()/2)
             ];
             if (this._defFb != null)
                 this._defFb.alterForce(def_restored);
@@ -1646,25 +1662,38 @@ class Battle {
                 def_restored = [0,0,0];
 
 
-            // restore attacker losses 
-            this._off.alterForce(
-                [
-                    Math.floor((2/3)*(this._offRefCt[0]-this._off.infantryCount)*Math.random()),
-                    Math.floor((2/3)*(this._offRefCt[1]-this._off.helicopterCount)*Math.random()),
-                    Math.floor((2/3)*(this._offRefCt[1]-this._off.armorCount)*Math.random())
-                ]
-            );
+            for(var i=0; i<this._off.length; i++){
+                // restore attacker losses 
+                this._off[i].alterForce(
+                    [
+                        Math.floor((2/3)*((this._offRefCt[0] / this._off.length)-this._off[i].infantryCount)*Math.random()),
+                        Math.floor((2/3)*((this._offRefCt[1] / this._off.length)-this._off[i].helicopterCount)*Math.random()),
+                        Math.floor((2/3)*((this._offRefCt[2] / this._off.length)-this._off[i].armorCount)*Math.random())
+                    ]
+                );
+            }
+
+            
 
             // create the loss record using the numbers from AFTER restorations are performed
             // provide notice of where the defenders routed to
+            let newInf = 0;
+            let newHel = 0;
+            let newArm = 0;
+            for(var i=0; i<this._off.length; i++){
+                newInf = newInf + this._off[i].infantryCount;
+                newHel = newHel + this._off[i].helicopterCount;
+                newArm = newArm + this._off[i].armorCount;
+            }
+
             troopLossRecord = 
             "<pre>" +
             "LOSSES:\n" +
             "-------\n" +
             "             ATTACKER" + "\n" +
-            "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
-            "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
-            "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
+            "INFANTRY:    " + (newInf - this._offRefCt[0]).toString() + "\n" +
+            "HELICOPTER:  " + (newHel - this._offRefCt[1]).toString() + "\n" +
+            "ARMOR:       " + (newArm - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + -(this._defRefCt[0] - def_restored[0]).toString() + "\n" +
             "HELICOPTER:  " + -(this._defRefCt[1] - def_restored[1]).toString() + "\n" +
@@ -1677,9 +1706,9 @@ class Battle {
             this._def._side = this._off.side;
             this._def.alterForce(
                 [
-                    this._off.infantryCount,
-                    this._off.helicopterCount,
-                    this._off.armorCount
+                    newInf,
+                    newHel,
+                    newArm
                 ]
             );
 
@@ -1719,7 +1748,7 @@ class Battle {
         this._ticks++;
         this._drawProgress();
 
-        if (this._off.side == this._def.side)
+        if (this._off[0].side == this._def.side)
         {
             GameMap.removeCombatAnimations( this._battle_number );
             this._drawProgress();
@@ -1741,13 +1770,16 @@ class Battle {
         // Damage by defenders
         let dmgd = 0;
 
-        // Calculate dmgo
-        if (this._off.infantry != null)
-            dmgo += Math.min( this._off.infantryCount, troop_combat_width[0] ) * this._off.infantry.dmgMod * (Math.random()/2 + this._off_mod);
-        if (this._off.helicopter != null)
-            dmgo += Math.min( this._off.helicopterCount, troop_combat_width[1] ) * this._off.helicopter.dmgMod * (Math.random()/2 + this._off_mod);
-        if (this._off.armor != null)
-            dmgo += Math.min( this._off.armorCount, troop_combat_width[2] ) * this._off.armor.dmgMod * (Math.random()/2 + this._off_mod);
+        for (let i = 0; i < this._off.length; i++) 
+        {
+            // Calculate dmgo
+            if (this._off[i].infantry != null)
+                dmgo += Math.min( this._off[i].infantryCount, troop_combat_width[0] ) * this._off[i].infantry.dmgMod * (Math.random()/2 + this._off_mod);
+            if (this._off[i].helicopter != null)
+                dmgo += Math.min( this._off[i].helicopterCount, troop_combat_width[1] ) * this._off[i].helicopter.dmgMod * (Math.random()/2 + this._off_mod);
+            if (this._off[i].armor != null)
+                dmgo += Math.min( this._off[i].armorCount, troop_combat_width[2] ) * this._off[i].armor.dmgMod * (Math.random()/2 + this._off_mod);
+        }
 
         // Calculate dmgd
         if (this._def.infantry != null)
@@ -1758,9 +1790,10 @@ class Battle {
             dmgd += Math.min( this._def.armorCount, troop_combat_width[2] ) * this._def.armor.dmgMod * (Math.random()/2 + this._def_mod);
 
         this._animateCombat();
-
-        // Deal damage to offense
-        this._off.distributeDamage(dmgd);
+        for(let i = 0; i<this._off.length; i++){
+            // Deal damage to offense
+            this._off[i].distributeDamage(dmgd / this._off.length);
+        }
 
         // Deal damage to defense
         this._def.distributeDamage(dmgo);
@@ -2342,7 +2375,7 @@ class Game{
             {
                 this._state = "battle";
                 // this._battlect++;
-                let battle = new Battle(dstForce, srcForce);
+                let battle = new Battle(dstForce, [srcForce]);
                 battle.start();
                 continue;
             }
