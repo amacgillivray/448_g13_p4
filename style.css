@@ -613,4 +613,25 @@ progress[value]::-webkit-progress-value {
   max-width: 100px;
   max-height: 100px;
   margin: 10px;
+  cursor: pointer;
+}
+
+.available rect,
+.available polygon, 
+.available line {
+  transition: 0.2s;
+}
+
+.t.available:hover rect,
+.t.available:hover polygon,
+.t.available:hover line {
+  fill: #8aef8a !important;
+  stroke: #4aaf4a !important;
+}
+
+.t.selected rect,
+.t.selected polygon,
+.t.selected line {
+  fill: #faefaa !important;
+  stroke: #cfaf4a !important;
 }
