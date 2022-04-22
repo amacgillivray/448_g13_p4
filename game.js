@@ -256,7 +256,35 @@ const terrain_types = [
     "urban"
 ];
 
-const region_terrain = {
+const terrain_mod = {
+    craters: [
+        1.4,
+        1,
+        0.7
+    ],
+    plains: [
+        1,
+        1.3,
+        2
+    ], 
+    forest: [
+        2,
+        1.2,
+        0.5
+    ],
+    water: [
+        .9,
+        .7,
+        2
+    ], 
+    urban: [
+        2.2,
+        1.5,
+        1
+    ]
+};
+
+let region_terrain = {
     a0: {craters: 0, plains: 0.9, forest: 0, water: 0, urban:0 },
     a1: {craters: 0, plains: 0.6, forest: 0, water: 0, urban:0 },
     a2: {craters: 0, plains: 0, forest: 0.5, water: 0, urban:0 },
@@ -1580,16 +1608,6 @@ class Unit{
         console.log("Adding " + cnt + " to " + this._id);
 		this._health += (this.hpMod * cnt);
         document.getElementById(this._id).setAttribute("data-count", this.count);
-	}
-}
-
-/**
- * @brief todo
- */
-class Terrain{
-	constructor(pos){
-		this.type;
-		this.region;		
 	}
 }
 
