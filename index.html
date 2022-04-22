@@ -6,195 +6,257 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Project 4</title>
   <link rel="stylesheet" href="./style.css"/>
-  <style>
-  	/* The Modal (background) */
-	.modal {
-	  display: none; 
-	  position: fixed; /* Stay in place */
-	  z-index: 1; /* Sit on top */
-	  left: 0;
-	  top: 0;
-	  width: 100%; /* Full width */
-	  height: 100%; /* Full height */
-	  overflow: auto; /* Enable scroll if needed */
-	  background-color: rgb(0,0,0); /* Fallback color */
-	  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-	}
-
-	/* Modal Content/Box */
-	.modal-content {
-	  background-color: #fefefe;
-	  margin: 15% auto; 
-	  border: 1px solid #888;
-	  width: 80%; /* Could be more or less, depending on screen size */
-	}
-
-	/* The Close Button */
-	.close {
-	  color: #aaa;
-	  //float: right;
-	  font-size: 28px;
-	  font-weight: bold;
-	}
-
-	.close:hover,
-	.close:focus {
-	  color: darkgreen;
-	  text-decoration: none;
-	  cursor: pointer;
-	}
-.grid-container {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  background-color: #1b2a38;
-  padding: 5px;
-}
-
-.inner-grid-container {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  background-color: grey;
-}
-
-.grid-item {
-  background-color: lightgrey;
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 5px;
-  font-size: 25px;
-  text-align: center;
-}
-
-.grid-item-inner {
-  background-color: grey;
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 5px;
-  font-size: 25px;
-  text-align: center;
-}
-
-.grid-item-close {
-  background-color: lightgreen;
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 5px;
-  font-size: 25px;
-  text-align: center;
-}
-
-.empty {
-  
-}
-
-.flex {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 100%;
-}
-
-.flex-item {
-  order: 5;
-  background-color: lightgrey;
-  border-right: 1px solid rgba(0, 0, 0, 0.8);
-  border-left: 1px solid rgba(0, 0, 0, 0.8);
-  height: 30px;
-}
-  </style>
+  <link rel="stylesheet" href="./style_ai.css"/>
 </head>
 
 <body>
-	<div id="myModal" class="modal">
-
-	  <!-- Modal content -->
-	  <div class="modal-content">
-	    <div class="grid-container">
-        <div class="empty"></div>
-        <div class="grid-item">display region</div>
-        <div class="empty"></div>
-        <div class="grid-item">ally forces box</div>
-        <div class="inner-grid-container">
-          <div class="grid-item-inner">left flank</div>
-          <div class="grid-item-inner">midle flank</div>
-          <div class="grid-item-inner">right flank</div>
-          <div class="flex">
-              <div class="flex-item">1</div>
-              <div class="flex-item">1</div>
-              <div class="flex-item">1</div>
-              <div class="flex-item"></div>
-          </div>
-          <div class="flex">
-              <div class="flex-item">1</div>
-              <div class="flex-item">1</div>
-              <div class="flex-item">1</div>
-              <div class="flex-item"></div>
-          </div>
-          <div class="flex">
-              <div class="flex-item">1</div>
-              <div class="flex-item">1</div>
-              <div class="flex-item">1</div>
-              <div class="flex-item"></div>
-          </div>
-        </div>
-        <div class="grid-item">enemy forces box</div>
-        <div class="empty"></div>
-        <div class="grid-item-close">
-          <span class="close"> CONFIRM  </span>
-        </div>
-        <div class="empty"></div>
+	<div id="battleWindow" class="modal">
+    <div class="modal-content">
+      <div class="grid-container">
+      <div class="empty"></div>
+      <div id="bw_region_display" class="grid-item">
+        <svg id="bw_display" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+        </svg>
       </div>
-	  </div>
-
-	</div>
+      <div class="empty"></div>
+      <div class="grid-item">
+          <h3>Attacking Force Allocation</h3>
+          <div class="allocation">
+            <svg id="off_alloc_1" class="alloc" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74.03246 67.55285">
+              <g id="off_a1_infantry_bf" class="t_np bf">
+                <rect class="cls-1" x=".50005" y="13.26024" width="73" height="41"/>
+                <line class="cls-1" x1=".50005" y1="54.26024" x2="73.50005" y2="13.26024"/>
+                <line class="cls-1" x1="73.50005" y1="54.26024" x2=".50005" y2="13.26024"/>
+              </g>
+              <g id="off_a1_helicopter_bf" class="t_np bf">
+                <rect class="cls-1" x=".5" y="13.29266" width="73" height="41"/>
+                <g>
+                  <polygon class="cls-1" points="37 31.37513 15.83874 24.94693 15.83874 37.80334 37 31.37513"/>
+                  <polygon class="cls-1" points="37 31.37513 58.16126 24.94693 58.16126 37.80333 37 31.37513"/>
+                  <g>
+                    <line class="cls-1" x1="37" y1="38.10117" x2="37" y2="25.29868"/>
+                    <polygon points="41.98633 26.75766 37 18.12244 32.01367 26.75766 41.98633 26.75766"/>
+                  </g>
+                  <path class="cls-2" d="M35.54652,45.8236l-.83936,2.54248h-1.07959l2.74658-8.0835h1.25928l2.7583,8.0835h-1.11523l-.86328-2.54248h-2.8667Zm2.65039-.81592l-.7915-2.32666c-.17969-.52734-.2998-1.00732-.41943-1.4751h-.02441c-.11963,.47998-.25146,.97168-.40771,1.46338l-.7915,2.33838h2.43457Z"/>
+                </g>
+              </g>
+              <g id="off_a1_armor_bf" class="t_np bf">
+                <rect class="cls-1" x=".53246" y="13.22773" width="73" height="41"/>
+                <rect class="cls-1" x="11.75587" y="24.16124" width="50.55319" height="19.13298" rx="9.56648" ry="9.56648"/>
+              </g>
+              <g id="off_a1_infantry_of" class="t_np of">
+                <rect class="cls-1" x="13.62799" y="10.38818" width="46.74412" height="46.74412" transform="translate(-13.03503 36.05113) rotate(-45)"/>
+                <line class="cls-1" x1="20.47351" y1="50.28678" x2="53.52659" y2="17.2337"/>
+                <line class="cls-1" x1="53.52659" y1="50.28678" x2="20.47351" y2="17.2337"/>
+              </g>
+              <g id="off_a1_armor_of" class="t_np of">
+                <rect class="cls-1" x="13.6604" y="10.4206" width="46.74412" height="46.74412" transform="translate(-13.04846 36.08355) rotate(-45)"/>
+                <rect class="cls-1" x="16.95639" y="25.79265" width="40.15215" height="16.00002" rx="8" ry="8"/>
+              </g>
+              <g id="off_a1_helicopter_of" class="t_np of">
+                <rect class="cls-1" x="13.62794" y="10.38813" width="46.74412" height="46.74412" transform="translate(-13.03501 36.05108) rotate(-45)"/>
+                <g>
+                  <polygon class="cls-1" points="37 34.22827 15.83874 27.80007 15.83874 40.65647 37 34.22827"/>
+                  <polygon class="cls-1" points="37 34.22827 58.16126 27.80007 58.16126 40.65647 37 34.22827"/>
+                  <g>
+                    <line class="cls-1" x1="37" y1="40.9543" x2="37" y2="28.15181"/>
+                    <polygon points="41.98633 29.6108 37 20.97557 32.01367 29.6108 41.98633 29.6108"/>
+                  </g>
+                </g>
+              </g>
+            </svg>
+            <svg id="off_alloc_2" class="alloc" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74.03246 67.55285">
+              <g id="off_a2_infantry_bf" class="t_np bf">
+                <rect class="cls-1" x=".50005" y="13.26024" width="73" height="41"/>
+                <line class="cls-1" x1=".50005" y1="54.26024" x2="73.50005" y2="13.26024"/>
+                <line class="cls-1" x1="73.50005" y1="54.26024" x2=".50005" y2="13.26024"/>
+              </g>
+              <g id="off_a2_helicopter_bf" class="t_np bf">
+                <rect class="cls-1" x=".5" y="13.29266" width="73" height="41"/>
+                <g>
+                  <polygon class="cls-1" points="37 31.37513 15.83874 24.94693 15.83874 37.80334 37 31.37513"/>
+                  <polygon class="cls-1" points="37 31.37513 58.16126 24.94693 58.16126 37.80333 37 31.37513"/>
+                  <g>
+                    <line class="cls-1" x1="37" y1="38.10117" x2="37" y2="25.29868"/>
+                    <polygon points="41.98633 26.75766 37 18.12244 32.01367 26.75766 41.98633 26.75766"/>
+                  </g>
+                  <path class="cls-2" d="M35.54652,45.8236l-.83936,2.54248h-1.07959l2.74658-8.0835h1.25928l2.7583,8.0835h-1.11523l-.86328-2.54248h-2.8667Zm2.65039-.81592l-.7915-2.32666c-.17969-.52734-.2998-1.00732-.41943-1.4751h-.02441c-.11963,.47998-.25146,.97168-.40771,1.46338l-.7915,2.33838h2.43457Z"/>
+                </g>
+              </g>
+              <g id="off_a2_armor_bf" class="t_np bf">
+                <rect class="cls-1" x=".53246" y="13.22773" width="73" height="41"/>
+                <rect class="cls-1" x="11.75587" y="24.16124" width="50.55319" height="19.13298" rx="9.56648" ry="9.56648"/>
+              </g>
+              <g id="off_a2_infantry_of" class="t_np of">
+                <rect class="cls-1" x="13.62799" y="10.38818" width="46.74412" height="46.74412" transform="translate(-13.03503 36.05113) rotate(-45)"/>
+                <line class="cls-1" x1="20.47351" y1="50.28678" x2="53.52659" y2="17.2337"/>
+                <line class="cls-1" x1="53.52659" y1="50.28678" x2="20.47351" y2="17.2337"/>
+              </g>
+              <g id="off_a2_armor_of" class="t_np of">
+                <rect class="cls-1" x="13.6604" y="10.4206" width="46.74412" height="46.74412" transform="translate(-13.04846 36.08355) rotate(-45)"/>
+                <rect class="cls-1" x="16.95639" y="25.79265" width="40.15215" height="16.00002" rx="8" ry="8"/>
+              </g>
+              <g id="off_a2_helicopter_of" class="t_np of">
+                <rect class="cls-1" x="13.62794" y="10.38813" width="46.74412" height="46.74412" transform="translate(-13.03501 36.05108) rotate(-45)"/>
+                <g>
+                  <polygon class="cls-1" points="37 34.22827 15.83874 27.80007 15.83874 40.65647 37 34.22827"/>
+                  <polygon class="cls-1" points="37 34.22827 58.16126 27.80007 58.16126 40.65647 37 34.22827"/>
+                  <g>
+                    <line class="cls-1" x1="37" y1="40.9543" x2="37" y2="28.15181"/>
+                    <polygon points="41.98633 29.6108 37 20.97557 32.01367 29.6108 41.98633 29.6108"/>
+                  </g>
+                </g>
+              </g>
+            </svg>
+            <svg id="off_alloc_3" class="alloc" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74.03246 67.55285">
+              <g id="off_a3_armor_bf" class="t_np bf">
+                <rect class="cls-1" x=".53246" y="13.22773" width="73" height="41"/>
+                <rect class="cls-1" x="11.75587" y="24.16124" width="50.55319" height="19.13298" rx="9.56648" ry="9.56648"/>
+              </g>
+              <g id="off_a3_armor_of" class="t_np of">
+                <rect class="cls-1" x="13.6604" y="10.4206" width="46.74412" height="46.74412" transform="translate(-13.04846 36.08355) rotate(-45)"/>
+                <rect class="cls-1" x="16.95639" y="25.79265" width="40.15215" height="16.00002" rx="8" ry="8"/>
+              </g>
+            </svg>
+          </div>
+      </div>
+      <div class="inner-grid-container">
+        <div id="bw_fl_t" class="grid-item-inner">left flank</div>
+        <div id="bw_fm_t" class="grid-item-inner">midle flank</div>
+        <div id="bw_fr_t" class="grid-item-inner">right flank</div>
+        <div class="flex">
+            <div id="bw_fl_t1" class="flex-item"></div>
+            <div id="bw_fl_t2" class="flex-item"></div>
+            <div id="bw_fl_t3" class="flex-item"></div>
+        </div>
+        <div class="flex">
+            <div id="bw_fm_t1" class="flex-item"></div>
+            <div id="bw_fm_t2" class="flex-item"></div>
+            <div id="bw_fm_t3" class="flex-item"></div>
+        </div>
+        <div class="flex">
+            <div id="bw_fr_t1" class="flex-item"></div>
+            <div id="bw_fr_t2" class="flex-item"></div>
+            <div id="bw_fr_t3" class="flex-item"></div>
+        </div>
+      </div>
+      <div class="grid-item">
+        <h3>Defending Force - Estimated Size</h3>
+        <div class="allocation">
+          <svg id="def_alloc_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74.03246 67.55285">
+            <g id="def_a1_infantry_bf" class="t_np bf">
+              <rect class="cls-1" x=".50005" y="13.26024" width="73" height="41"/>
+              <line class="cls-1" x1=".50005" y1="54.26024" x2="73.50005" y2="13.26024"/>
+              <line class="cls-1" x1="73.50005" y1="54.26024" x2=".50005" y2="13.26024"/>
+            </g>
+            <g id="def_a1_helicopter_bf" class="t_np bf">
+              <rect class="cls-1" x=".5" y="13.29266" width="73" height="41"/>
+              <g>
+                <polygon class="cls-1" points="37 31.37513 15.83874 24.94693 15.83874 37.80334 37 31.37513"/>
+                <polygon class="cls-1" points="37 31.37513 58.16126 24.94693 58.16126 37.80333 37 31.37513"/>
+                <g>
+                  <line class="cls-1" x1="37" y1="38.10117" x2="37" y2="25.29868"/>
+                  <polygon points="41.98633 26.75766 37 18.12244 32.01367 26.75766 41.98633 26.75766"/>
+                </g>
+                <path class="cls-2" d="M35.54652,45.8236l-.83936,2.54248h-1.07959l2.74658-8.0835h1.25928l2.7583,8.0835h-1.11523l-.86328-2.54248h-2.8667Zm2.65039-.81592l-.7915-2.32666c-.17969-.52734-.2998-1.00732-.41943-1.4751h-.02441c-.11963,.47998-.25146,.97168-.40771,1.46338l-.7915,2.33838h2.43457Z"/>
+              </g>
+            </g>
+            <g id="def_a1_armor_bf" class="t_np bf">
+              <rect class="cls-1" x=".53246" y="13.22773" width="73" height="41"/>
+              <rect class="cls-1" x="11.75587" y="24.16124" width="50.55319" height="19.13298" rx="9.56648" ry="9.56648"/>
+            </g>
+            <g id="def_a1_infantry_of" class="t_np of">
+              <rect class="cls-1" x="13.62799" y="10.38818" width="46.74412" height="46.74412" transform="translate(-13.03503 36.05113) rotate(-45)"/>
+              <line class="cls-1" x1="20.47351" y1="50.28678" x2="53.52659" y2="17.2337"/>
+              <line class="cls-1" x1="53.52659" y1="50.28678" x2="20.47351" y2="17.2337"/>
+            </g>
+            <g id="def_a1_armor_of" class="t_np of">
+              <rect class="cls-1" x="13.6604" y="10.4206" width="46.74412" height="46.74412" transform="translate(-13.04846 36.08355) rotate(-45)"/>
+              <rect class="cls-1" x="16.95639" y="25.79265" width="40.15215" height="16.00002" rx="8" ry="8"/>
+            </g>
+            <g id="def_a1_helicopter_of" class="t_np of">
+              <rect class="cls-1" x="13.62794" y="10.38813" width="46.74412" height="46.74412" transform="translate(-13.03501 36.05108) rotate(-45)"/>
+              <g>
+                <polygon class="cls-1" points="37 34.22827 15.83874 27.80007 15.83874 40.65647 37 34.22827"/>
+                <polygon class="cls-1" points="37 34.22827 58.16126 27.80007 58.16126 40.65647 37 34.22827"/>
+                <g>
+                  <line class="cls-1" x1="37" y1="40.9543" x2="37" y2="28.15181"/>
+                  <polygon points="41.98633 29.6108 37 20.97557 32.01367 29.6108 41.98633 29.6108"/>
+                </g>
+              </g>
+            </g>
+          </svg>
+          <svg id="def_alloc_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74.03246 67.55285">
+            <g id="def_a2_infantry_bf" class="t_np bf">
+              <rect class="cls-1" x=".50005" y="13.26024" width="73" height="41"/>
+              <line class="cls-1" x1=".50005" y1="54.26024" x2="73.50005" y2="13.26024"/>
+              <line class="cls-1" x1="73.50005" y1="54.26024" x2=".50005" y2="13.26024"/>
+            </g>
+            <g id="def_a2_helicopter_bf" class="t_np bf">
+              <rect class="cls-1" x=".5" y="13.29266" width="73" height="41"/>
+              <g>
+                <polygon class="cls-1" points="37 31.37513 15.83874 24.94693 15.83874 37.80334 37 31.37513"/>
+                <polygon class="cls-1" points="37 31.37513 58.16126 24.94693 58.16126 37.80333 37 31.37513"/>
+                <g>
+                  <line class="cls-1" x1="37" y1="38.10117" x2="37" y2="25.29868"/>
+                  <polygon points="41.98633 26.75766 37 18.12244 32.01367 26.75766 41.98633 26.75766"/>
+                </g>
+                <path class="cls-2" d="M35.54652,45.8236l-.83936,2.54248h-1.07959l2.74658-8.0835h1.25928l2.7583,8.0835h-1.11523l-.86328-2.54248h-2.8667Zm2.65039-.81592l-.7915-2.32666c-.17969-.52734-.2998-1.00732-.41943-1.4751h-.02441c-.11963,.47998-.25146,.97168-.40771,1.46338l-.7915,2.33838h2.43457Z"/>
+              </g>
+            </g>
+            <g id="def_a2_armor_bf" class="t_np bf">
+              <rect class="cls-1" x=".53246" y="13.22773" width="73" height="41"/>
+              <rect class="cls-1" x="11.75587" y="24.16124" width="50.55319" height="19.13298" rx="9.56648" ry="9.56648"/>
+            </g>
+            <g id="def_a2_infantry_of" class="t_np of">
+              <rect class="cls-1" x="13.62799" y="10.38818" width="46.74412" height="46.74412" transform="translate(-13.03503 36.05113) rotate(-45)"/>
+              <line class="cls-1" x1="20.47351" y1="50.28678" x2="53.52659" y2="17.2337"/>
+              <line class="cls-1" x1="53.52659" y1="50.28678" x2="20.47351" y2="17.2337"/>
+            </g>
+            <g id="def_a2_armor_of" class="t_np of">
+              <rect class="cls-1" x="13.6604" y="10.4206" width="46.74412" height="46.74412" transform="translate(-13.04846 36.08355) rotate(-45)"/>
+              <rect class="cls-1" x="16.95639" y="25.79265" width="40.15215" height="16.00002" rx="8" ry="8"/>
+            </g>
+            <g id="def_a2_helicopter_of" class="t_np of">
+              <rect class="cls-1" x="13.62794" y="10.38813" width="46.74412" height="46.74412" transform="translate(-13.03501 36.05108) rotate(-45)"/>
+              <g>
+                <polygon class="cls-1" points="37 34.22827 15.83874 27.80007 15.83874 40.65647 37 34.22827"/>
+                <polygon class="cls-1" points="37 34.22827 58.16126 27.80007 58.16126 40.65647 37 34.22827"/>
+                <g>
+                  <line class="cls-1" x1="37" y1="40.9543" x2="37" y2="28.15181"/>
+                  <polygon points="41.98633 29.6108 37 20.97557 32.01367 29.6108 41.98633 29.6108"/>
+                </g>
+              </g>
+            </g>
+          </svg>
+          <svg id="def_alloc_3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74.03246 67.55285">
+            <g id="def_a3_armor_bf" class="t_np bf">
+              <rect class="cls-1" x=".53246" y="13.22773" width="73" height="41"/>
+              <rect class="cls-1" x="11.75587" y="24.16124" width="50.55319" height="19.13298" rx="9.56648" ry="9.56648"/>
+            </g>
+            <g id="def_a3_armor_of" class="t_np of">
+              <rect class="cls-1" x="13.6604" y="10.4206" width="46.74412" height="46.74412" transform="translate(-13.04846 36.08355) rotate(-45)"/>
+              <rect class="cls-1" x="16.95639" y="25.79265" width="40.15215" height="16.00002" rx="8" ry="8"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="empty"></div>
+      <div id="bw_close" class="grid-item-close">
+        <span class="close">CONFIRM</span>
+      </div>
+      <div class="empty"></div>
+    </div>
+    </div>
+  </div>
   <div class="top">
     <h1 id="title">NORTH ATLANTIC</h1>
     <p id="turn-indicator" class="blufor"><span id="team">BLUFOR</span> TURN<span id="battleind"></span></p>
-  </div>
-  <div id="battle-box">
-    <div id="box-3w">
-      <div id="deploy-cp">
-        
-      </div>
-      <div id="battle-area">
-        <div id="flank-l">
-
-        </div>
-        <div id="flank-m">
-
-        </div>
-        <div id="flank-r">
-
-        </div>
-      </div>
-      <div id="ref-op">
-        
-      </div>
-    </div>
-    <div id="start-button">Begin</div>
   </div>
   <div id="container">
     <div id="data-panel">
       <div id="mapstatus">
         <svg id="mssvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 731.92874 90.34449">
-          <defs>
-            <style>
-              .cls-stat-1 {
-                fill: none;
-                stroke: #000;
-                stroke-miterlimit: 10;
-              }
-        
-              .cls-stat-2 {
-                fill: #f7ec2a;
-              }
-        
-              .cls-stat-3 {
-                fill: #231f20;
-              }
-        
-              .sh {
-                display: none;
-              }
-            </style>
-          </defs>
           <g id="macro-labels">
             <path class="cls-stat-3" d="M20.37489,77.51832l-1.40283,4.47559h-5.44434l7.78271-22.27881h6.24609l7.08105,22.27881h-5.67822l-1.20264-4.47559h-7.38184Zm3.94141-12.82617l-2.70557,8.71777h5.04395l-2.33838-8.71777Z"/>
             <path class="cls-stat-3" d="M91.55555,59.7151h9.05176c2.80566,0,4.40918,.30078,5.84521,1.13574,1.56982,.93506,2.53857,2.67188,2.53857,4.54248,0,2.1377-1.00195,3.64062-3.13965,4.67627,2.57178,1.23584,3.67383,2.87256,3.67383,5.44434,0,2.10449-.83496,3.9082-2.30469,5.01025-1.43604,1.10254-3.00586,1.46973-6.1792,1.46973h-9.48584v-22.27881Zm9.68652,8.65088c1.80371,0,2.73877-.73486,2.73877-2.20459,0-1.43604-.93506-2.1709-2.73877-2.1709h-4.77637v4.37549h4.77637Zm-.06689,9.35254c2.104,0,3.23975-.93506,3.23975-2.70557,0-1.77002-1.13574-2.70557-3.23975-2.70557h-4.70947v5.41113h4.70947Z"/>
@@ -701,168 +763,7 @@ I   - Company                - 41   to 250
       <div id="log">
       </div>
     </div>
-    <svg id="game" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1169.25532 1169.25532">
-    <defs>
-    <style>
-      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-15, .cls-16 {
-        stroke-miterlimit: 10;
-      }
-
-      .cls-1, .cls-2, .cls-3, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-11, .cls-12, .cls-13, .cls-15, .cls-16 {
-        stroke: #231f20;
-      }
-
-      .cls-1, .cls-2, .cls-4, .cls-6, .cls-10, .cls-14 {
-        fill: none;
-      }
-
-      .cls-2, .cls-6 {
-        stroke-width: 5px;
-      }
-
-      .cls-3 {
-        fill: #5095ac;
-      }
-
-      .cls-4 {
-        stroke: #000;
-      }
-
-      .cls-5 {
-        fill: #53ba69;
-      }
-
-      .cls-17 {
-        fill: #6d6e71;
-      }
-
-      .cls-17, .cls-18, .cls-19, .cls-20 {
-        opacity: .49;
-      }
-
-      .cls-6 {
-        stroke-dasharray: 0 0 60 60;
-      }
-
-      .cls-21 {
-        fill: #be1e2d;
-      }
-
-      .cls-22 {
-        fill: #009444;
-      }
-
-      .cls-18 {
-        fill: #a7a9ac;
-      }
-
-      .cls-19 {
-        fill: #808285;
-      }
-
-      .cls-23 {
-        fill: #d7df23;
-      }
-
-      .cls-7 {
-        fill: #5e5fa6;
-      }
-
-      .cls-20 {
-        fill: #939598;
-      }
-
-      .cls-8 {
-        fill: #a0b853;
-      }
-
-      .cls-9 {
-        fill: #db539e;
-      }
-
-      .cls-24 {
-        fill: #85d4ef;
-      }
-
-      .cls-10 {
-        stroke-width: 3px;
-      }
-
-      .cls-10, .cls-14 {
-        stroke: #493219;
-      }
-
-      .cls-11 {
-        fill: #50aaa1;
-      }
-
-      .cls-12 {
-        fill: #4f75af;
-      }
-
-      .cls-25 {
-        fill: #2bb673;
-      }
-
-      .cls-13 {
-        fill: #7e5da7;
-      }
-
-      .cls-26 {
-        fill: #00a651;
-      }
-
-      .cls-15 {
-        fill: #d15175;
-      }
-
-      .cls-27 {
-        fill: #231f20;
-      }
-
-      .cls-16 {
-        fill: #a860a6;
-      }
-
-      .bg {
-        fill: #9e9e9e;
-      }
-
-      .cls-e {
-        fill: #efbe6e;
-      }
-
-      #countries-inert
-      {
-        opacity: 0.45;
-      }
-
-      #regions {
-        opacity: 0.45;
-      }
-
-      .cls-forest {
-        /*fill: #009444;*/
-        fill: #058944;
-      }
-
-      .cls-plains {
-        fill: #d7df23;
-      }
-
-      .cls-urban-dense {
-        fill: #666;
-      }
-
-      #country_se {
-        fill: #47af23
-      }
-
-      #country_ne {
-        fill: #137a1d
-      }
-    </style>
-  </defs>
+    <svg id="game" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1169.25532 1169.25532"> 
   <circle class="bg" cx="584.62766" cy="584.62766" r="550.19985"/>
   <g id="countries-inert">
     <polygon class="cls-25" points="22.9897 511.84779 49.44034 520.81964 125.77863 509.25324 146.59816 520.81964 146.59816 534.69933 181.29739 534.69933 211.37005 511.56652 253.00911 493.06027 280.76849 458.36104 280.76849 428.28838 257.63568 409.78213 232.18958 409.78213 211.37005 368.14306 234.50286 368.14306 234.50286 312.62431 259.94896 280.23836 259.94896 264.04539 280.76849 240.91258 280.76849 208.52664 299.27474 187.7071 299.27474 153.00788 315.46771 113.07118 302.50838 93.52671 266.68931 115.97279 232.44189 141.18009 190.91034 177.63041 159.0284 211.09076 117.37867 264.63135 87.02653 314.11302 72.49731 342.69285 54.32889 385.59104 41.25102 424.72259 30.01917 469.73773 22.9897 511.84779"/>

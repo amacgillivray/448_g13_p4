@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project 4</title>
+  <link rel="stylesheet" href="./style.css"/>
+  <link rel="stylesheet" href="./style_ai.css"/>
+</head>
+
+<body>
+	<div id="battleWindow" class="modal">
+	</div>
+  <div class="top">
+    <h1 id="title">NORTH ATLANTIC</h1>
+    <p id="turn-indicator" class="blufor"><span id="team">BLUFOR</span> TURN<span id="battleind"></span></p>
+  </div>
+  <div id="container">
+    <div id="data-panel">
+      <div id="mapstatus">
+      </div>
+      <div id="progress">
+        <progress id="p_bfof" max="100" value="50"></progress>
+      </div>
+      <pre id="size-legend">Sym   Name                     Numbers
+X   - Brigade                - 2001 to 5000+
+III - Regiment               - 1001 to 2000
+II  - Battalion              - 251  to 1000
+I   - Company                - 41   to 250
+••• - Platoon                - 21   to 40
+••  - Section                - 11   to 20
+•   - Patrol                 - 6    to 10
+Ø   - Fireteam               - 3    to 5
+ø   - Fire and Maneuver Team - 1    to 2</pre>
+      <div id="log">
+      </div>
+    </div>
+    <svg id="game" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1169.25532 1169.25532">
+      <circle class="bg" cx="584.62766" cy="584.62766" r="550.19985"/>
+      <g id="countries-inert" class="jsfill"></g>
+      <g id="plains" class="jsfill"></g>
+      <g id="forest" class="jsfill"></g>
+      <g id="urban-dense" class="jsfill"></g>
+      <g id="water" class="jsfill"></g>
+      <g id="crater-layer"></g>
+      <g id="borders-inert" class="jsfill"></g>
+      <g id="outline-inert" class="jsfill"></g>
+      <g id="regions" class="jsfill"></g>
+      <g id="subregions" class="jsfill"></g>
+      <g id="arrow-container"></g>
+      <g id="combat-layer"></g>
+      <g id="hqs" class="jsfill"></g>
+      <g id="units_blufor" class="jsfill"></g>
+      <g id="units_opfor" class="jsfill"></g>
+      <g id="clouds"></g>
+    </svg>
+  </div>
+  <footer>
+    <script type="text/javascript" src="./game.js"></script>
+    <script type="text/javascript" src="./deps/svg-pan-zoom.js"></script>
+    <script>
+      /* use 3rd-party pan-and-zoom lib to handle pan and zoom operations on the game map */
+      /* the source code for this is in deps/svg-pan-zoom.js */
+      let panZoom = svgPanZoom('#game'); 
+    </script>
+  </footer>
+
+</body>
+
+</html>

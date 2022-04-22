@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74.03246 67.55285">
+  <g id="infantry_bf" class="t_np bf">
+    <rect class="cls-1" x=".50005" y="13.26024" width="73" height="41"/>
+    <line class="cls-1" x1=".50005" y1="54.26024" x2="73.50005" y2="13.26024"/>
+    <line class="cls-1" x1="73.50005" y1="54.26024" x2=".50005" y2="13.26024"/>
+  </g>
+  <g id="helicopter_bf" class="t_np bf">
+    <rect class="cls-1" x=".5" y="13.29266" width="73" height="41"/>
+    <g>
+      <polygon class="cls-1" points="37 31.37513 15.83874 24.94693 15.83874 37.80334 37 31.37513"/>
+      <polygon class="cls-1" points="37 31.37513 58.16126 24.94693 58.16126 37.80333 37 31.37513"/>
+      <g>
+        <line class="cls-1" x1="37" y1="38.10117" x2="37" y2="25.29868"/>
+        <polygon points="41.98633 26.75766 37 18.12244 32.01367 26.75766 41.98633 26.75766"/>
+      </g>
+      <path class="cls-2" d="M35.54652,45.8236l-.83936,2.54248h-1.07959l2.74658-8.0835h1.25928l2.7583,8.0835h-1.11523l-.86328-2.54248h-2.8667Zm2.65039-.81592l-.7915-2.32666c-.17969-.52734-.2998-1.00732-.41943-1.4751h-.02441c-.11963,.47998-.25146,.97168-.40771,1.46338l-.7915,2.33838h2.43457Z"/>
+    </g>
+  </g>
+  <g id="armor_bf" class="t_np bf">
+    <rect class="cls-1" x=".53246" y="13.22773" width="73" height="41"/>
+    <rect class="cls-1" x="11.75587" y="24.16124" width="50.55319" height="19.13298" rx="9.56648" ry="9.56648"/>
+  </g>
+  <g id="infantry_of" class="t_np of">
+    <rect class="cls-1" x="13.62799" y="10.38818" width="46.74412" height="46.74412" transform="translate(-13.03503 36.05113) rotate(-45)"/>
+    <line class="cls-1" x1="20.47351" y1="50.28678" x2="53.52659" y2="17.2337"/>
+    <line class="cls-1" x1="53.52659" y1="50.28678" x2="20.47351" y2="17.2337"/>
+  </g>
+  <g id="armor_of" class="t_np of">
+    <rect class="cls-1" x="13.6604" y="10.4206" width="46.74412" height="46.74412" transform="translate(-13.04846 36.08355) rotate(-45)"/>
+    <rect class="cls-1" x="16.95639" y="25.79265" width="40.15215" height="16.00002" rx="8" ry="8"/>
+  </g>
+  <g id="helicopter_of" class="t_np of">
+    <rect class="cls-1" x="13.62794" y="10.38813" width="46.74412" height="46.74412" transform="translate(-13.03501 36.05108) rotate(-45)"/>
+    <g>
+      <polygon class="cls-1" points="37 34.22827 15.83874 27.80007 15.83874 40.65647 37 34.22827"/>
+      <polygon class="cls-1" points="37 34.22827 58.16126 27.80007 58.16126 40.65647 37 34.22827"/>
+      <g>
+        <line class="cls-1" x1="37" y1="40.9543" x2="37" y2="28.15181"/>
+        <polygon points="41.98633 29.6108 37 20.97557 32.01367 29.6108 41.98633 29.6108"/>
+      </g>
+    </g>
+  </g>
+</svg>
