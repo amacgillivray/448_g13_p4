@@ -1,0 +1,177 @@
+
+.cls-stat-1 {
+    fill: none;
+    stroke: #000;
+    stroke-miterlimit: 10;
+}
+
+.cls-stat-2 {
+    fill: #f7ec2a;
+}
+
+.cls-stat-3 {
+    fill: #231f20;
+}
+
+.sh {
+    display: none;
+}
+
+.cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-15, .cls-16 {
+    stroke-miterlimit: 10;
+  }
+
+  .cls-1, .cls-2, .cls-3, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-11, .cls-12, .cls-13, .cls-15, .cls-16 {
+    stroke: #231f20;
+  }
+
+  .cls-1, .cls-2, .cls-4, .cls-6, .cls-10, .cls-14 {
+    fill: none;
+  }
+
+  .cls-2, .cls-6 {
+    stroke-width: 5px;
+  }
+
+  .cls-3 {
+    fill: #5095ac;
+  }
+
+  .cls-4 {
+    stroke: #000;
+  }
+
+  .cls-5 {
+    fill: #53ba69;
+  }
+
+  .cls-17 {
+    fill: #6d6e71;
+  }
+
+  .cls-17, .cls-18, .cls-19, .cls-20 {
+    opacity: .49;
+  }
+
+  .cls-6 {
+    stroke-dasharray: 0 0 60 60;
+  }
+
+  .cls-21 {
+    fill: #be1e2d;
+  }
+
+  .cls-22 {
+    fill: #009444;
+  }
+
+  .cls-18 {
+    fill: #a7a9ac;
+  }
+
+  .cls-19 {
+    fill: #808285;
+  }
+
+  .cls-23 {
+    fill: #d7df23;
+  }
+
+  .cls-7 {
+    fill: #5e5fa6;
+  }
+
+  .cls-20 {
+    fill: #939598;
+  }
+
+  .cls-8 {
+    fill: #a0b853;
+  }
+
+  .cls-9 {
+    fill: #db539e;
+  }
+
+  .cls-24 {
+    fill: #85d4ef;
+  }
+
+  .cls-10 {
+    stroke-width: 3px;
+  }
+
+  .cls-10, .cls-14 {
+    stroke: #493219;
+  }
+
+  .cls-11 {
+    fill: #50aaa1;
+  }
+
+  .cls-12 {
+    fill: #4f75af;
+  }
+
+  .cls-25 {
+    fill: #2bb673;
+  }
+
+  .cls-13 {
+    fill: #7e5da7;
+  }
+
+  .cls-26 {
+    fill: #00a651;
+  }
+
+  .cls-15 {
+    fill: #d15175;
+  }
+
+  .cls-27 {
+    fill: #231f20;
+  }
+
+  .cls-16 {
+    fill: #a860a6;
+  }
+
+  .bg {
+    fill: #9e9e9e;
+  }
+
+  .cls-e {
+    fill: #efbe6e;
+  }
+
+  #countries-inert
+  {
+    opacity: 0.45;
+  }
+
+  #regions {
+    opacity: 0.45;
+  }
+
+  .cls-forest {
+    /*fill: #009444;*/
+    fill: #058944;
+  }
+
+  .cls-plains {
+    fill: #d7df23;
+  }
+
+  .cls-urban-dense {
+    fill: #666;
+  }
+
+  #country_se {
+    fill: #47af23
+  }
+
+  #country_ne {
+    fill: #137a1d
+  }
+  
