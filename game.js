@@ -1230,101 +1230,6 @@ class GameUI {
         }
     }
 
-    // 
-    static drawBattleWindow ( battle ) 
-    {
-        const drawBattleDisplay = false;
-        // Get the modal
-        let modal = document.getElementById("battleWindow");
-
-        // Get the element that closes the modal
-        let span = document.getElementById("bw_close");
-
-        let display = document.getElementById("bw_display");
-
-        let attackers = battle._off;
-        let defender  = battle._def;
-
-        let flank_titles = [
-            document.getElementById("bw_fl_t"),
-            document.getElementById("bw_fm_t"),
-            document.getElementById("bw_fr_t")
-        ];
-
-        // Set the flank titles to reflect their respective terrain type.
-        for (let i = 0; i < flank_titles.length; i++)
-        {
-            flank_titles[i].innerHTML = battle.terrain[i].toUpperCase();
-        }
-
-        // Clone the attacking and defending region elements to the display
-        if (drawBattleDisplay) {
-            let ar = document.getElementById(attackers._region);
-            let dr = document.getElementById(defender._region );
-            ["countries-inert", "regions", "plains", "forest", "urban-dense", "water", "crater-layer", "clouds"].forEach(
-                (terrain) => {
-                    let t_n = document.getElementById(terrain);
-                    let clone = t_n.cloneNode(true);
-                    clone.setAttribute("id", clone.getAttribute("id") + "_bw_display");
-                    display.innerHTML+=clone.outerHTML.replace(/id\=\"..\"/gi, "");
-                }
-            );
-            [ar, dr].forEach( (rgn) => {
-                let clone = rgn.cloneNode(true);
-                clone.setAttribute("id", clone.getAttribute("id") + "_bw_display");
-                display.innerHTML+=clone.outerHTML.replace(/id\=\"..r\"|reinforceable|cpt/gi, "");
-                rgn = document.getElementById(rgn.getAttribute("id") + "_bw_display");
-            });
-
-            // Set display box viewport to zoom in on affected regions
-            ar = ar.getBBox();
-            dr = dr.getBBox();
-            let xmin = Math.min( ar.x, dr.x ) - Math.max( ar.width, dr.width );
-            // let xmax = xmin + Math.max( ar.width, dr.width ) - Math.min( ar.width, dr.width ) - 15;
-            // let xmax = xmin + 10;
-            let xmax = xmin + 2*Math.max( ar.width, dr.width );
-
-            let ymin = Math.min( ar.y, dr.y ) - Math.max( ar.height, dr.height );
-            // let ymax = ymin + 10;
-            // let ymax = ymin + Math.max( ar.height, dr.height ) - Math.min( ar.height, dr.height ) - 15;
-            let ymax = ymin + 2*Math.max( ar.height, dr.height );
-
-            display.setAttribute("viewBox", xmin + ' ' + ymin + ' ' + xmax + ' ' + ymax);
-        }
-
-        ["off", "def"].forEach((prefix) => 
-        {
-            let side = (prefix[0] == "o") ? attackers : defender;
-            let tt_ct = 1; // troop type count (how many types have been filled)
-
-            for (let i = 0; i < troop_type_names.length; i++) 
-            {
-                if (side[troop_type_names[i] + "Count"] > 0)
-                {
-                    // console.log(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
-                    let icon = document.getElementById(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
-                    icon.classList.toggle("t_np", false);
-                    icon.classList.toggle("t", true);
-                    icon.classList.toggle("available", true);
-                    icon.addEventListener("click", GameUI.battleWindowAllocCB, [false, false]);
-
-                    tt_ct++;
-                }
-            }
-        });
-
-        modal.style.display = "block";
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-    }
-
-    battleWindowAllocCB( e )
-    {
-        let troop_type = "";
-    }
-
 }
 
 /**
@@ -1827,6 +1732,101 @@ class Battle {
 
     	return;
     }
+    
+    static drawBattleWindow ( battle ) 
+    {
+        const drawBattleDisplay = false;
+        // Get the modal
+        let modal = document.getElementById("battleWindow");
+
+        // Get the element that closes the modal
+        let span = document.getElementById("bw_close");
+
+        let display = document.getElementById("bw_display");
+
+        let attackers = battle._off;
+        let defender  = battle._def;
+
+        let flank_titles = [
+            document.getElementById("bw_fl_t"),
+            document.getElementById("bw_fm_t"),
+            document.getElementById("bw_fr_t")
+        ];
+
+        // Set the flank titles to reflect their respective terrain type.
+        for (let i = 0; i < flank_titles.length; i++)
+        {
+            flank_titles[i].innerHTML = battle.terrain[i].toUpperCase();
+        }
+
+        // Clone the attacking and defending region elements to the display
+        if (drawBattleDisplay) {
+            let ar = document.getElementById(attackers._region);
+            let dr = document.getElementById(defender._region );
+            ["countries-inert", "regions", "plains", "forest", "urban-dense", "water", "crater-layer", "clouds"].forEach(
+                (terrain) => {
+                    let t_n = document.getElementById(terrain);
+                    let clone = t_n.cloneNode(true);
+                    clone.setAttribute("id", clone.getAttribute("id") + "_bw_display");
+                    display.innerHTML+=clone.outerHTML.replace(/id\=\"..\"/gi, "");
+                }
+            );
+            [ar, dr].forEach( (rgn) => {
+                let clone = rgn.cloneNode(true);
+                clone.setAttribute("id", clone.getAttribute("id") + "_bw_display");
+                display.innerHTML+=clone.outerHTML.replace(/id\=\"..r\"|reinforceable|cpt/gi, "");
+                rgn = document.getElementById(rgn.getAttribute("id") + "_bw_display");
+            });
+
+            // Set display box viewport to zoom in on affected regions
+            ar = ar.getBBox();
+            dr = dr.getBBox();
+            let xmin = Math.min( ar.x, dr.x ) - Math.max( ar.width, dr.width );
+            // let xmax = xmin + Math.max( ar.width, dr.width ) - Math.min( ar.width, dr.width ) - 15;
+            // let xmax = xmin + 10;
+            let xmax = xmin + 2*Math.max( ar.width, dr.width );
+
+            let ymin = Math.min( ar.y, dr.y ) - Math.max( ar.height, dr.height );
+            // let ymax = ymin + 10;
+            // let ymax = ymin + Math.max( ar.height, dr.height ) - Math.min( ar.height, dr.height ) - 15;
+            let ymax = ymin + 2*Math.max( ar.height, dr.height );
+
+            display.setAttribute("viewBox", xmin + ' ' + ymin + ' ' + xmax + ' ' + ymax);
+        }
+
+        ["off", "def"].forEach((prefix) => 
+        {
+            let side = (prefix[0] == "o") ? attackers : defender;
+            let tt_ct = 1; // troop type count (how many types have been filled)
+
+            for (let i = 0; i < troop_type_names.length; i++) 
+            {
+                if (side[troop_type_names[i] + "Count"] > 0)
+                {
+                    // console.log(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
+                    let icon = document.getElementById(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
+                    icon.classList.toggle("t_np", false);
+                    icon.classList.toggle("t", true);
+                    icon.classList.toggle("available", true);
+                    if (prefix[0] == "o")
+                      icon.addEventListener("click", GameUI.battleWindowAllocCB, [false, false]);
+                    tt_ct++;
+                }
+            }
+        });
+
+        modal.style.display = "block";
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+    }
+
+    battleWindowAllocCB( e )
+    {
+        let troop_type = "";
+        
+    }
 
     /**
      * @brief called repeatedly until the battle ends.
@@ -1935,7 +1935,6 @@ class Battle {
 }
 
 class Strike {
-
     constructor(strikeForce, target)
     {
         this._sf = strikeForce;
@@ -1946,11 +1945,10 @@ class Strike {
     {
         
     }
-
 }
 
-
-class Game{
+class Game
+{
 
     constructor()
     {
