@@ -595,7 +595,7 @@ function changeTurn_cb( e )
 /**
  * @brief Class containing static methods to interact with the map
  */
-class GameMap {
+class GameUI {
 
     /**
      * @brief update the ownership of a region
@@ -1272,10 +1272,13 @@ class GameMap {
             {
                 if (side[troop_type_names[i] + "Count"] > 0)
                 {
-                    console.log(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
+                    // console.log(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
                     let icon = document.getElementById(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
                     icon.classList.toggle("t_np", false);
                     icon.classList.toggle("t", true);
+                    icon.classList.toggle("available", true);
+                    icon.addEventListener("click", GameUI.battleWindowAllocCB, [false, false]);
+
                     tt_ct++;
                 }
             }
@@ -1286,8 +1289,13 @@ class GameMap {
         span.onclick = function() {
             modal.style.display = "none";
         }
-
     }
+
+    battleWindowAllocCB( e )
+    {
+        let troop_type = "";
+    }
+
 }
 
 /**
@@ -1300,7 +1308,7 @@ class Force{
     
 	constructor(region_group_id){
 		this._region = region_group_id;
-        this._unitList = GameMap.getUnitsInRegion(region_group_id);
+        this._unitList = GameUI.getUnitsInRegion(region_group_id);
         this._side = "neutral";
         this._determineSide();
 	}
@@ -1361,7 +1369,7 @@ class Force{
 		for(let i = 0; i < 3; i++){
 			if(this._unitList[i] != null){
 				this._unitList[i].alterUnits(list[i]);
-                GameMap.updateUnitDisplay(this._unitList[i]);
+                GameUI.updateUnitDisplay(this._unitList[i]);
 			} else {
                 // todo check later
                 this._unitList[i] = new Unit(
@@ -1371,7 +1379,7 @@ class Force{
                     this._side
                 );
                 console.log(this._unitList[i] + ": " + list[i]);
-                GameMap.updateUnitDisplay(this._unitList[i]);
+                GameUI.updateUnitDisplay(this._unitList[i]);
             }
 		}
 
@@ -1449,7 +1457,7 @@ class Force{
     /**
      * @brief Determines which team the force belongs to. Optionally updates the region display.
      * @param {bool} updateRegionOwner = true
-     *        When true, updates the region display to match the current owner using GameMap
+     *        When true, updates the region display to match the current owner using GameUI
      *        setRegionOwner(). When false, no changes are made to the map when the function is
      *        called.
      */
@@ -1472,7 +1480,7 @@ class Force{
         
         // Conditionally update the map display based on argument
         if (updateRegionOwner)
-            GameMap.setRegionOwner(this._region, this._side);
+            GameUI.setRegionOwner(this._region, this._side);
     }
 }
 
@@ -1600,7 +1608,7 @@ class Battle {
      */
     constructor( defending_force, attacking_force )
     {
-        GameMap.craterFix();
+        GameUI.craterFix();
 
         this._battle_number = battle_ct;
         battle_ct++;
@@ -1661,7 +1669,7 @@ class Battle {
         this._off_mod = Math.random()/2;
         this._def_mod = Math.random()/2 + 0.05;
 
-        GameMap.drawBattleWindow( this );
+        GameUI.drawBattleWindow( this );
 
         // Put information about the battle in the game log
         gameLog( 
@@ -1795,7 +1803,7 @@ class Battle {
         gameLog( winside + " " + verb + " control of " + this._def.region + "." + troopLossRecord);
 
         //battle_ct++;
-        GameMap.removeCombatAnimations( this._battle_number );
+        GameUI.removeCombatAnimations( this._battle_number );
         game.battleEndCb();
 
     	return;
@@ -1817,7 +1825,7 @@ class Battle {
 
         if (this._off.side == this._def.side)
         {
-            GameMap.removeCombatAnimations( this._battle_number );
+            GameUI.removeCombatAnimations( this._battle_number );
             this._drawProgress();
             this.end();
             return;
@@ -1863,7 +1871,7 @@ class Battle {
 
         if ( this._off.totalCount <= 0 || this._def.totalCount <= 0 )
         {
-            GameMap.removeCombatAnimations( this._battle_number );
+            GameUI.removeCombatAnimations( this._battle_number );
             this._drawProgress();
             this.end();
         }
@@ -1889,7 +1897,7 @@ class Battle {
             troop_type_names.forEach((type) => {
                 let tlist = (side == this._off) ? off_target : def_target;
                 if (side[type] != null) 
-                    GameMap.animateUnitCombat(side[type], tlist, this._ticks);
+                    GameUI.animateUnitCombat(side[type], tlist, this._ticks);
             });
         });
     }
@@ -1952,7 +1960,7 @@ class Game{
         this._changeTurn();
         this._changeTurn();
 
-        GameMap.drawClouds();
+        GameUI.drawClouds();
         this._applyFogOfWar();
         this._applyReinforcements();
     }
@@ -2027,7 +2035,7 @@ class Game{
         turn_ct++;
 
         if (turn_ct % 2 == 0)
-            GameMap.drawClouds();
+            GameUI.drawClouds();
 
         this._currentPlayerForces = 0;
 
@@ -2388,7 +2396,7 @@ class Game{
 
         // draw mvmt arrow: 
         // todo - add id to movement arrow so it can be removed
-        GameMap.drawMovementArrow(srcForce.side, e.currentTarget.oc, e.currentTarget.id);
+        GameUI.drawMovementArrow(srcForce.side, e.currentTarget.oc, e.currentTarget.id);
 
         let l = this["_queuedMoves_" + this._currentPlayerTurn].length;
         this["_queuedMoves_" + this._currentPlayerTurn][l] = [srcForce.side, srcForce, dstForce];
@@ -2438,7 +2446,7 @@ class Game{
                 ]
             );
 
-            // GameMap.animateUnitMove(srcForce, dstForce);
+            // GameUI.animateUnitMove(srcForce, dstForce);
 
             srcForce.alterForce(
                 (-1)*srcForce.infantryCount, 
