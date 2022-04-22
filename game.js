@@ -2038,6 +2038,9 @@ class Game{
             }
         }
 
+        GameMap.notification("You have recieved " + this._cptReinforcements[0] + " infantry, " + this._cptReinforcements[1] + " helicopter, and " + this._cptReinforcements[2] + " armored vehicle reinforcements from your controlled capitals.");
+
+
         gameLog(team_key[this._currentPlayerTurn] + " has reinforcements: " +
                 "<pre>" 
                 + troop_type_names[0].toUpperCase() + ":\t" + this._cptReinforcements[0] + "\n"
