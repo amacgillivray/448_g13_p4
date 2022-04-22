@@ -927,6 +927,7 @@ class GameUI {
                     circle.setAttribute("id", cgid + "_" + i);
                     cg.appendChild(circle);
                     cl++;
+                    region_terrain[reftgt.region]["craters"] += 0.003
                 }
             }
         }
