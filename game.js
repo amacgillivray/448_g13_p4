@@ -1593,7 +1593,7 @@ class Battle {
         this._off_mod = Math.random()/2;
         this._def_mod = Math.random()/2 + 0.05;
 
-        GameUI.drawBattleWindow( this );
+        Battle.drawBattleWindow( this );
 
         // Put information about the battle in the game log
         gameLog( 
@@ -1732,13 +1732,13 @@ class Battle {
 
     	return;
     }
-    
+
     static drawBattleWindow ( battle ) 
     {
         const drawBattleDisplay = false;
         // Get the modal
         let modal = document.getElementById("battleWindow");
-
+            modal.innerHTML = bwContent;
         // Get the element that closes the modal
         let span = document.getElementById("bw_close");
 
@@ -1819,6 +1819,7 @@ class Battle {
         // When the user clicks on <span> (x), close the modal
         span.onclick = function() {
             modal.style.display = "none";
+            modal.innerHTML = "";
         }
     }
 
