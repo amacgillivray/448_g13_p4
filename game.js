@@ -1619,8 +1619,10 @@ class Battle {
                 ]
             );
 
+
+            this._off[0]._side = this._refSides[0];
             for(var i=0; i<this._off.length; i++){
-                this._off[i]._side = this._refSides[0];
+                console.log("This is important" + this._offRefCt[0] / this._off.length);
                 this._off[i].alterForce(
                     [
                         Math.floor(this._offRefCt[0] / this._off.length),
@@ -1817,25 +1819,41 @@ class Battle {
         ];
 
         let def_target = [
-            this._off.infantry,
-            this._off.helicopter, 
-            this._off.armor
+            0,
+            0,
+            0
         ];
 
-        [this._off, this._def].forEach((side) => {
-            troop_type_names.forEach((type) => {
-                let tlist = (side == this._off) ? off_target : def_target;
-                if (side[type] != null) 
-                    GameMap.animateUnitCombat(side[type], tlist, this._ticks);
+        for(let i = 0; i<this._off.length; i++){
+            let temp = [
+                this._off[i].infantry,
+                this._off[i].helicopter,
+                this._off[i].armor
+            ]
+            def_target[i] = temp;
+        }
+
+        for(let i = 0; i<this._off.length; i++){
+            [this._off[i], this._def].forEach((side) => {
+                troop_type_names.forEach((type) => {
+                    let tlist = (side == this._off) ? off_target : def_target[i];
+                    if (side[type] != null) 
+                        GameMap.animateUnitCombat(side[type], tlist, this._ticks);
+                });
             });
-        });
+
+        }
     }
 
     _drawProgress()
     {
-        if (this._off.side == "of")
+        let offTotal = 0;
+        for(var i=0; i<this._off.length; i++){
+            offTotal = offTotal + this._off[i].infantryCount + this._off[i].helicopterCount + this._off[i].armorCount;
+        }
+        if (this._off[0].side == "of")
         {
-            document.getElementById("p_battle_" + this._battle_number).setAttribute("value", (this._def.totalCount/(this._def.totalCount+this._off.totalCount+1))*100);
+            document.getElementById("p_battle_" + this._battle_number).setAttribute("value", (offTotal /(this._def.totalCount+offTotal+1))*100);
         } else {
             document.getElementById("p_battle_" + this._battle_number).setAttribute("value", (this._off.totalCount/(this._off.totalCount+this._def.totalCount+1))*100);
         }
