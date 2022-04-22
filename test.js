@@ -1,5 +1,7 @@
-function test(){
 
+
+function test(){
+    console.log('Test 1: ' + gameLog());
 }
 
 //Tests
