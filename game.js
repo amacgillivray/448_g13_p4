@@ -1857,7 +1857,6 @@ class Game{
         GameMap.drawClouds();
         this._applyFogOfWar();
         this._applyReinforcements();
-        GameMap.notification("sup bitches");
     }
 
     getRegionForce(region_letter)
