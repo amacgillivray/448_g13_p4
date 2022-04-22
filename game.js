@@ -1193,6 +1193,7 @@ class GameMap {
         }
     }
 
+    // takes a message and puts it in the notification modal which is then displayed on the screen for the player.
     static notification(message){
         // Get the modal
         var modal = document.getElementById("notif");
