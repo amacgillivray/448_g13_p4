@@ -539,6 +539,21 @@ progress[value]::-webkit-progress-value {
 	  width: 80%; /* Could be more or less, depending on screen size */
 	}
 
+  .grid-container-notif {
+	  display: grid;
+	  grid-template-columns: auto;
+	  background-color: #1b2a38;
+	  padding: 5px;
+	}
+
+  .notif-content {
+	  background-color: #fefefe;
+	  margin: 15% auto; 
+	  border: 1px solid #888;
+	  width: 50%; /* Could be more or less, depending on screen size */
+	  /*height: 30%*/
+	}
+
 	/* The Close Button */
 	.close {
 	  color: #aaa;
