@@ -1244,7 +1244,7 @@ class GameUI {
         document.getElementById("notif-item").textContent = message;
 
         // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[1];
+        var span = document.getElementById("notif-close");
 
         modal.style.display = "block";
 
