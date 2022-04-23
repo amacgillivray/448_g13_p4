@@ -1558,6 +1558,10 @@ class Battle {
         ];
         this._defRefTotal = this._def.totalCount;
 
+        // Track whether or not the defending region is a capital
+        // If so, combat and casualty advantages are applied.
+        this._defIsCapital = isCapitalRegion(this._def.region);
+
         this._refSides = [
             this._off.side, 
             this._def.side
@@ -1623,6 +1627,10 @@ class Battle {
         this._off_mod = Math.random()/2;
         this._def_mod = Math.random()/2 + 0.05;
 
+        // Add additional defender bonus if the region is a capital
+        if (this._defIsCapital) 
+            this._def_mod += 0.05;
+
         // Battle.drawBattleWindow( this );
 
         // Put information about the battle in the game log
@@ -1652,15 +1660,17 @@ class Battle {
         let verb = "";
         let troopLossRecord = "";
 
+        let defCasualtyBonus = (this._defIsCapital) ? Math.random() : 0;
+
+
         if (this._off.totalCount == 0)
         {
-
             // partially restore casualties
             this._def.alterForce(
                 [
-                    Math.floor((this._defRefCt[0]-this._def.infantryCount)*Math.random()),
-                    Math.floor((this._defRefCt[1]-this._def.helicopterCount)*Math.random()),
-                    Math.floor((this._defRefCt[2]-this._def.armorCount)*Math.random())
+                    Math.floor((this._defRefCt[0]-this._def.infantryCount)*Math.min(1, Math.random() + defCasualtyBonus)),
+                    Math.floor((this._defRefCt[1]-this._def.helicopterCount)*Math.min(1, Math.random() + defCasualtyBonus)),
+                    Math.floor((this._defRefCt[2]-this._def.armorCount)*Math.min(1, Math.random() + defCasualtyBonus))
                 ]
             );
             this._off._side = this._refSides[0];
@@ -1694,9 +1704,9 @@ class Battle {
 
             // restore defender losses if a fallback position exists
             let def_restored = [
-                Math.floor((this._defRefCt[0])*Math.random()/2),
-                Math.floor((this._defRefCt[1])*Math.random()/2),
-                Math.floor((this._defRefCt[1])*Math.random()/2)
+                Math.floor((this._defRefCt[0])*Math.min(1, Math.random() + defCasualtyBonus)/2),
+                Math.floor((this._defRefCt[1])*Math.min(1, Math.random() + defCasualtyBonus)/2),
+                Math.floor((this._defRefCt[1])*Math.min(1, Math.random() + defCasualtyBonus)/2)
             ];
             if (this._defFb != null)
                 this._defFb.alterForce(def_restored);
