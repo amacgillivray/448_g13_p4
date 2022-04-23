@@ -250,113 +250,147 @@ const region_connections = {
 
 const terrain_types = [
     "craters",
+    "open",
     "plains",
     "forest",
     "water",
     "urban"
 ];
 
-const region_terrain = {
-    a0: {craters: 0, plains: 0.9, forest: 0, water: 0, urban:0 },
-    a1: {craters: 0, plains: 0.6, forest: 0, water: 0, urban:0 },
-    a2: {craters: 0, plains: 0, forest: 0.5, water: 0, urban:0 },
-    a3: {craters: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    a4: {craters: 0, plains: 0, forest: 0.5, water: 0, urban:0 },
-    a5: {craters: 0, plains: 0, forest: 0.5, water: 0, urban:0 },
-    a6: {craters: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    a7: {craters: 0, plains: 0, forest: 0.5, water: 0.2, urban:0.5 },
-    a8: {craters: 0, plains: 0.4, forest: 0.3, water: 0, urban:0 },
-    a9: {craters: 0, plains: 0.5, forest: 0.4, water: 0, urban:0 },
-    b0: {craters: 0, plains: 0.9, forest: 0.1, water: 0, urban:0 },
-    b1: {craters: 0, plains: 0.5, forest: 0.1, water: 0, urban:0 },
-    b2: {craters: 0, plains: 0.7, forest: 0.1, water: 0.1, urban:0 },
-    b3: {craters: 0, plains: 0.8, forest: 0, water: 0, urban:0 },
-    b4: {craters: 0, plains: 0, forest: 0, water: 0.1, urban:0 },
-    b5: {craters: 0, plains: 0, forest: 0, water: 0.3, urban:0.6 },
-    b6: {craters: 0, plains: 0, forest: 0, water: 0.3, urban:0.5 },
-    b7: {craters: 0, plains: 0, forest: 0, water: 0.2, urban:0.8 },
-    b8: {craters: 0, plains: 0, forest: 0, water: 0.2, urban:0.5 },
-    b9: {craters: 0, plains: 0, forest: 0, water: 0.3, urban:0 },
-    c0: {craters: 0, plains: 0, forest: 0, water: 0.4, urban:0 },
-    c1: {craters: 0, plains: 0, forest: 0, water: 0.4, urban:0.5 },
-    c2: {craters: 0, plains: 0, forest: 0, water: 0.2, urban:0.8 },
-    c3: {craters: 0, plains: 0, forest: 0, water: 0.1, urban:0.9 },
-    c4: {craters: 0, plains: 0, forest: 0, water: 0.1, urban:0.8 },
-    c5: {craters: 0, plains: 0, forest: 0, water: 0.2, urban:0 },
-    c6: {craters: 0, plains: 0, forest: 0.2, water: 0.2, urban:0 },
-    c7: {craters: 0, plains: 0.3, forest: 0, water: 0, urban:0 },
-    c8: {craters: 0, plains: 0, forest: 0, water: 0, urban:0.1 },
-    c9: {craters: 0, plains: 0, forest: 0, water: 0.2, urban:0.2 },
-    d0: {craters: 0, plains: 0, forest: 0, water: 0.2, urban:0 },
-    d1: {craters: 0, plains: 0, forest: 0.3, water: 0, urban:0.2 },
-    d2: {craters: 0, plains: 0, forest: 0.2, water: 0.2, urban:0.6 },
-    d3: {craters: 0, plains: 0, forest: 0.2, water: 0.1, urban:0.5 },
-    d4: {craters: 0, plains: 0, forest: 0, water: 0.1, urban:0 },
-    d5: {craters: 0, plains: 0, forest: 0, water: 0, urban:0 },
-    d6: {craters: 0, plains: 0.5, forest: 0, water: 0, urban:0 },
-    d7: {craters: 0, plains: 0.8, forest: 0, water: 0, urban:0 },
-    d8: {craters: 0, plains: 0, forest: 0, water: 0, urban:0 },
-    d9: {craters: 0, plains: 0, forest: 0, water: 0, urban:0 },
-    e0: {craters: 0, plains: 0.5, forest: 0, water: 0.2, urban:0 },
-    e1: {craters: 0, plains: 0, forest: 0.5, water: 0.2, urban:0 },
-    e2: {craters: 0, plains: 0.5, forest: 0.3, water: 0, urban:0 },
-    e3: {craters: 0, plains: 0, forest: 0.2, water: 0, urban:0.5 },
-    e4: {craters: 0, plains: 0, forest: 0.2, water: 0.2, urban:0.5 },
-    e5: {craters: 0, plains: 0, forest: 0.2, water: 0.2, urban:0.5 },
-    e6: {craters: 0, plains: 0, forest: 0.9, water: 0, urban:0 },
-    e7: {craters: 0, plains: 0, forest: 0, water: 0, urban:0 },
-    e8: {craters: 0, plains: 0, forest: 0, water: 0, urban:0 },
-    e9: {craters: 0, plains: 0, forest: 0, water: 0, urban:0 },
-    f0: {craters: 0, plains: 1, forest: 0, water: 0, urban:0 },
-    f1: {craters: 0, plains: 0.7, forest: 0, water: 0.1, urban:0 },
-    f2: {craters: 0, plains: 0, forest: 0, water: 0.2, urban:0 },
-    f3: {craters: 0, plains: 0, forest: 0, water: 0.2, urban:0.4 },
-    f4: {craters: 0, plains: 0, forest: 0, water: 0.2, urban:0.8 },
-    f5: {craters: 0, plains: 0.3, forest: 0, water: 0.2, urban:0.3 },
-    f6: {craters: 0, plains: 0.3, forest: 0, water: 0, urban:0 },
-    f7: {craters: 0, plains: 0, forest: 0.3, water: 0.3, urban:0.4 },
-    f8: {craters: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    f9: {craters: 0, plains: 0, forest: 0.6, water: 0.1, urban:0.3 },
-    g0: {craters: 0, plains: 0, forest: 0.5, water: 0, urban:0 },
-    g1: {craters: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    g2: {craters: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    g3: {craters: 0, plains: 0.7, forest: 0, water: 0, urban:0 },
-    g4: {craters: 0, plains: 0.1, forest: 0, water: 0.1, urban:0 },
-    g5: {craters: 0, plains: 0.2, forest: 0.1, water: 0, urban:0 },
-    g6: {craters: 0, plains: 0, forest: 0.4, water: 0, urban:0 },
-    g7: {craters: 0, plains: 0, forest: 1, water: 0, urban:0 },
-    g8: {craters: 0, plains: 0.4, forest: 0.3, water: 0, urban:0 },
-    g9: {craters: 0, plains: 0.7, forest: 0, water: 0.2, urban:0 },
-    h0: {craters: 0, plains: 0, forest: 0, water: 0, urban:0 },
-    h1: {craters: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    h2: {craters: 0, plains: 0.3, forest: 0, water: 0, urban:0 },
-    h3: {craters: 0, plains: 0.5, forest: 0.1, water: 0, urban:0 },
-    h4: {craters: 0, plains: 0, forest: 0.6, water: 0, urban:0 },
-    h5: {craters: 0, plains: 0.2, forest: 0.5, water: 0, urban:0 },
-    h6: {craters: 0, plains: 0.8, forest: 0, water: 0, urban:0 },
-    h7: {craters: 0, plains: 0, forest: 1, water: 0, urban:0 },
-    h8: {craters: 0, plains: 0, forest: 0.4, water: 0, urban:0 },
-    h9: {craters: 0, plains: 0.5, forest: 0, water: 0, urban:0 },
-    i0: {craters: 0, plains: 0.5, forest: 0.2, water: 0, urban:0 },
-    i1: {craters: 0, plains: 0.5, forest: 0, water: 0.1, urban:0 },
-    i2: {craters: 0, plains: 0, forest: 0, water: 0.2, urban:0 },
-    i3: {craters: 0, plains: 0.3, forest: 0.4, water: 0.1, urban:0 },
-    i4: {craters: 0, plains: 0, forest: 0.9, water: 0, urban:0 },
-    i5: {craters: 0, plains: 0.5, forest: 0.2, water: 0, urban:0 },
-    i6: {craters: 0, plains: 0.2, forest: 0.4, water: 0, urban:0 },
-    i7: {craters: 0, plains: 0.3, forest: 0.5, water: 0, urban:0 },
-    i8: {craters: 0, plains: 0.3, forest: 0.3, water: 0, urban:0 },
-    i9: {craters: 0, plains: 0.4, forest: 0.5, water: 0, urban:0 },
-    j0: {craters: 0, plains: 0, forest: 0.2, water: 0.2, urban:0.6 },
-    j1: {craters: 0, plains: 0, forest: 0.5, water: 0, urban:0.2 },
-    j2: {craters: 0, plains: 0, forest: 0.4, water: 0, urban:0 },
-    j3: {craters: 0, plains: 0, forest: 0.4, water: 0, urban:0 },
-    j4: {craters: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    j5: {craters: 0, plains: 0, forest: 0.7, water: 0, urban:0 },
-    j6: {craters: 0, plains: 0, forest: 0.8, water: 0, urban:0 },
-    j7: {craters: 0, plains: 0, forest: 0.6, water: 0, urban:0 },
-    j8: {craters: 0, plains: 0.3, forest: 0.7, water: 0, urban:0 },
-    j9: {craters: 0, plains: 0.2, forest: 0.8, water: 0, urban:0 },
+const terrain_mod = {
+    craters: [
+        1.4,
+        1,
+        0.7
+    ],
+    open: [
+        1,
+        1,
+        1
+    ],
+    plains: [
+        1,
+        1.3,
+        2
+    ], 
+    forest: [
+        2,
+        1.2,
+        0.5
+    ],
+    water: [
+        .9,
+        .7,
+        2
+    ], 
+    urban: [
+        2.2,
+        1.5,
+        1
+    ]
+};
+
+let region_terrain = {
+    a0: {craters: 0, open: 0, plains: 0.9, forest: 0, water: 0, urban:0 },
+    a1: {craters: 0, open: 0, plains: 0.6, forest: 0, water: 0, urban:0 },
+    a2: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0, urban:0 },
+    a3: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
+    a4: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0, urban:0 },
+    a5: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0, urban:0 },
+    a6: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
+    a7: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0.2, urban:0.5 },
+    a8: {craters: 0, open: 0, plains: 0.4, forest: 0.3, water: 0, urban:0 },
+    a9: {craters: 0, open: 0, plains: 0.5, forest: 0.4, water: 0, urban:0 },
+    b0: {craters: 0, open: 0, plains: 0.9, forest: 0.1, water: 0, urban:0 },
+    b1: {craters: 0, open: 0, plains: 0.5, forest: 0.1, water: 0, urban:0 },
+    b2: {craters: 0, open: 0, plains: 0.7, forest: 0.1, water: 0.1, urban:0 },
+    b3: {craters: 0, open: 0, plains: 0.8, forest: 0, water: 0, urban:0 },
+    b4: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.1, urban:0 },
+    b5: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.3, urban:0.6 },
+    b6: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.3, urban:0.5 },
+    b7: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0.8 },
+    b8: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0.5 },
+    b9: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.3, urban:0 },
+    c0: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.4, urban:0 },
+    c1: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.4, urban:0.5 },
+    c2: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0.8 },
+    c3: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.1, urban:0.9 },
+    c4: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.1, urban:0.8 },
+    c5: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0 },
+    c6: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0.2, urban:0 },
+    c7: {craters: 0, open: 0, plains: 0.3, forest: 0, water: 0, urban:0 },
+    c8: {craters: 0, open: 0, plains: 0, forest: 0, water: 0, urban:0.1 },
+    c9: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0.2 },
+    d0: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0 },
+    d1: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0.2 },
+    d2: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0.2, urban:0.6 },
+    d3: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0.1, urban:0.5 },
+    d4: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.1, urban:0 },
+    d5: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
+    d6: {craters: 0, open: 0, plains: 0.5, forest: 0, water: 0, urban:0 },
+    d7: {craters: 0, open: 0, plains: 0.8, forest: 0, water: 0, urban:0 },
+    d8: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
+    d9: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
+    e0: {craters: 0, open: 0, plains: 0.5, forest: 0, water: 0.2, urban:0 },
+    e1: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0.2, urban:0 },
+    e2: {craters: 0, open: 0, plains: 0.5, forest: 0.3, water: 0, urban:0 },
+    e3: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0, urban:0.5 },
+    e4: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0.2, urban:0.5 },
+    e5: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0.2, urban:0.5 },
+    e6: {craters: 0, open: 0, plains: 0, forest: 0.9, water: 0, urban:0 },
+    e7: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
+    e8: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
+    e9: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
+    f0: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
+    f1: {craters: 0, open: 0, plains: 0.7, forest: 0, water: 0.1, urban:0 },
+    f2: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0 },
+    f3: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0.4 },
+    f4: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0.8 },
+    f5: {craters: 0, open: 0, plains: 0.3, forest: 0, water: 0.2, urban:0.3 },
+    f6: {craters: 0, open: 0, plains: 0.3, forest: 0, water: 0, urban:0 },
+    f7: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0.3, urban:0.4 },
+    f8: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
+    f9: {craters: 0, open: 0, plains: 0, forest: 0.6, water: 0.1, urban:0.3 },
+    g0: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0, urban:0 },
+    g1: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
+    g2: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
+    g3: {craters: 0, open: 0, plains: 0.7, forest: 0, water: 0, urban:0 },
+    g4: {craters: 0, open: 0, plains: 0.1, forest: 0, water: 0.1, urban:0 },
+    g5: {craters: 0, open: 0, plains: 0.2, forest: 0.1, water: 0, urban:0 },
+    g6: {craters: 0, open: 0, plains: 0, forest: 0.4, water: 0, urban:0 },
+    g7: {craters: 0, open: 0, plains: 0, forest: 1, water: 0, urban:0 },
+    g8: {craters: 0, open: 0, plains: 0.4, forest: 0.3, water: 0, urban:0 },
+    g9: {craters: 0, open: 0, plains: 0.7, forest: 0, water: 0.2, urban:0 },
+    h0: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
+    h1: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
+    h2: {craters: 0, open: 0, plains: 0.3, forest: 0, water: 0, urban:0 },
+    h3: {craters: 0, open: 0, plains: 0.5, forest: 0.1, water: 0, urban:0 },
+    h4: {craters: 0, open: 0, plains: 0, forest: 0.6, water: 0, urban:0 },
+    h5: {craters: 0, open: 0, plains: 0.2, forest: 0.5, water: 0, urban:0 },
+    h6: {craters: 0, open: 0, plains: 0.8, forest: 0, water: 0, urban:0 },
+    h7: {craters: 0, open: 0, plains: 0, forest: 1, water: 0, urban:0 },
+    h8: {craters: 0, open: 0, plains: 0, forest: 0.4, water: 0, urban:0 },
+    h9: {craters: 0, open: 0, plains: 0.5, forest: 0, water: 0, urban:0 },
+    i0: {craters: 0, open: 0, plains: 0.5, forest: 0.2, water: 0, urban:0 },
+    i1: {craters: 0, open: 0, plains: 0.5, forest: 0, water: 0.1, urban:0 },
+    i2: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0 },
+    i3: {craters: 0, open: 0, plains: 0.3, forest: 0.4, water: 0.1, urban:0 },
+    i4: {craters: 0, open: 0, plains: 0, forest: 0.9, water: 0, urban:0 },
+    i5: {craters: 0, open: 0, plains: 0.5, forest: 0.2, water: 0, urban:0 },
+    i6: {craters: 0, open: 0, plains: 0.2, forest: 0.4, water: 0, urban:0 },
+    i7: {craters: 0, open: 0, plains: 0.3, forest: 0.5, water: 0, urban:0 },
+    i8: {craters: 0, open: 0, plains: 0.3, forest: 0.3, water: 0, urban:0 },
+    i9: {craters: 0, open: 0, plains: 0.4, forest: 0.5, water: 0, urban:0 },
+    j0: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0.2, urban:0.6 },
+    j1: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0, urban:0.2 },
+    j2: {craters: 0, open: 0, plains: 0, forest: 0.4, water: 0, urban:0 },
+    j3: {craters: 0, open: 0, plains: 0, forest: 0.4, water: 0, urban:0 },
+    j4: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
+    j5: {craters: 0, open: 0, plains: 0, forest: 0.7, water: 0, urban:0 },
+    j6: {craters: 0, open: 0, plains: 0, forest: 0.8, water: 0, urban:0 },
+    j7: {craters: 0, open: 0, plains: 0, forest: 0.6, water: 0, urban:0 },
+    j8: {craters: 0, open: 0, plains: 0.3, forest: 0.7, water: 0, urban:0 },
+    j9: {craters: 0, open: 0, plains: 0.2, forest: 0.8, water: 0, urban:0 },
 };
 
 const game_setup = {
@@ -907,6 +941,7 @@ class GameUI {
                     circle.setAttribute("id", cgid + "_" + i);
                     cg.appendChild(circle);
                     cl++;
+                    region_terrain[reftgt.region]["craters"] += 0.003
                 }
             }
         }
@@ -1209,101 +1244,23 @@ class GameUI {
         }
     }
 
-    // 
-    static drawBattleWindow ( battle ) 
-    {
-        const drawBattleDisplay = false;
+    // takes a message and puts it in the notification modal which is then displayed on the screen for the player.
+    static notification(message){
         // Get the modal
-        let modal = document.getElementById("battleWindow");
+        var modal = document.getElementById("notif");
 
-        // Get the element that closes the modal
-        let span = document.getElementById("bw_close");
+        document.getElementById("notif-item").textContent = message;
 
-        let display = document.getElementById("bw_display");
-
-        let attackers = battle._off;
-        let defender  = battle._def;
-
-        let flank_titles = [
-            document.getElementById("bw_fl_t"),
-            document.getElementById("bw_fm_t"),
-            document.getElementById("bw_fr_t")
-        ];
-
-        // Set the flank titles to reflect their respective terrain type.
-        for (let i = 0; i < flank_titles.length; i++)
-        {
-            flank_titles[i].innerHTML = battle.terrain[i].toUpperCase();
-        }
-
-        // Clone the attacking and defending region elements to the display
-        if (drawBattleDisplay) {
-            let ar = document.getElementById(attackers._region);
-            let dr = document.getElementById(defender._region );
-            ["countries-inert", "regions", "plains", "forest", "urban-dense", "water", "crater-layer", "clouds"].forEach(
-                (terrain) => {
-                    let t_n = document.getElementById(terrain);
-                    let clone = t_n.cloneNode(true);
-                    clone.setAttribute("id", clone.getAttribute("id") + "_bw_display");
-                    display.innerHTML+=clone.outerHTML.replace(/id\=\"..\"/gi, "");
-                }
-            );
-            [ar, dr].forEach( (rgn) => {
-                let clone = rgn.cloneNode(true);
-                clone.setAttribute("id", clone.getAttribute("id") + "_bw_display");
-                display.innerHTML+=clone.outerHTML.replace(/id\=\"..r\"|reinforceable|cpt/gi, "");
-                rgn = document.getElementById(rgn.getAttribute("id") + "_bw_display");
-            });
-
-            // Set display box viewport to zoom in on affected regions
-            ar = ar.getBBox();
-            dr = dr.getBBox();
-            let xmin = Math.min( ar.x, dr.x ) - Math.max( ar.width, dr.width );
-            // let xmax = xmin + Math.max( ar.width, dr.width ) - Math.min( ar.width, dr.width ) - 15;
-            // let xmax = xmin + 10;
-            let xmax = xmin + 2*Math.max( ar.width, dr.width );
-
-            let ymin = Math.min( ar.y, dr.y ) - Math.max( ar.height, dr.height );
-            // let ymax = ymin + 10;
-            // let ymax = ymin + Math.max( ar.height, dr.height ) - Math.min( ar.height, dr.height ) - 15;
-            let ymax = ymin + 2*Math.max( ar.height, dr.height );
-
-            display.setAttribute("viewBox", xmin + ' ' + ymin + ' ' + xmax + ' ' + ymax);
-        }
-
-        ["off", "def"].forEach((prefix) => 
-        {
-            let side = (prefix[0] == "o") ? attackers : defender;
-            let tt_ct = 1; // troop type count (how many types have been filled)
-
-            for (let i = 0; i < troop_type_names.length; i++) 
-            {
-                if (side[troop_type_names[i] + "Count"] > 0)
-                {
-                    // console.log(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
-                    let icon = document.getElementById(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
-                    icon.classList.toggle("t_np", false);
-                    icon.classList.toggle("t", true);
-                    icon.classList.toggle("available", true);
-                    icon.addEventListener("click", GameUI.battleWindowAllocCB, [false, false]);
-
-                    tt_ct++;
-                }
-            }
-        });
+        // Get the <span> element that closes the modal
+        var span = document.getElementById("notif-close");
 
         modal.style.display = "block";
+
         // When the user clicks on <span> (x), close the modal
         span.onclick = function() {
-            modal.style.display = "none";
+          modal.style.display = "none";
         }
     }
-
-    battleWindowAllocCB( e )
-    {
-        let troop_type = "";
-    }
-
 }
 
 /**
@@ -1591,16 +1548,6 @@ class Unit{
 	}
 }
 
-/**
- * @brief todo
- */
-class Terrain{
-	constructor(pos){
-		this.type;
-		this.region;		
-	}
-}
-
 function battleCb( obj )
 {
     obj._tick();
@@ -1645,31 +1592,55 @@ class Battle {
         // retreat to in case of defeat.
         this._defFb = null;
         let avail_fb = region_connections[this._def.region];
-        for (let i = 0; i < avail_fb.length; i++)
+        let i;
+        for (i = 0; i < avail_fb.length; i++)
         {
-            for (let e = 0; e < game.forces.length; e++)
+            let candidate = game.getRegionForce(avail_fb[i]);
+            if (candidate.side == this._def.side)
             {
-                if (game.forces[e].region == avail_fb[i] && game.forces[e].side == this._def.side)
-                    this._defFb = game.forces[e];
+                this._defFb = candidate;
+                // add some randomness to the choice of whether or not to keep looking
+                if (Math.random() > 0.5)
+                    break;
             }
         }
 
         // choose terrain types for the battle
         this.terrain = [];
         let terrain_possible = region_terrain[this._def.region];
-        let i = 0;
+
+        i = 0;
         while (this.terrain.length < 3)
         {
             for (let e = 0; e < terrain_types.length; e++)
             {
-                if (terrain_possible[terrain_types[e]] > 0 && Math.random() < terrain_possible[terrain_types[e]])
-                {
-                    this.terrain[i] = terrain_types[e];
-                    i++;
+
+                if (terrain_possible[terrain_types[e]] > 0) {
+                    // for the first few tries, apply probability
+                    if ( Math.random() < terrain_possible[terrain_types[e]])
+                    {
+                        this.terrain[i] = terrain_types[e];
+                        i++;
+                    }
                 }
             }
         }
         console.log(this.terrain);
+
+        this._flanks = {
+            left: {
+                attacker: [],
+                defender: []
+            },
+            middle: {
+                attacker: [],
+                defender: []
+            },
+            right: {
+                attacker: [],
+                defender: []
+            }
+        }
 
         // Set tick counter
         this._ticks = 0;
@@ -1677,7 +1648,7 @@ class Battle {
         this._off_mod = Math.random()/2;
         this._def_mod = Math.random()/2 + 0.05;
 
-        GameUI.drawBattleWindow( this );
+        // Battle.drawBattleWindow( this );
 
         // Put information about the battle in the game log
         gameLog( 
@@ -1734,12 +1705,12 @@ class Battle {
             "-------\n" +
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
-            "ROTORCRAFT:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
-            "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
+            "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
+            "ARMOR:       " + (this._off.armorCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + (this._def.infantryCount - this._defRefCt[0]).toString() + "\n" +
-            "ROTORCRAFT:  " + (this._def.helicopterCount - this._defRefCt[1]).toString() + "\n" +
-            "ARMOR:       " + (this._def.helicopterCount - this._defRefCt[2]).toString() +
+            "HELICOPTER:  " + (this._def.helicopterCount - this._defRefCt[1]).toString() + "\n" +
+            "ARMOR:       " + (this._def.armorCount - this._defRefCt[2]).toString() +
             "</pre>";
 
         } else {
@@ -1750,7 +1721,7 @@ class Battle {
             let def_restored = [
                 Math.floor((this._defRefCt[0])*Math.random()/2),
                 Math.floor((this._defRefCt[1])*Math.random()/2),
-                Math.floor((this._defRefCt[1])*Math.random()/2)
+                Math.floor((this._defRefCt[2])*Math.random()/2)
             ];
             if (this._defFb != null)
                 this._defFb.alterForce(def_restored);
@@ -1763,7 +1734,7 @@ class Battle {
                 [
                     Math.floor((2/3)*(this._offRefCt[0]-this._off.infantryCount)*Math.random()),
                     Math.floor((2/3)*(this._offRefCt[1]-this._off.helicopterCount)*Math.random()),
-                    Math.floor((2/3)*(this._offRefCt[1]-this._off.armorCount)*Math.random())
+                    Math.floor((2/3)*(this._offRefCt[2]-this._off.armorCount)*Math.random())
                 ]
             );
 
@@ -1776,7 +1747,7 @@ class Battle {
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
             "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
-            "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
+            "ARMOR:       " + (this._off.armorCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + -(this._defRefCt[0] - def_restored[0]).toString() + "\n" +
             "HELICOPTER:  " + -(this._defRefCt[1] - def_restored[1]).toString() + "\n" +
@@ -1815,6 +1786,102 @@ class Battle {
         game.battleEndCb();
 
     	return;
+    }
+
+    static drawBattleWindow ( battle ) 
+    {
+        const drawBattleDisplay = false;
+        // Get the modal
+        let modal = document.getElementById("battleWindow");
+            modal.innerHTML = bwContent;
+        // Get the element that closes the modal
+        let span = document.getElementById("bw_close");
+
+        let display = document.getElementById("bw_display");
+
+        let attackers = battle._off;
+        let defender  = battle._def;
+
+        let flank_titles = [
+            document.getElementById("bw_fl_t"),
+            document.getElementById("bw_fm_t"),
+            document.getElementById("bw_fr_t")
+        ];
+
+        // Set the flank titles to reflect their respective terrain type.
+        for (let i = 0; i < flank_titles.length; i++)
+        {
+            flank_titles[i].innerHTML = battle.terrain[i].toUpperCase();
+        }
+
+        // Clone the attacking and defending region elements to the display
+        if (drawBattleDisplay) {
+            let ar = document.getElementById(attackers._region);
+            let dr = document.getElementById(defender._region );
+            ["countries-inert", "regions", "plains", "forest", "urban-dense", "water", "crater-layer", "clouds"].forEach(
+                (terrain) => {
+                    let t_n = document.getElementById(terrain);
+                    let clone = t_n.cloneNode(true);
+                    clone.setAttribute("id", clone.getAttribute("id") + "_bw_display");
+                    display.innerHTML+=clone.outerHTML.replace(/id\=\"..\"/gi, "");
+                }
+            );
+            [ar, dr].forEach( (rgn) => {
+                let clone = rgn.cloneNode(true);
+                clone.setAttribute("id", clone.getAttribute("id") + "_bw_display");
+                display.innerHTML+=clone.outerHTML.replace(/id\=\"..r\"|reinforceable|cpt/gi, "");
+                rgn = document.getElementById(rgn.getAttribute("id") + "_bw_display");
+            });
+
+            // Set display box viewport to zoom in on affected regions
+            ar = ar.getBBox();
+            dr = dr.getBBox();
+            let xmin = Math.min( ar.x, dr.x ) - Math.max( ar.width, dr.width );
+            // let xmax = xmin + Math.max( ar.width, dr.width ) - Math.min( ar.width, dr.width ) - 15;
+            // let xmax = xmin + 10;
+            let xmax = xmin + 2*Math.max( ar.width, dr.width );
+
+            let ymin = Math.min( ar.y, dr.y ) - Math.max( ar.height, dr.height );
+            // let ymax = ymin + 10;
+            // let ymax = ymin + Math.max( ar.height, dr.height ) - Math.min( ar.height, dr.height ) - 15;
+            let ymax = ymin + 2*Math.max( ar.height, dr.height );
+
+            display.setAttribute("viewBox", xmin + ' ' + ymin + ' ' + xmax + ' ' + ymax);
+        }
+
+        ["off", "def"].forEach((prefix) => 
+        {
+            let side = (prefix[0] == "o") ? attackers : defender;
+            let tt_ct = 1; // troop type count (how many types have been filled)
+
+            for (let i = 0; i < troop_type_names.length; i++) 
+            {
+                if (side[troop_type_names[i] + "Count"] > 0)
+                {
+                    // console.log(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
+                    let icon = document.getElementById(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
+                    icon.classList.toggle("t_np", false);
+                    icon.classList.toggle("t", true);
+                    icon.classList.toggle("available", true);
+                    if (prefix[0] == "o")
+                      icon.addEventListener("click", GameUI.battleWindowAllocCB, [false, false]);
+                    tt_ct++;
+                }
+            }
+        });
+
+        modal.style.display = "block";
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+            modal.innerHTML = "";
+        }
+    }
+
+    battleWindowAllocCB( e )
+    {
+        let troop_type = "";
+        
     }
 
     /**
@@ -1925,7 +1992,6 @@ class Battle {
 
 //Not neccessarily neeed 
 class Strike {
-
     constructor(strikeForce, target)
     {
         this._sf = strikeForce;
@@ -1936,11 +2002,10 @@ class Strike {
     {
         
     }
-
 }
 
-
-class Game{
+class Game
+{
 
     constructor()
     {
@@ -2152,6 +2217,8 @@ class Game{
             }
         }
 
+        GameUI.notification("You have recieved " + this._cptReinforcements[0] + " infantry, " + this._cptReinforcements[1] + " helicopter, and " + this._cptReinforcements[2] + " armored vehicle reinforcements from your controlled capitals. These troops will be deployed to the next region you select.");
+
         gameLog(team_key[this._currentPlayerTurn] + " has reinforcements: " +
                 "<pre>" 
                 + troop_type_names[0].toUpperCase() + ":\t" + this._cptReinforcements[0] + "\n"
@@ -2260,6 +2327,8 @@ class Game{
         });
 
         document.getElementById("turn-indicator").innerHTML = team_key[winteam] + " VICTORY";
+
+        GameUI.notification(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
 
         gameLog(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
 
@@ -2508,7 +2577,6 @@ class Game{
             this._changeTurn();
         }
     }
-
 }
 
 let log_entries = 0;

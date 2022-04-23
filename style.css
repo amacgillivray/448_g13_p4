@@ -539,6 +539,21 @@ progress[value]::-webkit-progress-value {
 	  width: 80%; /* Could be more or less, depending on screen size */
 	}
 
+  .grid-container-notif {
+	  display: grid;
+	  grid-template-columns: auto;
+	  background-color: #1b2a38;
+	  padding: 5px;
+	}
+
+  .notif-content {
+	  background-color: #fefefe;
+	  margin: 15% auto; 
+	  border: 1px solid #888;
+	  width: 50%; /* Could be more or less, depending on screen size */
+	  /*height: 30%*/
+	}
+
 	/* The Close Button */
 	.close {
 	  color: #aaa;
@@ -613,4 +628,25 @@ progress[value]::-webkit-progress-value {
   max-width: 100px;
   max-height: 100px;
   margin: 10px;
+  cursor: pointer;
+}
+
+.available rect,
+.available polygon, 
+.available line {
+  transition: 0.2s;
+}
+
+.t.available:hover rect,
+.t.available:hover polygon,
+.t.available:hover line {
+  fill: #8aef8a !important;
+  stroke: #4aaf4a !important;
+}
+
+.t.selected rect,
+.t.selected polygon,
+.t.selected line {
+  fill: #faefaa !important;
+  stroke: #cfaf4a !important;
 }
