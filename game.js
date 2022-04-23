@@ -1236,6 +1236,23 @@ class GameUI {
         }
     }
 
+    // takes a message and puts it in the notification modal which is then displayed on the screen for the player.
+    static notification(message){
+        // Get the modal
+        var modal = document.getElementById("notif");
+
+        document.getElementById("notif-item").textContent = message;
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementById("notif-close");
+
+        modal.style.display = "block";
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+    }
 }
 
 /**
@@ -1681,11 +1698,11 @@ class Battle {
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
             "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
-            "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
+            "ARMOR:       " + (this._off.armorCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + (this._def.infantryCount - this._defRefCt[0]).toString() + "\n" +
             "HELICOPTER:  " + (this._def.helicopterCount - this._defRefCt[1]).toString() + "\n" +
-            "ARMOR:       " + (this._def.helicopterCount - this._defRefCt[2]).toString() +
+            "ARMOR:       " + (this._def.armorCount - this._defRefCt[2]).toString() +
             "</pre>";
 
         } else {
@@ -1696,7 +1713,7 @@ class Battle {
             let def_restored = [
                 Math.floor((this._defRefCt[0])*Math.random()/2),
                 Math.floor((this._defRefCt[1])*Math.random()/2),
-                Math.floor((this._defRefCt[1])*Math.random()/2)
+                Math.floor((this._defRefCt[2])*Math.random()/2)
             ];
             if (this._defFb != null)
                 this._defFb.alterForce(def_restored);
@@ -1709,7 +1726,7 @@ class Battle {
                 [
                     Math.floor((2/3)*(this._offRefCt[0]-this._off.infantryCount)*Math.random()),
                     Math.floor((2/3)*(this._offRefCt[1]-this._off.helicopterCount)*Math.random()),
-                    Math.floor((2/3)*(this._offRefCt[1]-this._off.armorCount)*Math.random())
+                    Math.floor((2/3)*(this._offRefCt[2]-this._off.armorCount)*Math.random())
                 ]
             );
 
@@ -1722,7 +1739,7 @@ class Battle {
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
             "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
-            "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
+            "ARMOR:       " + (this._off.armorCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + -(this._defRefCt[0] - def_restored[0]).toString() + "\n" +
             "HELICOPTER:  " + -(this._defRefCt[1] - def_restored[1]).toString() + "\n" +
@@ -2191,6 +2208,8 @@ class Game
             }
         }
 
+        GameUI.notification("You have recieved " + this._cptReinforcements[0] + " infantry, " + this._cptReinforcements[1] + " helicopter, and " + this._cptReinforcements[2] + " armored vehicle reinforcements from your controlled capitals. These troops will be deployed to the next region you select.");
+
         gameLog(team_key[this._currentPlayerTurn] + " has reinforcements: " +
                 "<pre>" 
                 + troop_type_names[0].toUpperCase() + ":\t" + this._cptReinforcements[0] + "\n"
@@ -2299,6 +2318,8 @@ class Game
         });
 
         document.getElementById("turn-indicator").innerHTML = team_key[winteam] + " VICTORY";
+
+        GameUI.notification(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
 
         gameLog(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
 
