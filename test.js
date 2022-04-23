@@ -25,8 +25,7 @@ function test(){
     GameUI.setRegionOwner("a2", savedowner); //restore the "owner" of the region
 
     //Get units in region e0
-    
-    let test_unit = GameUI.getUnitsInRegion("e0");
+    let test_unit = GameUI.getUnitsInRegion('a7');
     //get current E0 units info
     let inf_id = document.getElementById("e0").classList.item(1) + "_e0_infantry";
     let inf_count = document.getElementById(inf_id).dataset.count;
@@ -34,7 +33,7 @@ function test(){
     let heli_count = document.getElementById(heli_id).dataset.count;
     let arm_id = document.getElementById("e0").classList.item(1) + "_e0_armor";
     let arm_count = document.getElementById(arm_id).dataset.count;
-    console.log(test_unit);
+    console.log(test_unit.pop());
     //test based on the info
     //if (test_unit[0]._id == inf_id) 
 
