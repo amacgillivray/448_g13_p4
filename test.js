@@ -56,11 +56,11 @@ function test(){
     let test_force_side=document.getElementById(test_force_reg).classList.item(1);
     //current data
     var inf_cnt = parseInt(document.getElementById(test_force_side+"_"+test_force_reg+"_infantry").dataset.count);
-    if(inf_cnt === NaN) inf_cnt =0;
+    if(isNaN(inf_cnt)) inf_cnt =0;
     var heli_cnt = parseInt(document.getElementById(test_force_side+"_"+test_force_reg+"_helicopter").dataset.count);
-    if(heli_cnt === NaN) heli_cnt =0;
+    if(isNaN(heli_cnt)) heli_cnt =0;
     var arm_cnt = parseInt(document.getElementById(test_force_side+"_"+test_force_reg+"_armor").dataset.count);
-    if(arm_cnt === NaN) arm_cnt =0;
+    if(isNaN(arm_cnt)) arm_cnt =0;
     console.log(inf_cnt+" "+heli_cnt+" "+arm_cnt);
     //mock unit list to alter
     let mock_unitlist =[
