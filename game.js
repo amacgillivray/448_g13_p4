@@ -1606,6 +1606,7 @@ class Battle {
         }
         console.log(this.terrain);
 
+        // Add flanks
         this._flanks = {
             left: {
                 attacker: [],
@@ -1619,7 +1620,18 @@ class Battle {
                 attacker: [],
                 defender: []
             }
-        }
+        };
+        // Initialize flanks to 0 for # of troop types
+        ["left", "middle", "right"].forEach((flank) => {
+            for ( let tt = 0; tt < troop_type_names.length; tt++ )
+            {
+                this._flanks[flank]["attacker"][tt] = 0;
+                this._flanks[flank]["defender"][tt] = 0;
+            }
+        });
+
+        // Generate the defender's flanks using AI 
+        this._defenderFlanksAi();
 
         // Set tick counter
         this._ticks = 0;
@@ -1773,102 +1785,6 @@ class Battle {
     	return;
     }
 
-    static drawBattleWindow ( battle ) 
-    {
-        const drawBattleDisplay = false;
-        // Get the modal
-        let modal = document.getElementById("battleWindow");
-            modal.innerHTML = bwContent;
-        // Get the element that closes the modal
-        let span = document.getElementById("bw_close");
-
-        let display = document.getElementById("bw_display");
-
-        let attackers = battle._off;
-        let defender  = battle._def;
-
-        let flank_titles = [
-            document.getElementById("bw_fl_t"),
-            document.getElementById("bw_fm_t"),
-            document.getElementById("bw_fr_t")
-        ];
-
-        // Set the flank titles to reflect their respective terrain type.
-        for (let i = 0; i < flank_titles.length; i++)
-        {
-            flank_titles[i].innerHTML = battle.terrain[i].toUpperCase();
-        }
-
-        // Clone the attacking and defending region elements to the display
-        if (drawBattleDisplay) {
-            let ar = document.getElementById(attackers._region);
-            let dr = document.getElementById(defender._region );
-            ["countries-inert", "regions", "plains", "forest", "urban-dense", "water", "crater-layer", "clouds"].forEach(
-                (terrain) => {
-                    let t_n = document.getElementById(terrain);
-                    let clone = t_n.cloneNode(true);
-                    clone.setAttribute("id", clone.getAttribute("id") + "_bw_display");
-                    display.innerHTML+=clone.outerHTML.replace(/id\=\"..\"/gi, "");
-                }
-            );
-            [ar, dr].forEach( (rgn) => {
-                let clone = rgn.cloneNode(true);
-                clone.setAttribute("id", clone.getAttribute("id") + "_bw_display");
-                display.innerHTML+=clone.outerHTML.replace(/id\=\"..r\"|reinforceable|cpt/gi, "");
-                rgn = document.getElementById(rgn.getAttribute("id") + "_bw_display");
-            });
-
-            // Set display box viewport to zoom in on affected regions
-            ar = ar.getBBox();
-            dr = dr.getBBox();
-            let xmin = Math.min( ar.x, dr.x ) - Math.max( ar.width, dr.width );
-            // let xmax = xmin + Math.max( ar.width, dr.width ) - Math.min( ar.width, dr.width ) - 15;
-            // let xmax = xmin + 10;
-            let xmax = xmin + 2*Math.max( ar.width, dr.width );
-
-            let ymin = Math.min( ar.y, dr.y ) - Math.max( ar.height, dr.height );
-            // let ymax = ymin + 10;
-            // let ymax = ymin + Math.max( ar.height, dr.height ) - Math.min( ar.height, dr.height ) - 15;
-            let ymax = ymin + 2*Math.max( ar.height, dr.height );
-
-            display.setAttribute("viewBox", xmin + ' ' + ymin + ' ' + xmax + ' ' + ymax);
-        }
-
-        ["off", "def"].forEach((prefix) => 
-        {
-            let side = (prefix[0] == "o") ? attackers : defender;
-            let tt_ct = 1; // troop type count (how many types have been filled)
-
-            for (let i = 0; i < troop_type_names.length; i++) 
-            {
-                if (side[troop_type_names[i] + "Count"] > 0)
-                {
-                    // console.log(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
-                    let icon = document.getElementById(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
-                    icon.classList.toggle("t_np", false);
-                    icon.classList.toggle("t", true);
-                    icon.classList.toggle("available", true);
-                    if (prefix[0] == "o")
-                      icon.addEventListener("click", GameUI.battleWindowAllocCB, [false, false]);
-                    tt_ct++;
-                }
-            }
-        });
-
-        modal.style.display = "block";
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-            modal.innerHTML = "";
-        }
-    }
-
-    battleWindowAllocCB( e )
-    {
-        let troop_type = "";
-        
-    }
-
     /**
      * @brief called repeatedly until the battle ends.
      *        For now, should deal damage entirely at random
@@ -1972,8 +1888,143 @@ class Battle {
         }
     }
 
+    _drawBattleWindow () 
+    {
+        const drawBattleDisplay = false;
+        // Get the modal
+        let modal = document.getElementById("battleWindow");
+            modal.innerHTML = bwContent;
+        // Get the element that closes the modal
+        let span = document.getElementById("bw_close");
 
+        let display = document.getElementById("bw_display");
+
+        let attackers = this._off;
+        let defender  = this._def;
+
+        let flank_titles = [
+            document.getElementById("bw_fl_t"),
+            document.getElementById("bw_fm_t"),
+            document.getElementById("bw_fr_t")
+        ];
+
+        // Set the flank titles to reflect their respective terrain type.
+        for (let i = 0; i < flank_titles.length; i++)
+        {
+            flank_titles[i].innerHTML = this.terrain[i].toUpperCase();
+        }
+
+        // Clone the attacking and defending region elements to the display
+        if (drawBattleDisplay) {
+            let ar = document.getElementById(attackers._region);
+            let dr = document.getElementById(defender._region );
+            ["countries-inert", "regions", "plains", "forest", "urban-dense", "water", "crater-layer", "clouds"].forEach(
+                (terrain) => {
+                    let t_n = document.getElementById(terrain);
+                    let clone = t_n.cloneNode(true);
+                    clone.setAttribute("id", clone.getAttribute("id") + "_bw_display");
+                    display.innerHTML+=clone.outerHTML.replace(/id\=\"..\"/gi, "");
+                }
+            );
+            [ar, dr].forEach( (rgn) => {
+                let clone = rgn.cloneNode(true);
+                clone.setAttribute("id", clone.getAttribute("id") + "_bw_display");
+                display.innerHTML+=clone.outerHTML.replace(/id\=\"..r\"|reinforceable|cpt/gi, "");
+                rgn = document.getElementById(rgn.getAttribute("id") + "_bw_display");
+            });
+
+            // Set display box viewport to zoom in on affected regions
+            ar = ar.getBBox();
+            dr = dr.getBBox();
+            let xmin = Math.min( ar.x, dr.x ) - Math.max( ar.width, dr.width );
+            // let xmax = xmin + Math.max( ar.width, dr.width ) - Math.min( ar.width, dr.width ) - 15;
+            // let xmax = xmin + 10;
+            let xmax = xmin + 2*Math.max( ar.width, dr.width );
+
+            let ymin = Math.min( ar.y, dr.y ) - Math.max( ar.height, dr.height );
+            // let ymax = ymin + 10;
+            // let ymax = ymin + Math.max( ar.height, dr.height ) - Math.min( ar.height, dr.height ) - 15;
+            let ymax = ymin + 2*Math.max( ar.height, dr.height );
+
+            display.setAttribute("viewBox", xmin + ' ' + ymin + ' ' + xmax + ' ' + ymax);
+        }
+
+        ["off", "def"].forEach((prefix) => 
+        {
+            let side = (prefix[0] == "o") ? attackers : defender;
+            let tt_ct = 1; // troop type count (how many types have been filled)
+
+            for (let i = 0; i < troop_type_names.length; i++) 
+            {
+                if (side[troop_type_names[i] + "Count"] > 0)
+                {
+                    // console.log(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
+                    let icon = document.getElementById(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
+                    icon.classList.toggle("t_np", false);
+                    icon.classList.toggle("t", true);
+                    icon.classList.toggle("available", true);
+                    if (prefix[0] == "o")
+                      icon.addEventListener("click", GameUI.battleWindowAllocCB, [false, false]);
+                    tt_ct++;
+                }
+            }
+        });
+
+        modal.style.display = "block";
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+            modal.innerHTML = "";
+        }
+    }
+
+    battleWindowAllocCB( e )
+    {
+        let troop_type = "";
+    }
+
+    _defenderFlanksAi()
+    {
+        let flank_key = [
+            "left",
+            "middle",
+            "right"
+        ];
+
+        debugger;
+
+        let defenderAlloc = this._defRefCt;
+        for (let i = 0; i < troop_type_names.length; i++)
+        {
+            // let firstPass = true;
+            let min_buff = 1;
+
+            while (defenderAlloc[i] > 0)
+            {
+                for (let f = 0; f < 3; f++)
+                {
+                    let alloc = Math.ceil(Math.random() * defenderAlloc[i]);
+                    if (defenderAlloc[i] - alloc < 0)
+                        alloc = defenderAlloc[i];
+
+                    // Prioritize bonuses but be open to all terrain types
+                    if (terrain_mod[this.terrain[f]][i] > min_buff)
+                    {
+                        this._flanks[flank_key[f]]["defender"][i] += alloc;
+                        defenderAlloc[i] -= alloc;
+                        if (defenderAlloc[i] == 0)
+                            break;
+                    }
+                }
+                // firstPass = false;
+                min_buff-=0.2;
+            } 
+        }
+        console.log(this);
+    }
 }
+
+
 
 class Strike {
     constructor(strikeForce, target)
@@ -2010,8 +2061,8 @@ class Game
         // this._bfqmv = [];
         // this._ofqmv = [];
 
-        this._queuedMoves_bf = [];
-        this._queuedMoves_of = [];
+        this._queuedActions_bf = [];
+        this._queuedActions_of = [];
         this._battlect = 0;
 
         document.getElementById("turn-indicator").addEventListener("click", changeTurn_cb, [false, false]);
@@ -2105,7 +2156,7 @@ class Game
         });
         
         // Apply queued moves from previous turn
-        this._handlePlayerMoves();
+        this._handlePlayerActions();
 
         // troop counts
         let bf_tc = 0;
@@ -2452,11 +2503,11 @@ class Game
         // draw mvmt arrow: 
         GameUI.drawMovementArrow(srcForce.side, e.currentTarget.oc, e.currentTarget.id);
 
-        let l = this["_queuedMoves_" + this._currentPlayerTurn].length;
-        this["_queuedMoves_" + this._currentPlayerTurn][l] = [srcForce.side, srcForce, dstForce];
+        let l = this["_queuedActions_" + this._currentPlayerTurn].length;
+        this["_queuedActions_" + this._currentPlayerTurn][l] = [srcForce.side, srcForce, dstForce];
 
         // After player has made 3 moves, end their turn
-        if (this["_queuedMoves_" + this._currentPlayerTurn].length >= Math.min(3, this._currentPlayerForces))
+        if (this["_queuedActions_" + this._currentPlayerTurn].length >= Math.min(3, this._currentPlayerForces))
         {
             this._changeTurn();
         } 
@@ -2465,13 +2516,9 @@ class Game
     // Sort actions into moves and battles. Then call handlePlayerMoves / handlePlayerBattles
     _handlePlayerActions()
     {
-        
-    }
-    
-    _handlePlayerMoves()
-    {
-
-        let move_list = this["_queuedMoves_" + this._currentPlayerTurn];
+        let actions = this["_queuedActions_" + this._currentPlayerTurn];
+        let moves = [];
+        let battles = [];
 
         // remove all "moved" classes
         let moved_cc = document.getElementsByClassName("moved");
@@ -2480,6 +2527,39 @@ class Game
             moved_cc[i].classList.remove("moved");
         }
 
+        while (actions.length > 0)
+        {
+            let srcForce = actions[0][1];
+            let dstForce = actions[0][2];
+            if ( srcForce.side == dstForce.side || dstForce.side == "neutral" )
+                moves[moves.length] = actions.shift();
+            else 
+                battles[battles.length] = actions.shift();
+        }
+
+        // filter battles; group by target cell
+        // for (let i = 0; i < battles.length; i++)
+        // {
+        //     let battle = battles[i];
+        //     for (let e = 0; e < battles.length; e++)
+        //     {
+        //         if (battle[2] == battles[e][2])
+        //         {
+        //             battle[1] = [battle[1], battles[e][1]];
+        //             battles.splice(e,1);
+        //         } else {
+        //             // convert to array with one element
+        //             // battle[2] = [battle[2]];
+        //         }
+        //     }
+        // }
+
+        this._handleMoves(moves);
+        this._handleBattles(battles);
+    }
+    
+    _handleMoves( move_list )
+    {
         for (let i = 0; i < move_list.length; i++)
         {
             // Ensure that the move is still valid
@@ -2494,14 +2574,6 @@ class Game
             // Otherwise, start a battle and return
             if (dstForce.side == "neutral")
                 dstForce._side = srcForce.side;
-            else if (dstForce.side != this._currentPlayerTurn)
-            {
-                this._state = "battle";
-                // this._battlect++;
-                let battle = new Battle(dstForce, srcForce);
-                battle.start();
-                continue;
-            }
 
             //log.innerHTML += "<p>" + this._currentPlayerTurn.toUpperCase() + " moved from " + srcForce.region_phonetic + " to " + dstForce.region_phonetic + "</p>\n";
             gameLog( team_key[this._currentPlayerTurn] + " moves from " + srcForce.region + " to " + dstForce.region );
@@ -2524,9 +2596,9 @@ class Game
         }
 
         // Reset move list
-        while (this["_queuedMoves_" + this._currentPlayerTurn].length > 0)
+        while (this["_queuedActions_" + this._currentPlayerTurn].length > 0)
         {
-            this["_queuedMoves_" + this._currentPlayerTurn].pop();
+            this["_queuedActions_" + this._currentPlayerTurn].pop();
         }
 
         // Remove arrows 
@@ -2536,7 +2608,23 @@ class Game
             ac[0].remove();
         }
 
-        // this["_queuedMoves_" + this._currentPlayerTurn] = [];
+        // this["_queuedActions_" + this._currentPlayerTurn] = [];
+    }
+
+    _handleBattles( battle_list )
+    {
+        this._state = "battle";
+        for (let i = 0; i < battle_list.length; i++)
+        {
+            // Ensure that the move is still valid
+            if (battle_list[i][0] != battle_list[i][1].side)
+                continue;
+
+            let srcForce = battle_list[i][1];
+            let dstForce = battle_list[i][2];
+            let battle = new Battle(dstForce, srcForce);
+            battle.start();
+        }
     }
 
     battleIncrement()
