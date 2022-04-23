@@ -554,14 +554,16 @@ progress[value]::-webkit-progress-value {
 	}
 .grid-container {
   display: grid;
-  grid-template-columns: auto auto auto;
+  /* grid-template-columns: auto auto auto; */
+  grid-template-columns: 30% 40% 30%;
   background-color: #1b2a38;
   padding: 5px;
 }
 
 .inner-grid-container {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 33.3% 33.4% 33.3%;
+  grid-template-rows: 40px 40px auto;
   background-color: grey;
 }
 
@@ -581,6 +583,15 @@ progress[value]::-webkit-progress-value {
   text-align: center;
 }
 
+.grid-item-adv {
+  background-color: #efab45;
+  font-size: 10px !important;
+  text-transform: uppercase;
+  padding: 5px;
+  text-align: center;
+  color: #000;
+}
+
 .grid-item-close {
   background-color: lightgreen;
   border: 1px solid rgba(0, 0, 0, 0.8);
@@ -592,16 +603,13 @@ progress[value]::-webkit-progress-value {
 .flex {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   justify-content: flex-start;
   width: 100%;
-}
-
-.flex-item {
-  order: 5;
   background-color: lightgrey;
   border-right: 1px solid rgba(0, 0, 0, 0.8);
   border-left: 1px solid rgba(0, 0, 0, 0.8);
-  height: 30px;
+  /* height: 30px; */
 }
 
 .allocation {
@@ -609,17 +617,18 @@ progress[value]::-webkit-progress-value {
   flex-direction: column;
 }
 
-.allocation svg {
+.allocation svg,
+.flex svg {
   max-width: 100px;
   max-height: 100px;
-  margin: 10px;
-  cursor: pointer;
+  margin: 10px auto;
 }
 
 .available rect,
 .available polygon, 
 .available line {
   transition: 0.2s;
+  cursor: pointer;
 }
 
 .t.available:hover rect,

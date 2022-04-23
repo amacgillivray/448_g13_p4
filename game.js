@@ -1538,6 +1538,8 @@ class Battle {
      */
     constructor( defending_force, attacking_force )
     {
+        this.state = "initial";
+        
         GameUI.craterFix();
 
         this._battle_number = battle_ct;
@@ -1956,45 +1958,182 @@ class Battle {
                 {
                     // console.log(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
                     let icon = document.getElementById(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
+                               document.getElementById(prefix + "_alloc_" + tt_ct).innerHTML = icon.outerHTML;
+                    
+                    icon = document.getElementById(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
+
                     icon.classList.toggle("t_np", false);
                     icon.classList.toggle("t", true);
                     icon.classList.toggle("available", true);
-                    if (prefix[0] == "o")
-                      icon.addEventListener("click", GameUI.battleWindowAllocCB, [false, false]);
+                    icon.setAttribute("data-type", troop_type_names[i]);
+                    icon.setAttribute("data-count", side[troop_type_names[i] + "Count"]);
+                    if (prefix[0] == "o") {
+                      icon.addEventListener("click", Battle.startAllocCB, [false, true]);
+                      icon.obj = this;
+                    }
+
                     tt_ct++;
                 }
             }
         });
 
         modal.style.display = "block";
-        // When the user clicks on <span> (x), close the modal
-        // span.onclick = function() {
-        //     modal.style.display = "none";
-        //     modal.innerHTML = "";
-        //     this.battleWindowAllocCB()
-        // }
-        span.addEventListener("click", Battle.allocCB, [true, true]);
+
+        // todo - right event listener options?
+        span.addEventListener("click", Battle.closeWindowCB, [true, true]);
         span.obj = this;
     }
 
-    static allocCB( e )
+    /**
+     * @brief When the user clicks one of their available troop allocation icons, highlight the flanks and allow them
+     *        to place the troops there
+     * @param {event} e 
+     */
+    static startAllocCB( e )
+    {
+        let battle = e.currentTarget.obj;
+
+        // Ignore if a different troop is already being moved
+        if (battle.state == "allocWait")
+            return;
+        battle.state = "allocWait";
+
+        let icon = e.currentTarget;
+        // let modal = document.getElementById("battleWindow"); 
+        let fl = document.getElementById("fl"),
+            fm = document.getElementById("fm"),
+            fr = document.getElementById("fr");
+
+        while (!icon.classList.contains("t"))
+        {
+            // if we went too far, give up
+            if (icon.classList.contains("alloc"))
+                return;
+
+            icon = icon.parentElement;
+        }
+        icon.classList.toggle("selected", true);
+        icon.classList.toggle("available", false);
+        icon.removeEventListener("click", Battle.startAllocCB, [false, true]);
+        icon.addEventListener("click", Battle.cancelAllocCB, [false, true]);
+        icon.obj = battle;
+
+        // tt = tt.parentElement;
+
+        let tt_name = icon.getAttribute("data-type");
+        ["fl","fm","fr"].forEach((flank) => {
+            let fn = ["fl", "fm", "fr"].indexOf(flank);
+            let advantageDisplay = document.getElementById("bw_"+flank+"_a");
+            advantageDisplay.innerHTML = tt_name + " Effectiveness:<br/> x" + terrain_mod[battle.terrain[fn]][troop_type_names.indexOf(tt_name)];
+        });
+
+        [fl, fm, fr].forEach((flank) => {
+            // if (!isset( icon.forbid ) || flank != icon.forbid ) 
+            // {
+                flank.classList.toggle("validalloc", true);
+                flank.addEventListener("click", Battle.applyAllocCB, [false, true])
+                flank.obj = battle;
+                flank.toAdd = icon;
+            // }
+        });
+    }
+
+    static cancelAllocCB( e )
+    {
+        let battle = e.currentTarget.obj;
+        let icon = e.target;
+
+        while (!icon.classList.contains("t"))
+        {
+            // if we went too far, give up
+            if (icon.classList.contains("alloc"))
+                return;
+
+            icon = icon.parentElement;
+        }
+
+        if (battle.state != "allocWait")
+            return;
+        battle.state = "initial";
+
+        // Reset icon
+        icon.removeEventListener("click", Battle.cancelAllocCB, [false, true]);
+        icon.addEventListener("click", Battle.startAllocCB, [false, true]);
+        icon.classList.toggle("selected", false);
+        icon.classList.toggle("available", true);
+        icon.obj = battle;
+
+        // Remove efficiency information
+        ["fl","fm","fr"].forEach((flank) => {
+            let advantageDisplay = document.getElementById("bw_"+flank+"_a");
+            advantageDisplay.innerHTML = "-";
+        });
+
+        // Remove listeners on the flanks
+        [fl, fm, fr].forEach((flank) => {
+            flank.classList.toggle("validalloc", false);
+            flank.removeEventListener("click", Battle.applyAllocCB, [false, true])
+            flank.obj = null;
+            flank.toAdd = null;
+        });
+    }
+
+    static applyAllocCB( e )
+    {
+        let battle = e.currentTarget.obj;
+        let toAdd  = e.currentTarget.toAdd;
+        let icon = null;
+        let refID = toAdd.getAttribute("id");
+        let flank = e.target;
+
+        if (battle.state != "allocWait")
+            return;
+        battle.state = "initial";
+
+        toAdd.classList.toggle("selected", false);
+        toAdd.classList.toggle("available", true);
+        toAdd = toAdd.parentElement;
+        flank.innerHTML += toAdd.outerHTML;
+        toAdd.remove();
+
+        // Allow the player to revise their move if they so choose
+        // console.log(refID);
+        // icon = document.getElementById(refID);
+        // console.log(icon);
+        // icon.addEventListener("click", Battle.startAllocCB, [false, true]);
+        // icon.obj = battle;
+        // icon.forbid = flank.id;
+
+        // Remove listeners on the flanks
+        [fl, fm, fr].forEach((flank) => {
+            flank.classList.toggle("validalloc", false);
+            flank.removeEventListener("click", Battle.applyAllocCB, [false, true])
+            flank.obj = null;
+            flank.toAdd = null;
+        });
+    }
+
+    /**
+     * @brief When the user confirms their troop placements, collect the information and start the battle
+     * @param {event} e 
+     */
+    static closeWindowCB( e )
     {
         // let battle = e.obj;
         let battle = e.currentTarget.obj;
-
+        let modal = document.getElementById("battleWindow");
         let flanks = {
             left: [],
             middle: [],
             right: []
         };
 
-        let modal = document.getElementById("battleWindow");
-            modal.style.display = "none";
-            modal.innerHTML = "";
+        
 
+        // Hide the window and start the battle
+        modal.style.display = "none";
+        modal.innerHTML = "";
         battle.start();
-
-        let troop_type = "";
     }
 
     _defenderFlanksAi()
