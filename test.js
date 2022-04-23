@@ -23,7 +23,7 @@ function test(){
     GameUI.setRegionOwner("a2", savedowner); //restore the "owner" of the region
 
     //Get units in region e0
-    if(GameUI.getUnitsInRegion("e0"))
+    
 
 
     //draw movement arrow  
