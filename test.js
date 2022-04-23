@@ -51,7 +51,6 @@ function test(){
     gameLog("getUnitsInRegion() test: "+ result);
 
     //force: alter force,
-    
     let test_force_reg= "i3";
     let test_force_side=document.getElementById(test_force_reg).classList.item(1);
     //current data
@@ -95,13 +94,17 @@ function test(){
     gameLog(rmessage);
 
 
-    //Battle: start 
     //Game: change turn, handle win, handle playermoves 
+
+    //change turn
     result = "PASSED";
     if(changeTurn_cb() == true){
         result = "PASS";
     }
     rmessage = "Player turns have changed (as screen below shows) " + result;
     gameLog(rmessage);
+
+    //handle win screen
+    game._handleWin("of");
 
 }
