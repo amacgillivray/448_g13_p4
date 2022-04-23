@@ -85,16 +85,19 @@ function test(){
 
     //get current health of a unit
     let inf_unit = GameUI.getUnitsInRegion("i2")[0];
-    console.log(inf_unit.health); // 400
+    rmessage = "The health of units in region i2: " + inf_unit.health; // 400
+    gameLog(rmessage);
     //call function
     inf_unit.updateHealth(100);
     //after-dmg-health
-    console.log(inf_unit.health);//should be 400-100 =300
+    //console.log(inf_unit.health);//should be 400-100 =300
+    rmessage = "The health of updated units in i2 after damage is: " + inf_unit.health;
+    gameLog(rmessage);
 
-    //if(currenthealt == after-dmg-health) result = PASSED
-    //change turn done
+
     //Battle: start 
     //Game: change turn, handle win, handle playermoves 
+    result = "PASSED";
     if(changeTurn_cb() == true){
         result = "PASS";
     }
