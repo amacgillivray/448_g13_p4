@@ -1986,9 +1986,15 @@ class Battle {
                     icon.classList.toggle("available", true);
                     icon.setAttribute("data-type", troop_type_names[i]);
                     icon.setAttribute("data-count", side[troop_type_names[i] + "Count"]);
+                    console.log(prefix + "_alloc_" + tt_ct + "_text");
+                    let text = document.getElementById(prefix + "_alloc_" + tt_ct + "_text");
+                        text.innerHTML = "<b>" + troop_type_names[i] + "</b><br/>"; 
                     if (prefix[0] == "o") {
-                      icon.addEventListener("click", Battle.startAllocCB, [false, true]);
-                      icon.obj = this;
+                        icon.addEventListener("click", Battle.startAllocCB, [false, true]);
+                        icon.obj = this;
+                        text.innerHTML += side[troop_type_names[i] + "Count"]; 
+                    } else {
+                        text.innerHTML += troop_sizes[getBestTroopCountSymbol( side[troop_type_names[i] + "Count"]) ]; 
                     }
 
                     tt_ct++;
@@ -2797,3 +2803,4 @@ let log_entries = 0;
 let battle_ct = 0;
 let turn_ct = 0;
 let game = new Game;
+

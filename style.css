@@ -652,3 +652,21 @@ progress[value]::-webkit-progress-value {
   stroke: #444 !important;
   user-select: none;
 }
+
+.allocpair {
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 16pt; 
+  align-items: center;
+  justify-content: space-evenly;
+  text-align: left;
+}
+
+.allocpair svg {
+  margin: 10px !important;
+}
+
+.allocpair p {
+  width: 10ch;
+  text-transform: capitalize;
+}
