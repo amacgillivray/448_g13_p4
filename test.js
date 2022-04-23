@@ -1,5 +1,5 @@
 function test(){
-    gameLog("GameLog is working.");
+    gameLog("Gamelog is working");
     let result = "FAIL";
     let rsmessage;
     //get best troop count symbol => 300 outputs batallion
