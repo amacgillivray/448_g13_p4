@@ -1,17 +1,17 @@
 function test(){
-    gameLog("hello world");
+    gameLog("GameLog is working.");
     let result = "FAIL";
     let rsmessage;
     //get best troop count symbol => 300 outputs batallion
     if( getBestTroopCountSymbol(300) == "battalion") result = "PASS";
-    rsmessage = "getBestTroopCountSymbol() test: " + result;
+    rsmessage = "getBestTroopCountSymbol() has 300 troops test: " + result;
     gameLog(rsmessage);
 
     //Iscapital region 
     //using a6 to test
     if(isCapitalRegion("A6")) result = "PASS";
     else result = "FAIL";
-    rsmessage = "isCapitalRegion() test: "+ result;
+    rsmessage = "isCapitalRegion() is A6 test: "+ result;
     gameLog(rsmessage);
 
     //GameUI => set region owner (test for of, bf, neutral)
