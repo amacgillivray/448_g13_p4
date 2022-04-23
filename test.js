@@ -79,11 +79,6 @@ function test(){
     gameLog("alterForce() test: "+ result);
     
 
-
-
-
-
-
     // distribute damage side
 
     //Unit: update health alter units
@@ -97,7 +92,7 @@ function test(){
     console.log(inf_unit.health);//should be 400-100 =300
 
     //if(currenthealt == after-dmg-health) result = PASSED
-
+    //change turn done
     //Battle: start 
     //Game: change turn, handle win, handle playermoves 
     if(changeTurn_cb() == true){
