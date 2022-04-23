@@ -1604,7 +1604,27 @@ class Battle {
                 }
             }
         }
-        console.log(this.terrain);
+        // console.log(this.terrain);
+
+        // Set tick counter
+        this._ticks = 0;
+
+        this._off_mod = Math.random()/2;
+        this._def_mod = Math.random()/2 + 0.05;
+
+        // Add additional defender bonus if the region is a capital
+        if (this._defIsCapital) 
+            this._def_mod += 0.05;
+
+        // Battle.drawBattleWindow( this );
+
+        // Put information about the battle in the game log
+        gameLog( 
+            team_key[this._off.side] + 
+            " attacks " + this._def.region + 
+            " from " + this._off.region + 
+            "<br/><progress id=\"p_battle_" + this._battle_number + "\" class=\"battle\" max=\"100\" value=\"50\"></progress>"
+        ); 
 
         // Add flanks
         this._flanks = {
@@ -1629,29 +1649,10 @@ class Battle {
                 this._flanks[flank]["defender"][tt] = 0;
             }
         });
-
         // Generate the defender's flanks using AI 
         this._defenderFlanksAi();
-
-        // Set tick counter
-        this._ticks = 0;
-
-        this._off_mod = Math.random()/2;
-        this._def_mod = Math.random()/2 + 0.05;
-
-        // Add additional defender bonus if the region is a capital
-        if (this._defIsCapital) 
-            this._def_mod += 0.05;
-
-        // Battle.drawBattleWindow( this );
-
-        // Put information about the battle in the game log
-        gameLog( 
-            team_key[this._off.side] + 
-            " attacks " + this._def.region + 
-            " from " + this._off.region + 
-            "<br/><progress id=\"p_battle_" + this._battle_number + "\" class=\"battle\" max=\"100\" value=\"50\"></progress>"
-        ); 
+        // Get the attacker's flanks using the battle window
+        this._drawBattleWindow();
     }
 
     start()
@@ -1770,9 +1771,6 @@ class Battle {
                     (-1)*this._off.armorCount
                 ]
             );
-
-            
-
         }
 
         
@@ -1792,8 +1790,6 @@ class Battle {
      */
     _tick()
     {
-        const s = Date.now();
-        let now = null;
 
         console.log("Tick #" + this._ticks);
         this._ticks++;
@@ -1890,7 +1886,7 @@ class Battle {
 
     _drawBattleWindow () 
     {
-        const drawBattleDisplay = false;
+        const drawBattleDisplay = true;
         // Get the modal
         let modal = document.getElementById("battleWindow");
             modal.innerHTML = bwContent;
@@ -1972,14 +1968,32 @@ class Battle {
 
         modal.style.display = "block";
         // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-            modal.innerHTML = "";
-        }
+        // span.onclick = function() {
+        //     modal.style.display = "none";
+        //     modal.innerHTML = "";
+        //     this.battleWindowAllocCB()
+        // }
+        span.addEventListener("click", Battle.allocCB, [true, true]);
+        span.obj = this;
     }
 
-    battleWindowAllocCB( e )
+    static allocCB( e )
     {
+        // let battle = e.obj;
+        let battle = e.currentTarget.obj;
+
+        let flanks = {
+            left: [],
+            middle: [],
+            right: []
+        };
+
+        let modal = document.getElementById("battleWindow");
+            modal.style.display = "none";
+            modal.innerHTML = "";
+
+        battle.start();
+
         let troop_type = "";
     }
 
@@ -1991,9 +2005,7 @@ class Battle {
             "right"
         ];
 
-        debugger;
-
-        let defenderAlloc = this._defRefCt;
+        let defenderAlloc = [...this._defRefCt];
         for (let i = 0; i < troop_type_names.length; i++)
         {
             // let firstPass = true;
@@ -2020,7 +2032,6 @@ class Battle {
                 min_buff-=0.2;
             } 
         }
-        console.log(this);
     }
 }
 
@@ -2623,7 +2634,7 @@ class Game
             let srcForce = battle_list[i][1];
             let dstForce = battle_list[i][2];
             let battle = new Battle(dstForce, srcForce);
-            battle.start();
+            // battle.start();
         }
     }
 
