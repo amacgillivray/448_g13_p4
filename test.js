@@ -2,18 +2,17 @@ function test(){
     gameLog("hello world");
     let result = "FAIL";
     let rsmessage;
-    let totalmessage;
     //get best troop count symbol => 300 outputs batallion
     if( getBestTroopCountSymbol(300) == "battalion") result = "PASS";
     rsmessage = "getBestTroopCountSymbol() test: " + result;
-    totalmessage += rsmessage + "\n";
+    gameLog(rsmessage);
 
     //Iscapital region 
     //using a6 to test
     if(isCapitalRegion("A6")) result = "PASS";
     else result = "FAIL";
     rsmessage = "isCapitalRegion() test: "+ result;
-    totalmessage += rsmessage + "\n";
+    gameLog(rsmessage);
 
     //GameUI => set region owner (test for of, bf, neutral)
     //use region a2 to test
@@ -22,17 +21,22 @@ function test(){
     if(document.getElementById("a2").classList.contains("of")) result = "PASS";
     else result = "FAIL";
     rsmessage = "setRegionOwner() test: "+result;
-    totalmessage += rsmessage + "\n";
+    gameLog(rsmessage);
     GameUI.setRegionOwner("a2", savedowner); //restore the "owner" of the region
 
     //Get units in region e0
-    let test_units=[];
-    //test_units.push(new Unit())
-    gameLog(totalmessage);
-    //if(GameUI.getUnitsInRegion("e0"))
+    let test_unit = GameUI.getUnitsInRegion("e0");
+    //get current E0 units info
+    let inf_id = document.getElementById("e0").classList.item(1) + "_e0_infantry";
+    let inf_count = document.getElementById(inf_id).data-count;
+    let heli_id = document.getElementById("e0").classList.item(1) + "_e0_helicopter";
+    let heli_count = document.getElementById(heli_id).data-count;
+    let arm_id = document.getElementById("e0").classList.item(1) + "_e0_armor";
+    let arm_count = document.getElementById(arm_id).data-count;
+    //test based on the info
+    //if (test_unit[0]._id == inf_id) 
 
 
-    //draw movement arrow  
     //force: alter force, distribute damage side
     //Unit: update health alter units
     //Battle: start 
