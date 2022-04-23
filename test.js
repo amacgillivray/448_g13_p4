@@ -4,14 +4,14 @@ function test(){
     let rsmessage;
     //get best troop count symbol => 300 outputs batallion
     if( getBestTroopCountSymbol(300) == "battalion") result = "PASS";
-    rsmessage = "getBestTroopCountSymbol() has 300 troops test: " + result;
+    rsmessage = "getBestTroopCountSymbol() test: " + result;
     gameLog(rsmessage);
 
     //Iscapital region 
     //using a6 to test
     if(isCapitalRegion("A6")) result = "PASS";
     else result = "FAIL";
-    rsmessage = "isCapitalRegion() is A6 test: "+ result;
+    rsmessage = "isCapitalRegion() test: "+ result;
     gameLog(rsmessage);
 
     //GameUI => set region owner (test for of, bf, neutral)
@@ -84,13 +84,12 @@ function test(){
 
     //get current health of a unit
     let inf_unit = GameUI.getUnitsInRegion("i2")[0];
-    rmessage = "The health of units in region i2: " + inf_unit.health; // 400
-    gameLog(rmessage);
+    //gameLog(rmessage);
     //call function
     inf_unit.updateHealth(100);
     //after-dmg-health
     //console.log(inf_unit.health);//should be 400-100 =300
-    rmessage = "The health of updated units in i2 after damage is: " + inf_unit.health;
+    rmessage = "updateHealth() test : " + inf_unit.health; // 300 
     gameLog(rmessage);
 
 
