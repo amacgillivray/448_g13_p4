@@ -2310,7 +2310,6 @@ class Game
         // at once. 
         if (this._state == "waitForMoveSelect" || this._state == "battle") 
             return;
-        this._state = "waitForMoveSelect";
 
         // use the realtarget variable to propagate up from whatever node 
         // was clicked to the node that is the group with the region-letter
@@ -2319,14 +2318,18 @@ class Game
         while (realtarget.id.length != 2 && realtarget.nodeName != "svg")
             realtarget = realtarget.parentElement;
 
+        // If the force has already been moved, don't allow it to be moved again
+        if (realtarget.classList.contains("moved"))
+            return;
+
         // validate that the region is for the current player;
-        // if not, reset state and return
+        // if not, return
         let clickedForce = this.getRegionForce(realtarget.id);
         if (clickedForce.side != this._currentPlayerTurn)
-        {
-            this._state = "initial";
             return;
-        }
+
+        // Set the state
+        this._state = "waitForMoveSelect";
 
         // mark the region group as selected and add an event listener for
         // re-clicking on the region to cancel movement.
@@ -2386,20 +2389,14 @@ class Game
             gameSelectedRegionClickCallback,
             [false, true]
         );
-
-            
-        // e.currentTarget.addEventListener(
-        //     "click",
-        //     gameRegionClickCallback,
-        //     [false, false]
-        // );
-        // e.currentTarget.obj = this;
     }
     
     //set this._currentPlayerTurn to "of" then back to "bf" in an alternating manner
 
     _moveHandler( e )
     {
+
+        let origin = document.getElementById(e.currentTarget.oc);
 
         if (this._state != "waitForMoveSelect") 
             return;
@@ -2414,14 +2411,14 @@ class Game
         );
         e.currentTarget.obj = this;
 
-        // Remove "selected" class from origin
-        document.getElementById(e.currentTarget.oc).classList.remove("selected");
+        // Remove "selected" class from origin, mark as moved
+        origin.classList.remove("selected");
+        origin.classList.add("moved");
 
         // Remove "validmove" class from move options
         region_connections[e.currentTarget.oc].forEach((validMove) => {
             let node = document.getElementById(validMove);
             node.classList.remove("validmove");
-            // console.log("Removed OTU event listener for " + node.id + " move from " + e.currentTarget.oc);
             node.removeEventListener(
                 "click",
                 gameMoveRegionClickCallback,
@@ -2443,24 +2440,36 @@ class Game
         let srcForce = this.getRegionForce(e.currentTarget.oc);
 
         // draw mvmt arrow: 
-        // todo - add id to movement arrow so it can be removed
         GameUI.drawMovementArrow(srcForce.side, e.currentTarget.oc, e.currentTarget.id);
 
         let l = this["_queuedMoves_" + this._currentPlayerTurn].length;
         this["_queuedMoves_" + this._currentPlayerTurn][l] = [srcForce.side, srcForce, dstForce];
 
         // After player has made 3 moves, end their turn
-        if (this["_queuedMoves_" + this._currentPlayerTurn].length > Math.min(2, this._currentPlayerForces))
+        if (this["_queuedMoves_" + this._currentPlayerTurn].length >= Math.min(3, this._currentPlayerForces))
         {
             this._changeTurn();
         } 
     }
 
+    // Sort actions into moves and battles. Then call handlePlayerMoves / handlePlayerBattles
+    _handlePlayerActions()
+    {
+        
+    }
     
     _handlePlayerMoves()
     {
+
         let move_list = this["_queuedMoves_" + this._currentPlayerTurn];
-        
+
+        // remove all "moved" classes
+        let moved_cc = document.getElementsByClassName("moved");
+        for (let i = moved_cc.length-1; i >=0; i--)
+        {
+            moved_cc[i].classList.remove("moved");
+        }
+
         for (let i = 0; i < move_list.length; i++)
         {
             // Ensure that the move is still valid

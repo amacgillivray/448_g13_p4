@@ -624,6 +624,7 @@ progress[value]::-webkit-progress-value {
 
 .t.available:hover rect,
 .t.available:hover polygon,
+.t.available:hover path,
 .t.available:hover line {
   fill: #8aef8a !important;
   stroke: #4aaf4a !important;
@@ -631,7 +632,14 @@ progress[value]::-webkit-progress-value {
 
 .t.selected rect,
 .t.selected polygon,
+.t.selected path,
 .t.selected line {
   fill: #faefaa !important;
   stroke: #cfaf4a !important;
+}
+
+.region.moved .sr {
+  fill: #777 !important;
+  stroke: #444 !important;
+  user-select: none;
 }
