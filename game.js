@@ -394,107 +394,107 @@ let region_terrain = {
 };
 
 const game_setup = {
-    //{side: bf/of, troop:[infantry, helicopter, a
-    a0: {side: "", troop: [0, 0, 0]},
-    a1: {side: "", troop: [0, 0, 0]},
-    a2: {side: "", troop: [0, 0, 0]},
-    a3: {side: "", troop: [0, 0, 0]},
-    a4: {side: "", troop: [0, 0, 0]},
-    a5: {side: "", troop: [0, 0, 0]},
-    a6: {side: "bf", troop: [1200, 2, 20]},
-    a7: {side: "bf", troop: [225, 0, 6]},
-    a8: {side: "bf", troop: [500, 0, 8]},
-    a9: {side: "", troop: [0, 0, 0]},
-    b0: {side: "", troop: [0, 0, 0]},
-    b1: {side: "", troop: [0, 0, 0]},
-    b2: {side: "", troop: [0, 0, 0]},
-    b3: {side: "", troop: [0, 0, 0]},
-    b4: {side: "", troop: [0, 0, 0]},
-    b5: {side: "bf", troop: [850, 4, 12]},
-    b6: {side: "", troop: [0, 0, 0]},
-    b7: {side: "", troop: [0, 0, 0]},
-    b8: {side: "", troop: [0, 0, 0]},
-    b9: {side: "", troop: [0, 0, 0]},
-    c0: {side: "", troop: [0, 0, 0]},
-    c1: {side: "bf", troop: [120, 0, 4]},
-    c2: {side: "", troop: [0, 0, 0]},
-    c3: {side: "", troop: [0, 0, 0]},
-    c4: {side: "bf", troop: [650, 6, 0]},
-    c5: {side: "", troop: [0, 0, 0]},
-    c6: {side: "", troop: [0, 0, 0]},
-    c7: {side: "", troop: [0, 0, 0]},
-    c8: {side: "", troop: [0, 0, 0]},
-    c9: {side: "", troop: [40, 1, 0]},
-    d0: {side: "", troop: [0, 0, 0]},
-    d1: {side: "", troop: [0, 0, 0]},
-    d2: {side: "bf", troop: [1850, 0, 38]},
-    d3: {side: "of", troop: [250, 0, 12]},
-    d4: {side: "bf", troop: [250, 0, 12]},
-    d5: {side: "", troop: [0, 0, 0]},
-    d6: {side: "", troop: [0, 0, 0]},
-    d7: {side: "", troop: [0, 0, 0]},
-    d8: {side: "bf", troop: [350, 8, 0]},
-    d9: {side: "bf", troop: [200, 0, 8]},
-    e0: {side: "bf", troop: [1500, 12, 28]},
-    e1: {side: "of", troop: [1500, 12, 28]},
-    e2: {side: "", troop: [0, 0, 0]},
-    e3: {side: "of", troop: [1850, 0, 38]},
-    e4: {side: "bf", troop: [350, 0, 14]},
-    e5: {side: "of", troop: [350, 0, 14]},
-    e6: {side: "", troop: [0, 0, 0]},
-    e7: {side: "", troop: [0, 0, 0]},
-    e8: {side: "of", troop: [350, 0, 18]},
-    e9: {side: "of", troop: [350, 8, 0]},
-    f0: {side: "", troop: [0, 0, 0]},
-    f1: {side: "of", troop: [520, 6, 14]},
-    f2: {side: "bf", troop: [520, 6, 14]},
-    f3: {side: "bf", troop: [300, 0, 7]},
-    f4: {side: "bf", troop: [1990, 0, 32]},
-    f5: {side: "of", troop: [895, 0, 16]},
-    f6: {side: "of", troop: [300, 0, 7]},
-    f7: {side: "", troop: [0, 0, 0]},
-    f8: {side: "", troop: [0, 0, 0]},
-    f9: {side: "bf", troop: [450, 4, 10]},
-    g0: {side: "", troop: [0, 0, 0]},
-    g1: {side: "", troop: [0, 0, 0]},
-    g2: {side: "", troop: [0, 0, 0]},
-    g3: {side: "", troop: [0, 0, 0]},
-    g4: {side: "of", troop: [450, 4, 10]},
-    g5: {side: "", troop: [0, 0, 0]},
-    g6: {side: "", troop: [0, 0, 0]},
-    g7: {side: "", troop: [0, 0, 0]},
-    g8: {side: "", troop: [0, 0, 0]},
-    g9: {side: "", troop: [0, 0, 0]},
-    h0: {side: "", troop: [0, 0, 0]},
-    h1: {side: "of", troop: [650, 6, 0]},
-    h2: {side: "", troop: [0, 0, 0]},
-    h3: {side: "", troop: [0, 0, 0]},
-    h4: {side: "", troop: [0, 0, 0]},
-    h5: {side: "", troop: [0, 0, 0]},
-    h6: {side: "", troop: [0, 0, 0]},
-    h7: {side: "", troop: [0, 0, 0]},
-    h8: {side: "", troop: [0, 0, 0]},
-    h9: {side: "", troop: [0, 0, 0]},
-    i0: {side: "", troop: [0, 0, 0]},
-    i1: {side: "", troop: [0, 0, 0]},
-    i2: {side: "of", troop: [40, 2, 0]},
-    i3: {side: "of", troop: [120, 0, 4]},
-    i4: {side: "", troop: [0, 0, 0]},
-    i5: {side: "of", troop: [850, 4, 12]},
-    i6: {side: "", troop: [0, 0, 0]},
-    i7: {side: "", troop: [0, 0, 0]},
-    i8: {side: "", troop: [0, 0, 0]},
-    i9: {side: "", troop: [0, 0, 0]},
-    j0: {side: "of", troop: [500, 0, 8]},
-    j1: {side: "of", troop: [225, 0, 6]},
-    j2: {side: "of", troop: [1200, 2, 20]},
-    j3: {side: "", troop: [0, 0, 0]},
-    j4: {side: "", troop: [0, 0, 0]},
-    j5: {side: "", troop: [0, 0, 0]},
-    j6: {side: "", troop: [0, 0, 0]},
-    j7: {side: "", troop: [0, 0, 0]},
-    j8: {side: "", troop: [0, 0, 0]},
-    j9: {side: "of", troop: [500, 0, 8]},
+    //{side: bf/of, force:[infantry, helicopter, a
+    a0: {side: "neutral", force: [0, 0, 0]},
+    a1: {side: "neutral", force: [0, 0, 0]},
+    a2: {side: "neutral", force: [0, 0, 0]},
+    a3: {side: "neutral", force: [0, 0, 0]},
+    a4: {side: "neutral", force: [0, 0, 0]},
+    a5: {side: "neutral", force: [0, 0, 0]},
+    a6: {side: "bf", force: [1200, 2, 20]},
+    a7: {side: "bf", force: [225, 0, 6]},
+    a8: {side: "bf", force: [500, 0, 8]},
+    a9: {side: "neutral", force: [0, 0, 0]},
+    b0: {side: "neutral", force: [0, 0, 0]},
+    b1: {side: "neutral", force: [0, 0, 0]},
+    b2: {side: "neutral", force: [0, 0, 0]},
+    b3: {side: "neutral", force: [0, 0, 0]},
+    b4: {side: "neutral", force: [0, 0, 0]},
+    b5: {side: "bf", force: [850, 4, 12]},
+    b6: {side: "neutral", force: [0, 0, 0]},
+    b7: {side: "neutral", force: [0, 0, 0]},
+    b8: {side: "neutral", force: [0, 0, 0]},
+    b9: {side: "neutral", force: [0, 0, 0]},
+    c0: {side: "neutral", force: [0, 0, 0]},
+    c1: {side: "bf", force: [120, 0, 4]},
+    c2: {side: "neutral", force: [0, 0, 0]},
+    c3: {side: "neutral", force: [0, 0, 0]},
+    c4: {side: "bf", force: [650, 6, 0]},
+    c5: {side: "neutral", force: [0, 0, 0]},
+    c6: {side: "neutral", force: [0, 0, 0]},
+    c7: {side: "neutral", force: [0, 0, 0]},
+    c8: {side: "neutral", force: [0, 0, 0]},
+    c9: {side: "bf", force: [40, 1, 0]},
+    d0: {side: "neutral", force: [0, 0, 0]},
+    d1: {side: "neutral", force: [0, 0, 0]},
+    d2: {side: "bf", force: [1850, 0, 38]},
+    d3: {side: "of", force: [250, 0, 12]},
+    d4: {side: "bf", force: [250, 0, 12]},
+    d5: {side: "neutral", force: [0, 0, 0]},
+    d6: {side: "neutral", force: [0, 0, 0]},
+    d7: {side: "neutral", force: [0, 0, 0]},
+    d8: {side: "bf", force: [350, 8, 0]},
+    d9: {side: "bf", force: [200, 0, 8]},
+    e0: {side: "bf", force: [1500, 12, 28]},
+    e1: {side: "of", force: [1500, 12, 28]},
+    e2: {side: "neutral", force: [0, 0, 0]},
+    e3: {side: "of", force: [1850, 0, 38]},
+    e4: {side: "bf", force: [350, 0, 14]},
+    e5: {side: "of", force: [350, 0, 14]},
+    e6: {side: "neutral", force: [0, 0, 0]},
+    e7: {side: "neutral", force: [0, 0, 0]},
+    e8: {side: "of", force: [350, 0, 18]},
+    e9: {side: "of", force: [350, 8, 0]},
+    f0: {side: "neutral", force: [0, 0, 0]},
+    f1: {side: "of", force: [520, 6, 14]},
+    f2: {side: "bf", force: [520, 6, 14]},
+    f3: {side: "bf", force: [300, 0, 7]},
+    f4: {side: "bf", force: [1990, 0, 32]},
+    f5: {side: "of", force: [895, 0, 16]},
+    f6: {side: "of", force: [300, 0, 7]},
+    f7: {side: "neutral", force: [0, 0, 0]},
+    f8: {side: "neutral", force: [0, 0, 0]},
+    f9: {side: "bf", force: [450, 4, 10]},
+    g0: {side: "neutral", force: [0, 0, 0]},
+    g1: {side: "neutral", force: [0, 0, 0]},
+    g2: {side: "neutral", force: [0, 0, 0]},
+    g3: {side: "neutral", force: [0, 0, 0]},
+    g4: {side: "of", force: [450, 4, 10]},
+    g5: {side: "neutral", force: [0, 0, 0]},
+    g6: {side: "neutral", force: [0, 0, 0]},
+    g7: {side: "neutral", force: [0, 0, 0]},
+    g8: {side: "neutral", force: [0, 0, 0]},
+    g9: {side: "neutral", force: [0, 0, 0]},
+    h0: {side: "neutral", force: [0, 0, 0]},
+    h1: {side: "of", force: [650, 6, 0]},
+    h2: {side: "neutral", force: [0, 0, 0]},
+    h3: {side: "neutral", force: [0, 0, 0]},
+    h4: {side: "neutral", force: [0, 0, 0]},
+    h5: {side: "neutral", force: [0, 0, 0]},
+    h6: {side: "neutral", force: [0, 0, 0]},
+    h7: {side: "neutral", force: [0, 0, 0]},
+    h8: {side: "neutral", force: [0, 0, 0]},
+    h9: {side: "neutral", force: [0, 0, 0]},
+    i0: {side: "neutral", force: [0, 0, 0]},
+    i1: {side: "neutral", force: [0, 0, 0]},
+    i2: {side: "of", force: [40, 2, 0]},
+    i3: {side: "of", force: [120, 0, 4]},
+    i4: {side: "neutral", force: [0, 0, 0]},
+    i5: {side: "of", force: [850, 4, 12]},
+    i6: {side: "neutral", force: [0, 0, 0]},
+    i7: {side: "neutral", force: [0, 0, 0]},
+    i8: {side: "neutral", force: [0, 0, 0]},
+    i9: {side: "neutral", force: [0, 0, 0]},
+    j0: {side: "of", force: [500, 0, 8]},
+    j1: {side: "of", force: [225, 0, 6]},
+    j2: {side: "of", force: [1200, 2, 20]},
+    j3: {side: "neutral", force: [0, 0, 0]},
+    j4: {side: "neutral", force: [0, 0, 0]},
+    j5: {side: "neutral", force: [0, 0, 0]},
+    j6: {side: "neutral", force: [0, 0, 0]},
+    j7: {side: "neutral", force: [0, 0, 0]},
+    j8: {side: "neutral", force: [0, 0, 0]},
+    j9: {side: "of", force: [500, 0, 8]},
 };
 
 /**
@@ -730,6 +730,9 @@ class GameUI {
         // node = document.getElementById(node);
 
         //console.log("Troop count: " + unit.count);
+        if (unit.side == "neutral")
+            return;
+
         document.getElementById(node).setAttribute("data-count", unit.count)
 
         // Hide or unhide the unit based on its count.
@@ -1246,11 +1249,32 @@ class GameUI {
  */
 class Force{
     
-	constructor(region_group_id){
-		this._region = region_group_id;
-        this._unitList = GameUI.getUnitsInRegion(region_group_id);
-        this._side = "neutral";
-        this._determineSide();
+	constructor(region_id){
+		this._region = region_id;
+        this._side = game_setup[region_id]["side"];
+        this._unitList = [];
+        let units = game_setup[region_id]["force"];
+
+        troop_type_names.forEach((unitType) => {
+            // node id format: [teamprefix]_[regionletter]_[trooptype]
+            // let selector = this._side + "_" + region_letter + "_" + unitType;
+            // console.log(selector);
+            // let node = document.getElementById(selector);
+            // if (node.classList.contains("t"))
+            if (units[troop_type_names.indexOf(unitType)] > 0) {
+                this._unitList.push( new Unit(unitType, this._region, units[troop_type_names.indexOf(unitType)], this._side ) );
+                GameUI.updateUnitDisplay( this.unitList[troop_type_names.indexOf(unitType)] );
+            } else
+                this._unitList.push( null );
+        });
+
+        GameUI.setRegionOwner(this.region, this.side);
+
+        // this._unitList = [];
+        // for (let i = 0; i < troop_type_names.length; i++)
+        //     this._unitList[i] = null;
+        // if (this.side != "neutral")
+        //     this.alterForce(game_setup[region_id]["force"]);
 	}
 
 	//getters
@@ -1290,7 +1314,6 @@ class Force{
     }
 
 	//setters
-	
     set region(p){
 		this._region = p;
 	}
@@ -1298,14 +1321,10 @@ class Force{
 		this._unitList = uts;
         this._determineSide();
 	}
-    // set side(newSide)
-    // {
-    //     this._side = newSide;
-    //     document.getElementById(this._region).setAttribute("class", "region " + this._side);
-    // }
 
 	//methods
 	alterForce(list){
+        console.log(list);
 		for(let i = 0; i < 3; i++){
 			if(this._unitList[i] != null){
 				this._unitList[i].alterUnits(list[i]);
@@ -1318,13 +1337,13 @@ class Force{
                     list[i],
                     this._side
                 );
-                console.log(this._unitList[i] + ": " + list[i]);
+                //console.log(this._unitList[i] + ": " + list[i]);
                 GameUI.updateUnitDisplay(this._unitList[i]);
             }
 		}
 
         // Remove empty units
-        for(let i = 0; i < 3; i++){
+        for(let i = 0; i < this._unitList.length; i++){
 			if(this._unitList[i].count == 0){
                 this._unitList[i] = null;
             }
@@ -2236,34 +2255,11 @@ class Game
         return null;
     }
 
-    moveTroops(src, dst, count){
-    	//assuming count is valid
-
-    	let A = getRegionForce(src);
-    	let B = getRegionForce(dst);
-    	let removeCount = count.map(function(x){x * -1});
-
-    	//some verification may be needed for both zones
-    	if(A.side == B.side || A.side == "neutral" || B.side == "neutral"){
-    		//reduce count in source and increase count in destination
-	    	A.alterForce(removeCount);
-	    	B.alterForce(count);
-    	}else{
-    		console.log("invalid src or dst");
-    		return 0;
-    	}
-
-    	//check win
-
-    	return 0;
-	}
-
     _initialize_forces()
     {
         region_group_ids.forEach((region) => {
             this.forces.push( new Force(region) );
         });
-        console.log(this.forces);
     }
 
     _initializeHeadquarters()
@@ -2490,6 +2486,7 @@ class Game
                 troop_type_names.forEach((troop_type) => {
                     if (force[troop_type] != null)
                     {
+                        console.log(force[troop_type].id);
                         document.getElementById(force[troop_type].id).classList.add("fow");
                     }
                 });
@@ -2728,21 +2725,13 @@ class Game
             //log.innerHTML += "<p>" + this._currentPlayerTurn.toUpperCase() + " moved from " + srcForce.region_phonetic + " to " + dstForce.region_phonetic + "</p>\n";
             gameLog( team_key[this._currentPlayerTurn] + " moves from " + srcForce.region + " to " + dstForce.region );
 
-            dstForce.alterForce([
-                srcForce.infantryCount, 
-                srcForce.helicopterCount,
-                srcForce.armorCount
-                ]
-            );
-
-            // GameUI.animateUnitMove(srcForce, dstForce);
-
-            srcForce.alterForce(
-                (-1)*srcForce.infantryCount, 
-                (-1)*srcForce.helicopterCount,
-                (-1)*srcForce.armorCount
-            );
-
+            // Add the units to the destination, remove them from the source
+            let units = [];
+            for (let i = 0; i < troop_type_names.length; i++)
+                units.push(srcForce[troop_type_names[i] + "Count"]);
+            dstForce.alterForce( units );
+            units = units.map(function(x){x * -1});
+            srcForce.alterForce( units );
         }
 
         // Reset move list
@@ -2757,8 +2746,6 @@ class Game
         {
             ac[0].remove();
         }
-
-        // this["_queuedActions_" + this._currentPlayerTurn] = [];
     }
 
     _handleBattles( battle_list )
