@@ -497,13 +497,13 @@ const game_setup = {
     j9: {side: "of", troop: [500, 0, 8]},
 };
 
-const terrain_mod = {
+/*const terrain_mod = {
     //terrain: [infantry, armor, helicopter]
     plains: [0.5, 2.0, 1.0],
     forest: [2.0, 0.5,0.5],
     water: [0.5,0.5,1.0],
     urban: [2.0, 1.5,1.0]
-}
+}*/
 
 /**
  * @brief Shorthand for "opfor" used in SVG node class names
