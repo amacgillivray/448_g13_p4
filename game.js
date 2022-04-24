@@ -2424,7 +2424,7 @@ class Battle {
      * 
      * @post Icon LOSES EventListener("click", Battle.cancelAllocCB, [false, true]);
      * @post Icon GAINS EventListener("click", Battle.startAllocCB, [false, true]);
-     * @post Flank LOSES flank.removeEventListener("click", Battle.applyAllocCB, [false, true]);
+     * @post Flank LOSES flank.removeEventListener("click", Battle.promptAllocCb, [false, true]);
      */
     static cancelAllocCB( e )
     {
@@ -2463,7 +2463,7 @@ class Battle {
         // Remove listeners on the flanks
         [fl, fm, fr].forEach((flank) => {
             flank.classList.toggle("validalloc", false);
-            flank.removeEventListener("click", Battle.applyAllocCB, [false, true]);
+            flank.removeEventListener("click", Battle.promptAllocCb, [false, true]);
             flank.obj = null;
             flank.toAdd = null;
         });
@@ -2476,7 +2476,7 @@ class Battle {
      * 
      * @post Troop split modal is opened with Battle.applyIndep as callback
      * @post Icon LOSES EventListener("click", Battle.cancelAllocCB, [false, true]);
-     * @post Flank LOSES EventListener("click", Battle.applyAllocCB, [false, true]);
+     * @post Flank LOSES EventListener("click", Battle.promptAllocCb, [false, true]);
      * @post Await ApplyIndep
      */
     static promptAllocCb( e )
@@ -2506,7 +2506,7 @@ class Battle {
         // Remove listeners on the flanks
         [fl, fm, fr].forEach((flank) => {
             flank.classList.toggle("validalloc", false);
-            flank.removeEventListener("click", Battle.applyAllocCB, [false, true]);
+            flank.removeEventListener("click", Battle.promptAllocCb, [false, true]);
             flank.obj = null;
             flank.toAdd = null;
         });
