@@ -3167,6 +3167,17 @@ class Game
         if (realtarget.classList.contains("moved"))
             return;
 
+        // Dont allow moving empty region
+        console.log(realtarget);
+        if (isCapitalRegion(realtarget.id) && this._state != "reinforcing")
+        {
+            if (this.getRegionForce(realtarget.id).totalCount == 0)
+            {
+                console.log("Skipping");
+                return;
+            }
+        }    
+
         // validate that the region is for the current player;
         // if not, return
         let clickedForce = this.getRegionForce(realtarget.id);
@@ -3331,15 +3342,30 @@ class Game
         {
             // let force = document.getElementById(regions_capitals[i]);
             let force = this.getRegionForce( regions_capitals[i] );
+
+            if (tf_ct < 5) {
+                console.log(force);
+                console.log(regions_capitals[i]);
+            }
+
             if ( ( force.side == this._currentPlayerTurn ) && ( force.totalCount == 0 ) )
-                tf_ct--;
-        
+            {    tf_ct--;
+                if (tf_ct < 5) {
+                    console.log(force);
+                    console.log(regions_capitals[i]);
+                }
+            }
+
         }
+
+        // TODO - REMOVE OUTER IF
+        if (turn_ct > 4){
         if (this["_queuedActions_" + this._currentPlayerTurn].length >= Math.min(3, tf_ct))
         {
             if (debug) console.log("tf_ct: " + tf_ct);
             if (debug) console.log("cpfs:" + this._currentPlayerForces );
             this._changeTurn();
+        }
         }
     }
 
