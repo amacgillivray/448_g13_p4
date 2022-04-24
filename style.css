@@ -750,3 +750,17 @@ progress[value]::-webkit-progress-value {
   align-items: center;
   justify-content: space-evenly;
 }
+
+#bw_region_display {
+  width: 32%;
+  padding: 2px;
+  margin: auto;
+  /* box-shadow: 0px 0px 4px #0005; */
+}
+
+#battleWindow {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: unset;
+}
