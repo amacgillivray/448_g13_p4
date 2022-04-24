@@ -1309,6 +1309,23 @@ class GameUI {
         ts++;
     }
 
+    // takes a message and puts it in the notification modal which is then displayed on the screen for the player.
+    static notification(message){
+        // Get the modal
+        var modal = document.getElementById("notif");
+
+        document.getElementById("notif-item").textContent = message;
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementById("notif-close");
+
+        modal.style.display = "block";
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+    }
 }
 
 /**
@@ -1394,7 +1411,7 @@ class Force{
 
 	//methods
 	alterForce(list){
-        console.log(list);
+        // console.log(list);
 		for(let i = 0; i < 3; i++){
 			if(this._unitList[i] != null){
 				this._unitList[i].alterUnits(list[i]);
@@ -1606,7 +1623,7 @@ class Unit{
 		this.health = this.health - dmg; 
 	}
 	alterUnits(cnt){
-        console.log("Adding " + cnt + " to " + this._id);
+        // console.log("Adding " + cnt + " to " + this._id);
 		this._health += (this.hpMod * cnt);
         document.getElementById(this._id).setAttribute("data-count", this.count);
 	}
@@ -1796,11 +1813,11 @@ class Battle {
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
             "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
-            "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
+            "ARMOR:       " + (this._off.armorCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + (this._def.infantryCount - this._defRefCt[0]).toString() + "\n" +
             "HELICOPTER:  " + (this._def.helicopterCount - this._defRefCt[1]).toString() + "\n" +
-            "ARMOR:       " + (this._def.helicopterCount - this._defRefCt[2]).toString() +
+            "ARMOR:       " + (this._def.armorCount - this._defRefCt[2]).toString() +
             "</pre>";
 
         } else {
@@ -1824,7 +1841,7 @@ class Battle {
                 [
                     Math.floor((2/3)*(this._offRefCt[0]-this._off.infantryCount)*Math.random()),
                     Math.floor((2/3)*(this._offRefCt[1]-this._off.helicopterCount)*Math.random()),
-                    Math.floor((2/3)*(this._offRefCt[1]-this._off.armorCount)*Math.random())
+                    Math.floor((2/3)*(this._offRefCt[2]-this._off.armorCount)*Math.random())
                 ]
             );
 
@@ -1837,7 +1854,7 @@ class Battle {
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
             "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
-            "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
+            "ARMOR:       " + (this._off.armorCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + -(this._defRefCt[0] - def_restored[0]).toString() + "\n" +
             "HELICOPTER:  " + -(this._defRefCt[1] - def_restored[1]).toString() + "\n" +
@@ -1886,6 +1903,7 @@ class Battle {
         console.log("Tick #" + this._ticks);
         this._ticks++;
         this._drawProgress();
+        let fl = ["left", "middle", "right"];
 
         if (this._off.side == this._def.side)
         {
@@ -1903,35 +1921,120 @@ class Battle {
         // let off_mod = Math.random();
         // let def_mod = Math.random();
 
-        // Damage by attackers
-        let dmgo = 0;
 
-        // Damage by defenders
-        let dmgd = 0;
+        // If the opposing flank is empty, move troops to the best candidate flank where 
+        // enemies are still present.
+        for (let i = 0; i < fl.length; i++) {
+            let f = fl[i];
+            
+            let attacker_sz = this._flanks[f]["attacker"].reduce((sum, idx) => sum + idx, 0);
+            let defender_sz = this._flanks[f]["defender"].reduce((sum, idx) => sum + idx, 0);
 
-        // Calculate dmgo
-        if (this._off.infantry != null)
-            dmgo += Math.min( this._off.infantryCount, troop_combat_width[0] ) * this._off.infantry.dmgMod * (Math.random()/2 + this._off_mod);
-        if (this._off.helicopter != null)
-            dmgo += Math.min( this._off.helicopterCount, troop_combat_width[1] ) * this._off.helicopter.dmgMod * (Math.random()/2 + this._off_mod);
-        if (this._off.armor != null)
-            dmgo += Math.min( this._off.armorCount, troop_combat_width[2] ) * this._off.armor.dmgMod * (Math.random()/2 + this._off_mod);
+            let mvTo = "";
+            let mvFm = [];
+            if (attacker_sz == 0 && defender_sz > 0)
+            {
+                mvTo = this._findCandidateFlank( f, "defender" );
+                mvFm = this._flanks[f]["defender"];
+                console.log("Moving defender from " + f + " flank to " + mvTo );
+            } else if ( attacker_sz > 0 && defender_sz == 0 ) {
+                mvTo = this._findCandidateFlank( f, "attacker" );
+                mvFm = this._flanks[f]["attacker"];
+                console.log("Moving attacker from " + f + " flank to " + mvTo );
+            }
 
-        // Calculate dmgd
-        if (this._def.infantry != null)
-            dmgd += Math.min( this._def.infantryCount, troop_combat_width[0] ) * this._def.infantry.dmgMod * (Math.random()/2 + this._def_mod);
-        if (this._def.helicopter != null)
-            dmgd += Math.min( this._def.helicopterCount, troop_combat_width[1] ) * this._def.helicopter.dmgMod * (Math.random()/2 + this._def_mod);
-        if (this._def.armor != null)
-            dmgd += Math.min( this._def.armorCount, troop_combat_width[2] ) * this._def.armor.dmgMod * (Math.random()/2 + this._def_mod);
+            if ( mvTo != "" && mvTo != f )
+            {
+                mvTo = this._flanks[mvTo]
+                for (let e = 0; e < troop_type_names.length; e++)
+                {
+                    mvTo[e] += mvFm[e];
+                    mvFm[e] = 0;
+                }
+                console.log(this._flanks);
+            }
+        }
 
         this._animateCombat();
 
+        // Damage by attackers
+        let dmgo = [];
+        let oref = [];
+        let omax = [];
+
+        // Damage by defenders
+        let dmgd = [];
+        let dref = [];
+        let dmax = [];
+
+        for (let i = 0; i < troop_type_names.length; i++)
+        {
+            dmgo[i] = 0;
+            oref[i] = [];
+            omax[i] = 0;
+
+            dmgd[i] = 0;
+            dref[i] = [];
+            dmax[i] = 0;
+        }
+
+        for (let i = 0; i < fl.length; i++) {
+            let f = fl[i];
+            let off = this._flanks[f]["attacker"];
+            let def = this._flanks[f]["defender"];
+
+            // infantry
+            for (let e = 0; e < troop_type_names.length; e++)
+            {
+                oref[i].push( off[e] );
+                dref[i].push( def[e] );
+
+                // console.log(this._def[troop_type_names[e]].dmgMod);
+                // console.log(Math.min(def[e], troop_combat_width[e]));
+                // console.log((Math.random()/2) + this._off_mod + terrain_mod[this.terrain[i]][e]);
+
+                // debugger;
+                if (this._off[troop_type_names[e]] != null) {
+                    omax[i] += def[e] * this._off[troop_type_names[e]].hpMod;
+                    dmgo[i] += Math.min(off[e], troop_combat_width[e]) * 
+                            this._off[troop_type_names[e]].dmgMod *
+                            (Math.random()/2 + this._off_mod + terrain_mod[this.terrain[i]][e]);
+                }
+
+                if (this._def[troop_type_names[e]] != null) {
+                    dmax[i] += def[e] * this._def[troop_type_names[e]].hpMod;
+                    dmgd[i] += Math.min(def[e], troop_combat_width[e]) * 
+                            this._def[troop_type_names[e]].dmgMod * 
+                            (Math.random()/2 + this._def_mod + terrain_mod[this.terrain[i]][e]);
+                }
+            }
+
+            // Limit the damage to the total health of the current flank
+            if (dmgd[i] > omax[i]) 
+                dmgd[i] = omax[i];
+            if (dmgo[i] > dmax[i]) 
+                dmgo[i] = dmax[i];
+
+            console.log("Attacker " + f + " Deals Dmg: " + dmgo[i]);
+            console.log("Defender " + f + " Deals Dmg: " + dmgd[i]);
+
+            this._off.distributeDamage(dmgd[i]);
+            this._def.distributeDamage(dmgo[i]);
+
+            for (let e = 0; e < troop_type_names; e++)
+            {
+                oref[i][e] -= off[e];
+                dref[i][e] -= def[e];
+                this._flanks[f]["attacker"][e] -= oref[i][e];
+                this._flanks[f]["defender"][e] -= dref[i][e];
+            }
+        }
+
         // Deal damage to offense
-        this._off.distributeDamage(dmgd);
+        // this._off.distributeDamage(dmgd);
 
         // Deal damage to defense
-        this._def.distributeDamage(dmgo);
+        // this._def.distributeDamage(dmgo);
 
         if ( this._off.totalCount <= 0 || this._def.totalCount <= 0 )
         {
@@ -1941,6 +2044,46 @@ class Battle {
         }
 
         return;
+    }
+
+    _findCandidateFlank( originFlank, side )
+    {
+        let flanks = ["left", "middle", "right"];
+        let candidates = [];
+        let target_side = (side == "attacker") ? "defender" : "attacker";
+        let fc = "";
+
+        for (let i = 0; i < flanks.length; i++)
+        {
+            let f = flanks[i];
+            if (f == originFlank)
+                continue;
+            let f_sz = this._flanks[f][target_side].reduce((sum, idx) => sum + idx, 0);
+            if (f_sz > 0)
+                candidates.push(f);
+        }
+
+        // Case 0: 
+        // if there are no valid places to move, combat is about to end,
+        // and the origin can stay where it is
+        //
+        // Case 1: 
+        // If there is only one candidate, that's the best candidate
+        //
+        // Case 2:
+        // There are 2 candidates. Choose the one with the fewest enemy 
+        // troops remaining first.
+        if ( candidates.length == 0)
+                fc = originFlank;
+        else if (candidates.length == 1)
+                fc = candidates[0];
+        else {
+            let sz = [this._flanks[candidates[0]][target_side].reduce((sum, idx) => sum + idx, 0),
+                      this._flanks[candidates[1]][target_side].reduce((sum, idx) => sum + idx, 0)];
+            fc = candidates[sz.indexOf(Math.min(sz[0], sz[1]))];
+        }
+
+        return fc;
     }
 
     _animateCombat()
@@ -2059,7 +2202,7 @@ class Battle {
                     icon.classList.toggle("available", true);
                     icon.setAttribute("data-type", troop_type_names[i]);
                     icon.setAttribute("data-count", side[troop_type_names[i] + "Count"]);
-                    console.log(prefix + "_alloc_" + tt_ct + "_text");
+                    // console.log(prefix + "_alloc_" + tt_ct + "_text");
                     let text = document.getElementById(prefix + "_alloc_" + tt_ct + "_text");
                         text.innerHTML = "<b>" + troop_type_names[i] + "</b><br/>"; 
                     if (prefix[0] == "o") {
@@ -2246,7 +2389,7 @@ class Battle {
         }
 
         icon.classList.toggle("selected", false);
-        icon.classList.toggle("available", true);
+        icon.classList.toggle("allocated", true);
         icon.removeEventListener("click", Battle.cancelAllocCB, [false, true]);
         icon.setAttribute("data-count", remaining_sz);
         
@@ -2284,18 +2427,42 @@ class Battle {
         let battle = e.currentTarget.obj;
         let modal = document.getElementById("battleWindow");
         let flanks = {
-            left: [],
-            middle: [],
-            right: []
+            fl: [],
+            fm: [],
+            fr: []
         };
 
+        for (let i = 0; i < troop_type_names.length; i++)
+        {
+            flanks["fl"][i] = 0;
+            flanks["fm"][i] = 0;
+            flanks["fr"][i] = 0;
+        }
+
+
+        let troops = document.getElementsByClassName("allocated");
+        while (troops.length > 0)
+        {
+            let flank = troops[0].parentElement.parentElement.getAttribute("id");
+            flanks[flank][troop_type_names.indexOf(troops[0].getAttribute("data-type"))] = parseInt(troops[0].getAttribute("data-count"));
+            troops[0].remove();
+        }
+
         // Hide the window and start the battle
-        modal.style.display = "none";
-        
+        modal.style.display = "none";        
         modal.innerHTML = "";
-        battle.start();
+        battle.setAttackerFlanks( flanks );
+    }
 
+    setAttackerFlanks( flanks )
+    {
+        console.log(flanks);
 
+        ["left", "middle", "right"].forEach((flank) => {
+            this._flanks[flank]["attacker"] = flanks["f" + flank[0]];
+        });
+        console.log(this);
+        this.start();
     }
 
     static _offenseFlanksAi( e )
@@ -2381,7 +2548,6 @@ class Battle {
         }
     }
 }
-
 
 
 class Strike {
@@ -2587,6 +2753,8 @@ class Game
             }
         }
 
+        GameUI.notification("You have recieved " + this._cptReinforcements[0] + " infantry, " + this._cptReinforcements[1] + " helicopter, and " + this._cptReinforcements[2] + " armored vehicle reinforcements from your controlled capitals. These troops will be deployed to the next region you select.");
+
         gameLog(team_key[this._currentPlayerTurn] + " has reinforcements: " +
                 "<pre>" 
                 + troop_type_names[0].toUpperCase() + ":\t" + this._cptReinforcements[0] + "\n"
@@ -2696,6 +2864,8 @@ class Game
         });
 
         document.getElementById("turn-indicator").innerHTML = team_key[winteam] + " VICTORY";
+
+        GameUI.notification(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
 
         gameLog(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
 
