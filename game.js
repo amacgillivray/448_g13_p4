@@ -28,9 +28,9 @@ const troop_type_names = [
  * @note  Indices correspond to troop_type_names
  */
 const troop_combat_width = [
-    1000,
-    20,
-    40
+    400,
+    10,
+    20
     // useful for debugging combat 
     // 100,
     // 2,
