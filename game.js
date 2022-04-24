@@ -521,7 +521,7 @@ const game_setup = {
     j6: {side: "neutral", force: [0, 0, 0]},
     j7: {side: "neutral", force: [0, 0, 0]},
     j8: {side: "neutral", force: [0, 0, 0]},
-    j9: {side: "of", force: [500, 0, 8]},
+    j9: {side: "neutral", force: [0, 0, 0]},
 };
 
 /**
@@ -2892,6 +2892,18 @@ class Game
                 this._currentPlayerForces++;
             }
         });
+
+        // If the player ended their turn without reinforcing, remove the reinforceable class
+        if (this._state == "reinforcing")
+        {
+            let rc = document.getElementsByClassName("reinforceable");
+            for (let i = rc.length-1; i >= 0; i--)
+            {
+                rc[i].removeEventListener("click", Game.reinforcements_cb, [false, false]);
+                rc[i].classList.remove("reinforceable");
+            }
+            this._state = "initial";
+        }
         
         // Apply queued moves from previous turn
         this._handlePlayerActions();
@@ -2936,41 +2948,41 @@ class Game
      */
     _rotateTurn()
     {
-                // Rotate turns
-                if(this._currentPlayerTurn == "bf"){
-                    this._currentPlayerTurn = "of";
-                    document.getElementById("turn-indicator").setAttribute("class", "opfor");
-                    document.getElementById("team").innerHTML = "OPFOR (PACT)";
-                }else if(this._currentPlayerTurn == "of"){
-                    this._currentPlayerTurn = "bf";
-                    document.getElementById("turn-indicator").setAttribute("class", "blufor");
-                    document.getElementById("team").innerHTML = "BLUFOR (NATO)";
-                }
-        
-                // Highlight current player's own forces
-                this.forces.forEach((force) => {
-                    if (force.side == this._currentPlayerTurn)
-                        {
-                            document.getElementById(force.region).classList.toggle("cpt", true);
-                        }
-                });
-        
-        
-                // Apply fog-of-war
-                this._applyFogOfWar();
-        
-                // Apply reinforcements
-                // Skip first two turns used to initialize the game
-                if (turn_ct > 2)
-                   this._applyReinforcements();
-        
-        
-                // need to make sure that this only happens after battles end
-                let bc = document.getElementsByClassName("cbtFire");
-                while (bc.length > 0)
+        // Rotate turns
+        if(this._currentPlayerTurn == "bf"){
+            this._currentPlayerTurn = "of";
+            document.getElementById("turn-indicator").setAttribute("class", "opfor");
+            document.getElementById("team").innerHTML = "OPFOR (PACT)";
+        }else if(this._currentPlayerTurn == "of"){
+            this._currentPlayerTurn = "bf";
+            document.getElementById("turn-indicator").setAttribute("class", "blufor");
+            document.getElementById("team").innerHTML = "BLUFOR (NATO)";
+        }
+
+        // Highlight current player's own forces
+        this.forces.forEach((force) => {
+            if (force.side == this._currentPlayerTurn)
                 {
-                    bc[0].remove();
+                    document.getElementById(force.region).classList.toggle("cpt", true);
                 }
+        });
+
+
+        // Apply fog-of-war
+        this._applyFogOfWar();
+
+        // Apply reinforcements
+        // Skip first two turns used to initialize the game
+        if (turn_ct > 2)
+            this._applyReinforcements();
+
+
+        // need to make sure that this only happens after battles end
+        let bc = document.getElementsByClassName("cbtFire");
+        while (bc.length > 0)
+        {
+            bc[0].remove();
+        }
 
     }
 
@@ -2979,6 +2991,8 @@ class Game
      */
     _applyReinforcements()
     {
+        this._state = "reinforcing";
+
         this._cptReinforcements = [0,0,0];
 
         for (let i = 0; i < regions_capitals.length; i++)
