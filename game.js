@@ -2235,7 +2235,7 @@ class Battle {
         }
 
         icon.classList.toggle("selected", false);
-        icon.classList.toggle("available", true);
+        icon.classList.toggle("allocated", true);
         icon.removeEventListener("click", Battle.cancelAllocCB, [false, true]);
         icon.setAttribute("data-count", remaining_sz);
         
@@ -2273,18 +2273,42 @@ class Battle {
         let battle = e.currentTarget.obj;
         let modal = document.getElementById("battleWindow");
         let flanks = {
-            left: [],
-            middle: [],
-            right: []
+            fl: [],
+            fm: [],
+            fr: []
         };
 
+        for (let i = 0; i < troop_type_names.length; i++)
+        {
+            flanks["fl"][i] = 0;
+            flanks["fm"][i] = 0;
+            flanks["fr"][i] = 0;
+        }
+
+
+        let troops = document.getElementsByClassName("allocated");
+        while (troops.length > 0)
+        {
+            let flank = troops[0].parentElement.parentElement.getAttribute("id");
+            flanks[flank][troop_type_names.indexOf(troops[0].getAttribute("data-type"))] = parseInt(troops[0].getAttribute("data-count"));
+            troops[0].remove();
+        }
+
         // Hide the window and start the battle
-        modal.style.display = "none";
-        
+        modal.style.display = "none";        
         modal.innerHTML = "";
-        battle.start();
+        battle.setAttackerFlanks( flanks );
+    }
 
+    setAttackerFlanks( flanks )
+    {
+        console.log(flanks);
 
+        ["left", "middle", "right"].forEach((flank) => {
+            this._flanks[flank]["attacker"] = flanks["f" + flank[0]];
+        });
+        console.log(this);
+        this.start();
     }
 
     _defenderFlanksAi()
