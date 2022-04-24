@@ -2440,6 +2440,7 @@ class Battle {
         battle.state = "initial";
 
         // Reset icon
+        icon.removeEventListener("click", Battle.cancelAllocCB, [false, true]);
         icon.addEventListener("click", Battle.startAllocCB, [false, true]);
         icon.classList.toggle("selected", false);
         icon.classList.toggle("available", true);
@@ -2996,10 +2997,6 @@ class Game
             }
             this._state = "waitForMoveSelect";
         }
-
-
-        // console.log(node);
-        // console.log(e.target);
     }
 
     /**
