@@ -38,13 +38,12 @@
 ### Jarrod Grothusen
 ```
 2022-04-19 - 5 hours (working with team as a whole)
-2022-04-20 - 3 hours (working with Andrew and Nhat)
 2022-04-21 - 5 hours (working with team as a whole)
 2022-04-22 - 6 hours (working with team as a whole)
 2022-04-23 - 12 hours (working with team as a whole)
 ```
-#### TOTAL: 31 + 2022-04-24 hours
+#### TOTAL: 29 + 2022-04-24 hours
 
 
 ## Group Total: 
-### 83.5 + 25 + 31 + 31 = 170.5
+### 83.5 + 25 + 31 + 31 = 167.5
