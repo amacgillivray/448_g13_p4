@@ -3102,6 +3102,10 @@ class Game
             [false, true]
         );
         realtarget.obj = this;
+        
+        //disable turn-indicator
+        document.getElementById("turn-indicator").removeEventListener("click", Game.changeTurn_cb, [false, false]);
+        document.getElementById("turn-indicator").style.color = "#999";
 
         // mark valid moves and add event listeners for their selection.
         region_connections[realtarget.id].forEach((validMove) => {
@@ -3153,6 +3157,10 @@ class Game
             );
         });
         
+        //re-enable turn-indicator
+        document.getElementById("turn-indicator").addEventListener("click", Game.changeTurn_cb, [false, false]);
+        document.getElementById("turn-indicator").style.color = "white";
+
         // Remove cancel handler
         e.currentTarget.removeEventListener(
             "click",
@@ -3212,6 +3220,10 @@ class Game
                 [false, true]
             );
         });
+
+        //re-enable turn-indicator
+        document.getElementById("turn-indicator").addEventListener("click", Game.changeTurn_cb, [false, false]);
+        document.getElementById("turn-indicator").style.color = "white";
 
         // console.log("Removed OTU event listener for " + e.currentTarget.oc + " click-to-cancel");
         document.getElementById(e.currentTarget.oc).removeEventListener(
