@@ -48,6 +48,7 @@ svg {
 #turn-indicator {
   text-align: center;
   margin: 0;
+  cursor: pointer;
 }
 
 #turn-indicator.blufor {
@@ -56,6 +57,10 @@ svg {
 
 #turn-indicator.opfor {
   background-color: #f54;
+}
+
+#turn-indicator:hover {
+  background-color: #24cf8b;
 }
 
 /* troopcount_hidden */
@@ -704,6 +709,8 @@ progress[value]::-webkit-progress-value {
   background-color: rgb(255, 228, 95);
   font-size: 15px;
 }
+
+
 
 .endturn:hover{
   background-color: rgb(161, 148, 0);
