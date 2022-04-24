@@ -1309,6 +1309,23 @@ class GameUI {
         ts++;
     }
 
+    // takes a message and puts it in the notification modal which is then displayed on the screen for the player.
+    static notification(message){
+        // Get the modal
+        var modal = document.getElementById("notif");
+
+        document.getElementById("notif-item").textContent = message;
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementById("notif-close");
+
+        modal.style.display = "block";
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+    }
 }
 
 /**
@@ -1742,6 +1759,7 @@ class Battle {
         });
         // Generate the defender's flanks using AI 
         this._defenderFlanksAi();
+
         // Get the attacker's flanks using the battle window
         this._drawBattleWindow();
     }
@@ -1794,11 +1812,11 @@ class Battle {
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
             "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
-            "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
+            "ARMOR:       " + (this._off.armorCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + (this._def.infantryCount - this._defRefCt[0]).toString() + "\n" +
             "HELICOPTER:  " + (this._def.helicopterCount - this._defRefCt[1]).toString() + "\n" +
-            "ARMOR:       " + (this._def.helicopterCount - this._defRefCt[2]).toString() +
+            "ARMOR:       " + (this._def.armorCount - this._defRefCt[2]).toString() +
             "</pre>";
 
         } else {
@@ -1822,7 +1840,7 @@ class Battle {
                 [
                     Math.floor((2/3)*(this._offRefCt[0]-this._off.infantryCount)*Math.random()),
                     Math.floor((2/3)*(this._offRefCt[1]-this._off.helicopterCount)*Math.random()),
-                    Math.floor((2/3)*(this._offRefCt[1]-this._off.armorCount)*Math.random())
+                    Math.floor((2/3)*(this._offRefCt[2]-this._off.armorCount)*Math.random())
                 ]
             );
 
@@ -1835,7 +1853,7 @@ class Battle {
             "             ATTACKER" + "\n" +
             "INFANTRY:    " + (this._off.infantryCount - this._offRefCt[0]).toString() + "\n" +
             "HELICOPTER:  " + (this._off.helicopterCount - this._offRefCt[1]).toString() + "\n" +
-            "ARMOR:       " + (this._off.helicopterCount - this._offRefCt[2]).toString() + "\n\n" +
+            "ARMOR:       " + (this._off.armorCount - this._offRefCt[2]).toString() + "\n\n" +
             "             DEFENDER" + "\n" +
             "INFANTRY:    " + -(this._defRefCt[0] - def_restored[0]).toString() + "\n" +
             "HELICOPTER:  " + -(this._defRefCt[1] - def_restored[1]).toString() + "\n" +
@@ -2110,6 +2128,8 @@ class Battle {
         // Get the element that closes the modal
         let span = document.getElementById("bw_close");
 
+        let spenser = document.getElementById("bw_auto");
+
         let display = document.getElementById("bw_display");
 
         let attackers = this._off;
@@ -2196,6 +2216,9 @@ class Battle {
                     tt_ct++;
                 }
             }
+
+            
+
         });
 
         modal.style.display = "block";
@@ -2203,6 +2226,11 @@ class Battle {
         // todo - right event listener options?
         span.addEventListener("click", Battle.closeWindowCB, [true, true]);
         span.obj = this;
+
+        spenser.addEventListener("click", Battle._offenseFlanksAi, [true, true]);
+        spenser.obj = this;
+        // spenser.onclick = this._offenseFlanksAi();
+
     }
 
     /**
@@ -2435,6 +2463,52 @@ class Battle {
         });
         console.log(this);
         this.start();
+    }
+
+    static _offenseFlanksAi( e )
+    {
+        console.log("sup bitches");
+        let battle = e.currentTarget.obj;
+        let modal = document.getElementById("battleWindow");
+        let flank_key = [
+            "left",
+            "middle",
+            "right"
+        ];
+
+        let offAlloc = [...battle._offRefCt];
+        for (let i = 0; i < troop_type_names.length; i++)
+        {
+            // let firstPass = true;
+            let min_buff = 1;
+
+            while (offAlloc[i] > 0)
+            {
+                for (let f = 0; f < 3; f++)
+                {
+                    let alloc = Math.ceil(Math.random() * offAlloc[i]);
+                    if (offAlloc[i] - alloc < 0)
+                        alloc = offAlloc[i];
+
+                    // Prioritize bonuses but be open to all terrain types
+                    if (terrain_mod[battle.terrain[f]][i] > min_buff)
+                    {
+                        battle._flanks[flank_key[f]]["attacker"][i] += alloc;
+                        offAlloc[i] -= alloc;
+                        if (offAlloc[i] == 0)
+                            break;
+                    }
+                }
+                // firstPass = false;
+                min_buff-=0.2;
+            } 
+        }
+
+        // Hide the window and start the battle
+        modal.style.display = "none";
+        
+        modal.innerHTML = "";
+        battle.start();
     }
 
     _defenderFlanksAi()
@@ -2683,6 +2757,8 @@ class Game
             }
         }
 
+        GameUI.notification("You have recieved " + this._cptReinforcements[0] + " infantry, " + this._cptReinforcements[1] + " helicopter, and " + this._cptReinforcements[2] + " armored vehicle reinforcements from your controlled capitals. These troops will be deployed to the next region you select.");
+
         gameLog(team_key[this._currentPlayerTurn] + " has reinforcements: " +
                 "<pre>" 
                 + troop_type_names[0].toUpperCase() + ":\t" + this._cptReinforcements[0] + "\n"
@@ -2792,6 +2868,8 @@ class Game
         });
 
         document.getElementById("turn-indicator").innerHTML = team_key[winteam] + " VICTORY";
+
+        GameUI.notification(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
 
         gameLog(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
     }
@@ -2916,7 +2994,6 @@ class Game
         let srcForce = this.getRegionForce(e.currentTarget.oc);
 
         if(dstForce._side != srcForce._side && dstForce._side != "neutral"){
-            console.log("sup bitches");
             e.currentTarget.classList.add("invalid");
         }
 
