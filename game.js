@@ -2098,10 +2098,6 @@ class Battle {
                 oref[i].push( off[e] );
                 dref[i].push( def[e] );
 
-                // console.log(this._def[troop_type_names[e]].dmgMod);
-                // console.log(Math.min(def[e], troop_combat_width[e]));
-                // console.log((Math.random()/2) + this._off_mod + terrain_mod[this.terrain[i]][e]);
-
                 // debugger;
                 if (this._off[troop_type_names[e]] != null) {
                     omax[i] += def[e] * this._off[troop_type_names[e]].hpMod;
@@ -2330,7 +2326,8 @@ class Battle {
 
                     icon.classList.toggle("t_np", false);
                     icon.classList.toggle("t", true);
-                    icon.classList.toggle("available", true);
+                    if (prefix[0] == "o") 
+                        icon.classList.toggle("available", true);
                     icon.setAttribute("data-type", troop_type_names[i]);
                     icon.setAttribute("data-count", side[troop_type_names[i] + "Count"]);
                     // console.log(prefix + "_alloc_" + tt_ct + "_text");
@@ -2355,6 +2352,7 @@ class Battle {
         // todo - right event listener options?
         
         // Add event listener for close/confirm button
+        span.style.backgroundColor = "#777";
         span.addEventListener("click", Battle.closeWindowCB, [true, true]);
         span.obj = this;
 
@@ -2591,6 +2589,13 @@ class Battle {
         flank.innerHTML += icon.outerHTML.replace(/id\=\"/gi, "id=\"ts" + ts + "_");
         document.getElementById("ts" + ts + "_" + icon_refid).setAttribute("data-count", new_sz);
 
+        // If no troops left to allocate, indicate that the cancel button can be clicked.
+        if (document.getElementsByClassName("available").length == 0)
+        {
+            let span = document.getElementById("bw_close");
+                span.removeAttribute("style");
+        }
+
         if (remaining_sz == 0)
             icon.remove();
         else {
@@ -2614,6 +2619,14 @@ class Battle {
             fm: [],
             fr: []
         };
+
+        debugger;
+
+        // Ignore if not all troops have been allocated.
+        let allocCheck = document.getElementsByClassName("available");
+        if (allocCheck.length > 0)
+            return;
+
 
         for (let i = 0; i < troop_type_names.length; i++)
         {
