@@ -2485,6 +2485,13 @@ class Battle {
         let battle = e.currentTarget.obj;
         let icon = e.currentTarget.toAdd;
         let flank = e.target;
+
+        // Get to the root flank element if a child of it was the event target
+        while (!flank.classList.contains("flex"))
+        {
+            flank = flank.parentElement;
+        }
+
         let fl = document.getElementById("fl"),
             fm = document.getElementById("fm"),
             fr = document.getElementById("fr");
@@ -2551,6 +2558,7 @@ class Battle {
         let remaining_sz = 0;
         let new_sz = 0;
         let flank = params[2];
+        let abort = false;
 
         if (battle.state != "allocWait")
             return;
@@ -2562,10 +2570,18 @@ class Battle {
             {
                 remaining_sz = icon_refsz - unit_cts[i];
                 new_sz = unit_cts[i];
+
+                if (unit_cts[i] == 0)
+                    abort = true;
             }
         }
 
         icon.classList.toggle("selected", false);
+
+        // If adding 0 troops, skip the rest of the logic
+        if (abort)
+            return;
+
         icon.classList.toggle("allocated", true);
         icon.setAttribute("data-count", remaining_sz);
         
