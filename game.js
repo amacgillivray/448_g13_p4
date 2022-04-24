@@ -1,9 +1,10 @@
 /**
- * @file game.js
- * @brief Implements the game functionality.
- * 
- * @author Jarrod Grothusen
+ * @file   game.js
+ * @brief  Implements the game.
  * @author Andrew MacGillivray
+ * @author Jarrod Grothusen
+ * @author Luke McCumber
+ * @author Nhat Nyugen
  */
 
 "use strict";
@@ -51,6 +52,10 @@ const troop_sizes = {
     brigade: 5000
 };
 
+/**
+ * @brief Indicates a more descriptive name for the blufor / opfor
+ *        for display in the UI.
+ */
 const team_key = {
     bf: "<span class=\"bluetext\">NATO</span>",
     of: "<span class=\"redtext\">PACT</span>"
@@ -70,6 +75,7 @@ const region_polygon_ids = [
     "hotel"
 ];
 
+// todo - can remove?
 const region_phonetic_key = {
     a: "alpha",
     b: "bravo",
@@ -81,6 +87,9 @@ const region_phonetic_key = {
     h: "hotel"
 };
 
+/**
+ * @brief Indicates the capital of each region
+ */
 const regions_capitals_key = {
     a: "a6",
     b: "b5",
@@ -94,6 +103,9 @@ const regions_capitals_key = {
     j: "j2"
 };
 
+/**
+ * @brief List of capitals, without index
+ */
 const regions_capitals = [
     "a6",
     "b5",
@@ -107,6 +119,9 @@ const regions_capitals = [
     "j2"
 ];
 
+/**
+ * @brief Sets the reinforcement bonus gained by controlling each capital
+ */
 const capitals_reinforcements = 
 {
     // Each index is an array of numbers for how many troops the player is granted
@@ -248,6 +263,9 @@ const region_connections = {
     j9: ["j5", "j6", "j8", "i4", "i9", "i8"]
 };
 
+/**
+ * @brief List of all possible terrain types
+ */
 const terrain_types = [
     "craters",
     "open",
@@ -257,6 +275,9 @@ const terrain_types = [
     "urban"
 ];
 
+/**
+ * @brief Describes the troop efficiency modifiers for each troop type within each terrain type.
+ */
 const terrain_mod = {
     craters: [
         1.4,
@@ -291,108 +312,112 @@ const terrain_mod = {
 };
 
 let region_terrain = {
-    a0: {craters: 0, open: 0, plains: 0.9, forest: 0, water: 0, urban:0 },
-    a1: {craters: 0, open: 0, plains: 0.6, forest: 0, water: 0, urban:0 },
-    a2: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0, urban:0 },
-    a3: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    a4: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0, urban:0 },
-    a5: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0, urban:0 },
-    a6: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    a7: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0.2, urban:0.5 },
-    a8: {craters: 0, open: 0, plains: 0.4, forest: 0.3, water: 0, urban:0 },
-    a9: {craters: 0, open: 0, plains: 0.5, forest: 0.4, water: 0, urban:0 },
-    b0: {craters: 0, open: 0, plains: 0.9, forest: 0.1, water: 0, urban:0 },
-    b1: {craters: 0, open: 0, plains: 0.5, forest: 0.1, water: 0, urban:0 },
-    b2: {craters: 0, open: 0, plains: 0.7, forest: 0.1, water: 0.1, urban:0 },
-    b3: {craters: 0, open: 0, plains: 0.8, forest: 0, water: 0, urban:0 },
-    b4: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.1, urban:0 },
-    b5: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.3, urban:0.6 },
-    b6: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.3, urban:0.5 },
-    b7: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0.8 },
-    b8: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0.5 },
-    b9: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.3, urban:0 },
-    c0: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.4, urban:0 },
-    c1: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.4, urban:0.5 },
-    c2: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0.8 },
-    c3: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.1, urban:0.9 },
-    c4: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.1, urban:0.8 },
-    c5: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0 },
-    c6: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0.2, urban:0 },
-    c7: {craters: 0, open: 0, plains: 0.3, forest: 0, water: 0, urban:0 },
-    c8: {craters: 0, open: 0, plains: 0, forest: 0, water: 0, urban:0.1 },
-    c9: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0.2 },
-    d0: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0 },
-    d1: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0.2 },
-    d2: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0.2, urban:0.6 },
-    d3: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0.1, urban:0.5 },
-    d4: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.1, urban:0 },
+    a0: {craters: 0, open: 0.3, plains: 0.9, forest: 0, water: 0, urban:0 },
+    a1: {craters: 0, open: 0.3, plains: 0.6, forest: 0, water: 0, urban:0 },
+    a2: {craters: 0, open: 0.3, plains: 0, forest: 0.5, water: 0, urban:0 },
+    a3: {craters: 0, open: 0.3, plains: 0, forest: 0.3, water: 0, urban:0 },
+    a4: {craters: 0, open: 0.3, plains: 0, forest: 0.5, water: 0, urban:0 },
+    a5: {craters: 0, open: 0.3, plains: 0, forest: 0.5, water: 0, urban:0 },
+    a6: {craters: 0, open: 0.3, plains: 0, forest: 0.3, water: 0, urban:0 },
+    a7: {craters: 0, open: 0.3, plains: 0, forest: 0.5, water: 0.2, urban:0.5 },
+    a8: {craters: 0, open: 0.3, plains: 0.4, forest: 0.3, water: 0, urban:0 },
+    a9: {craters: 0, open: 0.3, plains: 0.5, forest: 0.4, water: 0, urban:0 },
+    b0: {craters: 0, open: 0.3, plains: 0.9, forest: 0.1, water: 0, urban:0 },
+    b1: {craters: 0, open: 0.3, plains: 0.5, forest: 0.1, water: 0, urban:0 },
+    b2: {craters: 0, open: 0.3, plains: 0.7, forest: 0.1, water: 0.1, urban:0 },
+    b3: {craters: 0, open: 0.3, plains: 0.8, forest: 0, water: 0, urban:0 },
+    b4: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.1, urban:0 },
+    b5: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.3, urban:0.6 },
+    b6: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.3, urban:0.5 },
+    b7: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.2, urban:0.8 },
+    b8: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.2, urban:0.5 },
+    b9: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.3, urban:0 },
+    c0: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.4, urban:0 },
+    c1: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.4, urban:0.5 },
+    c2: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.2, urban:0.8 },
+    c3: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.1, urban:0.9 },
+    c4: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.1, urban:0.8 },
+    c5: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.2, urban:0 },
+    c6: {craters: 0, open: 0.3, plains: 0, forest: 0.2, water: 0.2, urban:0 },
+    c7: {craters: 0, open: 0.3, plains: 0.3, forest: 0, water: 0, urban:0 },
+    c8: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0, urban:0.1 },
+    c9: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.2, urban:0.2 },
+    d0: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.2, urban:0 },
+    d1: {craters: 0, open: 0.3, plains: 0, forest: 0.3, water: 0, urban:0.2 },
+    d2: {craters: 0, open: 0.3, plains: 0, forest: 0.2, water: 0.2, urban:0.6 },
+    d3: {craters: 0, open: 0.3, plains: 0, forest: 0.2, water: 0.1, urban:0.5 },
+    d4: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.1, urban:0 },
     d5: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
-    d6: {craters: 0, open: 0, plains: 0.5, forest: 0, water: 0, urban:0 },
-    d7: {craters: 0, open: 0, plains: 0.8, forest: 0, water: 0, urban:0 },
+    d6: {craters: 0, open: 0.3, plains: 0.5, forest: 0, water: 0, urban:0 },
+    d7: {craters: 0, open: 0.3, plains: 0.8, forest: 0, water: 0, urban:0 },
     d8: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
     d9: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
-    e0: {craters: 0, open: 0, plains: 0.5, forest: 0, water: 0.2, urban:0 },
-    e1: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0.2, urban:0 },
-    e2: {craters: 0, open: 0, plains: 0.5, forest: 0.3, water: 0, urban:0 },
-    e3: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0, urban:0.5 },
-    e4: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0.2, urban:0.5 },
-    e5: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0.2, urban:0.5 },
-    e6: {craters: 0, open: 0, plains: 0, forest: 0.9, water: 0, urban:0 },
+    e0: {craters: 0, open: 0.3, plains: 0.5, forest: 0, water: 0.2, urban:0 },
+    e1: {craters: 0, open: 0.3, plains: 0, forest: 0.5, water: 0.2, urban:0 },
+    e2: {craters: 0, open: 0.3, plains: 0.5, forest: 0.3, water: 0, urban:0 },
+    e3: {craters: 0, open: 0.3, plains: 0, forest: 0.2, water: 0, urban:0.5 },
+    e4: {craters: 0, open: 0.3, plains: 0, forest: 0.2, water: 0.2, urban:0.5 },
+    e5: {craters: 0, open: 0.3, plains: 0, forest: 0.2, water: 0.2, urban:0.5 },
+    e6: {craters: 0, open: 0.3, plains: 0, forest: 0.9, water: 0, urban:0 },
     e7: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
     e8: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
     e9: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
     f0: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
-    f1: {craters: 0, open: 0, plains: 0.7, forest: 0, water: 0.1, urban:0 },
-    f2: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0 },
-    f3: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0.4 },
-    f4: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0.8 },
-    f5: {craters: 0, open: 0, plains: 0.3, forest: 0, water: 0.2, urban:0.3 },
-    f6: {craters: 0, open: 0, plains: 0.3, forest: 0, water: 0, urban:0 },
-    f7: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0.3, urban:0.4 },
-    f8: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    f9: {craters: 0, open: 0, plains: 0, forest: 0.6, water: 0.1, urban:0.3 },
-    g0: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0, urban:0 },
-    g1: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    g2: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    g3: {craters: 0, open: 0, plains: 0.7, forest: 0, water: 0, urban:0 },
-    g4: {craters: 0, open: 0, plains: 0.1, forest: 0, water: 0.1, urban:0 },
-    g5: {craters: 0, open: 0, plains: 0.2, forest: 0.1, water: 0, urban:0 },
-    g6: {craters: 0, open: 0, plains: 0, forest: 0.4, water: 0, urban:0 },
-    g7: {craters: 0, open: 0, plains: 0, forest: 1, water: 0, urban:0 },
-    g8: {craters: 0, open: 0, plains: 0.4, forest: 0.3, water: 0, urban:0 },
-    g9: {craters: 0, open: 0, plains: 0.7, forest: 0, water: 0.2, urban:0 },
+    f1: {craters: 0, open: 0.3, plains: 0.7, forest: 0, water: 0.1, urban:0 },
+    f2: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.2, urban:0 },
+    f3: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.2, urban:0.4 },
+    f4: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.2, urban:0.8 },
+    f5: {craters: 0, open: 0.3, plains: 0.3, forest: 0, water: 0.2, urban:0.3 },
+    f6: {craters: 0, open: 0.3, plains: 0.3, forest: 0, water: 0, urban:0 },
+    f7: {craters: 0, open: 0.3, plains: 0, forest: 0.3, water: 0.3, urban:0.4 },
+    f8: {craters: 0, open: 0.3, plains: 0, forest: 0.3, water: 0, urban:0 },
+    f9: {craters: 0, open: 0.3, plains: 0, forest: 0.6, water: 0.1, urban:0.3 },
+    g0: {craters: 0, open: 0.3, plains: 0, forest: 0.5, water: 0, urban:0 },
+    g1: {craters: 0, open: 0.3, plains: 0, forest: 0.3, water: 0, urban:0 },
+    g2: {craters: 0, open: 0.3, plains: 0, forest: 0.3, water: 0, urban:0 },
+    g3: {craters: 0, open: 0.3, plains: 0.7, forest: 0, water: 0, urban:0 },
+    g4: {craters: 0, open: 0.3, plains: 0.1, forest: 0, water: 0.1, urban:0 },
+    g5: {craters: 0, open: 0.3, plains: 0.2, forest: 0.1, water: 0, urban:0 },
+    g6: {craters: 0, open: 0.3, plains: 0, forest: 0.4, water: 0, urban:0 },
+    g7: {craters: 0, open: 0.3, plains: 0, forest: 1, water: 0, urban:0 },
+    g8: {craters: 0, open: 0.3, plains: 0.4, forest: 0.3, water: 0, urban:0 },
+    g9: {craters: 0, open: 0.3, plains: 0.7, forest: 0, water: 0.2, urban:0 },
     h0: {craters: 0, open: 1, plains: 0, forest: 0, water: 0, urban:0 },
-    h1: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    h2: {craters: 0, open: 0, plains: 0.3, forest: 0, water: 0, urban:0 },
-    h3: {craters: 0, open: 0, plains: 0.5, forest: 0.1, water: 0, urban:0 },
-    h4: {craters: 0, open: 0, plains: 0, forest: 0.6, water: 0, urban:0 },
-    h5: {craters: 0, open: 0, plains: 0.2, forest: 0.5, water: 0, urban:0 },
-    h6: {craters: 0, open: 0, plains: 0.8, forest: 0, water: 0, urban:0 },
-    h7: {craters: 0, open: 0, plains: 0, forest: 1, water: 0, urban:0 },
-    h8: {craters: 0, open: 0, plains: 0, forest: 0.4, water: 0, urban:0 },
-    h9: {craters: 0, open: 0, plains: 0.5, forest: 0, water: 0, urban:0 },
-    i0: {craters: 0, open: 0, plains: 0.5, forest: 0.2, water: 0, urban:0 },
-    i1: {craters: 0, open: 0, plains: 0.5, forest: 0, water: 0.1, urban:0 },
-    i2: {craters: 0, open: 0, plains: 0, forest: 0, water: 0.2, urban:0 },
-    i3: {craters: 0, open: 0, plains: 0.3, forest: 0.4, water: 0.1, urban:0 },
-    i4: {craters: 0, open: 0, plains: 0, forest: 0.9, water: 0, urban:0 },
-    i5: {craters: 0, open: 0, plains: 0.5, forest: 0.2, water: 0, urban:0 },
-    i6: {craters: 0, open: 0, plains: 0.2, forest: 0.4, water: 0, urban:0 },
-    i7: {craters: 0, open: 0, plains: 0.3, forest: 0.5, water: 0, urban:0 },
-    i8: {craters: 0, open: 0, plains: 0.3, forest: 0.3, water: 0, urban:0 },
-    i9: {craters: 0, open: 0, plains: 0.4, forest: 0.5, water: 0, urban:0 },
-    j0: {craters: 0, open: 0, plains: 0, forest: 0.2, water: 0.2, urban:0.6 },
-    j1: {craters: 0, open: 0, plains: 0, forest: 0.5, water: 0, urban:0.2 },
-    j2: {craters: 0, open: 0, plains: 0, forest: 0.4, water: 0, urban:0 },
-    j3: {craters: 0, open: 0, plains: 0, forest: 0.4, water: 0, urban:0 },
-    j4: {craters: 0, open: 0, plains: 0, forest: 0.3, water: 0, urban:0 },
-    j5: {craters: 0, open: 0, plains: 0, forest: 0.7, water: 0, urban:0 },
-    j6: {craters: 0, open: 0, plains: 0, forest: 0.8, water: 0, urban:0 },
-    j7: {craters: 0, open: 0, plains: 0, forest: 0.6, water: 0, urban:0 },
-    j8: {craters: 0, open: 0, plains: 0.3, forest: 0.7, water: 0, urban:0 },
-    j9: {craters: 0, open: 0, plains: 0.2, forest: 0.8, water: 0, urban:0 },
+    h1: {craters: 0, open: 0.3, plains: 0, forest: 0.3, water: 0, urban:0 },
+    h2: {craters: 0, open: 0.3, plains: 0.3, forest: 0, water: 0, urban:0 },
+    h3: {craters: 0, open: 0.3, plains: 0.5, forest: 0.1, water: 0, urban:0 },
+    h4: {craters: 0, open: 0.3, plains: 0, forest: 0.6, water: 0, urban:0 },
+    h5: {craters: 0, open: 0.3, plains: 0.2, forest: 0.5, water: 0, urban:0 },
+    h6: {craters: 0, open: 0.3, plains: 0.8, forest: 0, water: 0, urban:0 },
+    h7: {craters: 0, open: 0.3, plains: 0, forest: 1, water: 0, urban:0 },
+    h8: {craters: 0, open: 0.3, plains: 0, forest: 0.4, water: 0, urban:0 },
+    h9: {craters: 0, open: 0.3, plains: 0.5, forest: 0, water: 0, urban:0 },
+    i0: {craters: 0, open: 0.3, plains: 0.5, forest: 0.2, water: 0, urban:0 },
+    i1: {craters: 0, open: 0.3, plains: 0.5, forest: 0, water: 0.1, urban:0 },
+    i2: {craters: 0, open: 0.3, plains: 0, forest: 0, water: 0.2, urban:0 },
+    i3: {craters: 0, open: 0.3, plains: 0.3, forest: 0.4, water: 0.1, urban:0 },
+    i4: {craters: 0, open: 0.3, plains: 0, forest: 0.9, water: 0, urban:0 },
+    i5: {craters: 0, open: 0.3, plains: 0.5, forest: 0.2, water: 0, urban:0 },
+    i6: {craters: 0, open: 0.3, plains: 0.2, forest: 0.4, water: 0, urban:0 },
+    i7: {craters: 0, open: 0.3, plains: 0.3, forest: 0.5, water: 0, urban:0 },
+    i8: {craters: 0, open: 0.3, plains: 0.3, forest: 0.3, water: 0, urban:0 },
+    i9: {craters: 0, open: 0.3, plains: 0.4, forest: 0.5, water: 0, urban:0 },
+    j0: {craters: 0, open: 0.3, plains: 0, forest: 0.2, water: 0.2, urban:0.6 },
+    j1: {craters: 0, open: 0.3, plains: 0, forest: 0.5, water: 0, urban:0.2 },
+    j2: {craters: 0, open: 0.3, plains: 0, forest: 0.4, water: 0, urban:0 },
+    j3: {craters: 0, open: 0.3, plains: 0, forest: 0.4, water: 0, urban:0 },
+    j4: {craters: 0, open: 0.3, plains: 0, forest: 0.3, water: 0, urban:0 },
+    j5: {craters: 0, open: 0.3, plains: 0, forest: 0.7, water: 0, urban:0 },
+    j6: {craters: 0, open: 0.3, plains: 0, forest: 0.8, water: 0, urban:0 },
+    j7: {craters: 0, open: 0.3, plains: 0, forest: 0.6, water: 0, urban:0 },
+    j8: {craters: 0, open: 0.3, plains: 0.3, forest: 0.7, water: 0, urban:0 },
+    j9: {craters: 0, open: 0.3, plains: 0.2, forest: 0.8, water: 0, urban:0 },
 };
 
+/**
+ * @brief Describes the state of ownership / troop presence in each region at the start 
+ *        of the game. Used by the Game class to initialize all force objects.
+ */
 const game_setup = {
     //{side: bf/of, force:[infantry, helicopter, a
     a0: {side: "neutral", force: [0, 0, 0]},
@@ -507,7 +532,9 @@ const opfor_prefix = "of";
  */
 const blufor_prefix = "bf";
 
-
+/**
+ * @brief Posts the provided message to the game's log (UI component)
+ */
 function gameLog( message, classlist = "" )
 {
     let log = document.getElementById("log");
@@ -535,6 +562,13 @@ function gameLog( message, classlist = "" )
     log_entries++;
 }
 
+/**
+ * @brief Determines the class name of the troop-size indicator most appropriate 
+ *        for the given number of troops.
+ * @param {number} size 
+ * @returns string 
+ *          The name of the troop-size indicator that best fits the size.
+ */
 function getBestTroopCountSymbol( size )
 {
     let icon_sizes = [
@@ -599,14 +633,6 @@ function isCapitalRegion( region_id )
     return (region_id == regions_capitals_key[region_id[0]]);
 }
 
-function dist( a, b )
-{
-    let dx = Math.abs(a[0]-b[0]);
-    let dy = Math.abs(a[1]-b[1]);
-
-    return Math.sqrt(dx^2+dy^2);
-}
-
 function crater_cb( e )
 {    
     document.getElementById(e.target.id).setAttribute("class", "crater_filled");
@@ -627,7 +653,7 @@ function changeTurn_cb( e )
 }
 
 /**
- * @brief Class containing static methods to interact with the map
+ * @brief Class containing static methods to work with the game's user interface
  */
 class GameUI {
 
@@ -841,7 +867,7 @@ class GameUI {
     }
 
     /**
-     * 
+     * @brief Creates combat animations to visually indicate a firefight between the source and target units.
      * @param {Unit}  source 
      * @param {array} targets
      *        Array of Unit objects that the source is firing at. 
@@ -953,6 +979,11 @@ class GameUI {
         }
     }
 
+    /**
+     * @brief Replaces the "crater" class with "crater_filled", ending any active animations.
+     *        Useful if called at the end of combat, to ensure old craters do not replay their
+     *        "explosion" animation when new combat begins.
+     */
     static craterFix()
     {
         let cc = document.getElementsByClassName("crater");
@@ -962,6 +993,10 @@ class GameUI {
         }
     }
 
+    /**
+     * @brief Removes combat animations from the specified battle number
+     * @param {number} battle_no 
+     */
     static removeCombatAnimations( battle_no ) 
     {
         let old_anims = document.getElementsByClassName("cbt_no_" + battle_no );
@@ -1136,12 +1171,10 @@ class GameUI {
                 eco[1]
             ];
             ecm = [
-                // eco[0],
                 dc[0],
                 dc[1]
             ];
 
-            // let mf = dist(eco, ecm)/w;
             let mv = Math.abs(ecm[0]-eco[0]);
             let mf = mv/w;
 
@@ -1189,8 +1222,10 @@ class GameUI {
         container.innerHTML += arrow.outerHTML + "\n";
     }
 
-    // todo - take array of cells to draw clouds in
-    // tie into combat system; helicopters less effective in clouds
+    /**
+     * @brief Draws clouds on the map. 
+     * @todo tie into combat system; helicopters less effective when clouds present
+     */
     static drawClouds()
     {
         // let max = 
@@ -1239,6 +1274,18 @@ class GameUI {
         }
     }
 
+    /**
+     * @brief Displays a modal for moving troops. 
+     * @param {array} unit_cts 
+     *        Array of numbers indicating how many troops of each type are available to 
+     *        the current player for the current action. Indexes pertain to troop_type_names.
+     * @param {*} callback 
+     *        A callback function to call with cbparms after the user submits the modal.
+     *        The callback will be given the values of the modal, as an array, in addition
+     *        to cbparms.
+     * @param {*} cbparms 
+     *        Additional parameters for the callback function
+     */
     static troopSplitModal( unit_cts, callback, cbparms )
     {
         let modal = document.getElementById("troopSplitter");
@@ -1270,6 +1317,11 @@ class GameUI {
         close.cbparms = cbparms;
     }
 
+    /**
+     * @brief Callback for the troopSplit modal window. Captures values then 
+     *        executes the provided callback function.
+     * @param {*} e 
+     */
     static troopSplitModalCB( e )
     {
         let fields = e.currentTarget.fields;
@@ -1309,16 +1361,18 @@ class GameUI {
         ts++;
     }
 
-    // takes a message and puts it in the notification modal which is then displayed on the screen for the player.
+    /**
+     * @brief takes a message and puts it in the notification modal, which is
+     *        then displayed on the screen for the player.
+     */
     static notification(message){
         // Get the modal
         var modal = document.getElementById("notif");
 
-        document.getElementById("notif-item").textContent = message;
+        document.getElementById("notif-item").innerHTML = message;
 
         // Get the <span> element that closes the modal
         var span = document.getElementById("notif-close");
-
         modal.style.display = "block";
 
         // When the user clicks on <span> (x), close the modal
@@ -1329,211 +1383,10 @@ class GameUI {
 }
 
 /**
- * @brief Represents the entirety of one team's troops (of multiple types) within a given region.
- * @note  make sure to prevent any addition of troops from the opposite side to a force when a battle 
- *        begins. Either make moving to an occupied region immediately begin a battle, or copy the 
- *        "side" variable from found units on startup and check when adding troops.
- */
-class Force{
-    
-	constructor(region_id){
-		this._region = region_id;
-        this._side = game_setup[region_id]["side"];
-        this._unitList = [];
-        let units = game_setup[region_id]["force"];
-
-        troop_type_names.forEach((unitType) => {
-            // node id format: [teamprefix]_[regionletter]_[trooptype]
-            // let selector = this._side + "_" + region_letter + "_" + unitType;
-            // console.log(selector);
-            // let node = document.getElementById(selector);
-            // if (node.classList.contains("t"))
-            if (units[troop_type_names.indexOf(unitType)] > 0) {
-                this._unitList.push( new Unit(unitType, this._region, units[troop_type_names.indexOf(unitType)], this._side ) );
-                GameUI.updateUnitDisplay( this.unitList[troop_type_names.indexOf(unitType)] );
-            } else
-                this._unitList.push( null );
-        });
-
-        GameUI.setRegionOwner(this.region, this.side);
-
-        // this._unitList = [];
-        // for (let i = 0; i < troop_type_names.length; i++)
-        //     this._unitList[i] = null;
-        // if (this.side != "neutral")
-        //     this.alterForce(game_setup[region_id]["force"]);
-	}
-
-	//getters
-	get side(){
-        return this._side;
-	}
-	get region(){
-		return this._region;
-	}
-    get region_phonetic(){
-        return region_phonetic_key[this._region];
-    }
-	get unitList(){
-		return this._unitList;
-	}
-	get infantry(){
-		return this._unitList[0];
-	}
-	get helicopter(){
-		return this._unitList[1];
-	}
-	get armor(){
-		return this._unitList[2];
-	}
-	get infantryCount(){
-		return (this._unitList[0] == null) ? 0 : this._unitList[0].count;
-	}
-	get helicopterCount(){
-		return (this._unitList[1] == null) ? 0 : this._unitList[1].count;
-	}
-	get armorCount(){
-		return (this._unitList[2] == null) ? 0 : this._unitList[2].count;
-	}
-
-    get totalCount() {
-        return this.infantryCount + this.helicopterCount + this.armorCount;
-    }
-
-	//setters
-    set region(p){
-		this._region = p;
-	}
-	set unitList(uts){
-		this._unitList = uts;
-        this._determineSide();
-	}
-
-	//methods
-	alterForce(list){
-        // console.log(list);
-		for(let i = 0; i < 3; i++){
-			if(this._unitList[i] != null){
-				this._unitList[i].alterUnits(list[i]);
-                GameUI.updateUnitDisplay(this._unitList[i]);
-			} else {
-                // todo check later
-                this._unitList[i] = new Unit(
-                    troop_type_names[i],
-                    this._region,
-                    list[i],
-                    this._side
-                );
-                //console.log(this._unitList[i] + ": " + list[i]);
-                GameUI.updateUnitDisplay(this._unitList[i]);
-            }
-		}
-
-        // Remove empty units
-        for(let i = 0; i < this._unitList.length; i++){
-			if(this._unitList[i].count == 0){
-                this._unitList[i] = null;
-            }
-        }
-
-        this._determineSide();
-	}
-
-    // Todo - make "damage" an array to tell what fraction is from inf, hel, armor,
-    // and give the respective buffs / debuffs vs other units. 
-    distributeDamage( damage )
-    {
-
-        let types_present = 0;
-        // let fractional_damage = 0;
-        let newIc = 0;
-        let newHc = 0;
-        let newAc = 0;
-        let af = [ 0, 0, 0 ];
-
-        // random number between 0 and 1 to determine how to distribute damage between infantry
-        // and vehicles. Infantry damage is multiplied by balanceFactor, while vehicle damage 
-        // is divided by it.
-        let balanceFactor = Math.random();
-
-        if (this.infantryCount > 0)
-            types_present++;
-        if (this.armorCount > 0)
-            types_present++;
-        if (this.helicopterCount > 0)
-            types_present++;
-        
-
-        let damageMatrix = [
-            balanceFactor * (this.infantryCount / this.totalCount),
-            (1/balanceFactor) * (this.helicopterCount / this.totalCount),
-            (1/balanceFactor) * (this.armorCount / this.totalCount)
-        ];
-
-        if (this.infantryCount > 0)
-        {
-            newIc = this.infantryCount - ((damageMatrix[0] * damage) / this.infantry.hpMod);
-            if (newIc < 0) {
-                newIc = 0;
-            }
-            af[0] = (newIc - this.infantryCount);
-        }
-
-        if (this.helicopterCount > 0)
-        {
-            newHc = this.helicopterCount - ((damageMatrix[1] * damage) / this.helicopter.hpMod);
-            if (newHc < 0) {
-                newHc = 0;
-            }
-            af[1] = (newHc - this.helicopterCount);
-        }
-
-        if (this.armorCount > 0)
-        {
-            newAc = this.armorCount - ((damageMatrix[2] * damage) / this.armor.hpMod);
-            if (newAc < 0) {
-                newAc = 0;
-            }
-            af[2] = (newAc - this.armorCount);
-        }
-
-        this.alterForce(af);
-    }
-
-    /**
-     * @brief Determines which team the force belongs to. Optionally updates the region display.
-     * @param {bool} updateRegionOwner = true
-     *        When true, updates the region display to match the current owner using GameUI
-     *        setRegionOwner(). When false, no changes are made to the map when the function is
-     *        called.
-     */
-    _determineSide( updateRegionOwner = true )
-    {
-        // Track the previous side value
-        let prev_side = this._side;
-
-        // Default to "neutral"
-        this._side = "neutral";
-        
-        // Determine the side based on the units in the region
-        for (let i = 0; i < troop_type_names.length; i++)
-            if (this._unitList[i] != null)
-                this._side = this._unitList[i].side;
-
-        // Preserve ownership of capitals even when they become empty
-        if (this._side == "neutral" && isCapitalRegion(this._region) && prev_side != "neutral")
-            this._side = prev_side;
-        
-        // Conditionally update the map display based on argument
-        if (updateRegionOwner)
-            GameUI.setRegionOwner(this._region, this._side);
-    }
-}
-
-/**
  * @brief represents an individual troop type (infantry, helicopter, or armor)
+ * 
  */
-class Unit{
+ class Unit{
 
     constructor(type, region, count, side){
 
@@ -1614,14 +1467,21 @@ class Unit{
 	    this._type = t;
 	}
 	
-	//methods
-	//movement calc(){
-		// mov = movementFunction(region.terrain, this.type)
-		// this.movement = mov;
-	// }
+    /**
+     * @brief Applies the given amount of damage to the unit's health.
+     * @note  Converted to absolute value for safety; always detracts from health.
+     * @param {Number} dmg 
+     */
 	updateHealth(dmg){
-		this.health = this.health - dmg; 
+		this.health = this.health - Math.abs(dmg); 
 	}
+
+    /**
+     * @brief Directly modifies the number of troops in this unit, based on count.
+     * @details The health of the unit is increased by the hpMod (health-per-unit)
+     *          times the given count (number of units to add).
+     * @param {Number} cnt 
+     */
 	alterUnits(cnt){
         // console.log("Adding " + cnt + " to " + this._id);
 		this._health += (this.hpMod * cnt);
@@ -1629,11 +1489,202 @@ class Unit{
 	}
 }
 
-function battleCb( obj )
-{
-    obj._tick();
+/**
+ * @brief Represents the entirety of one team's troops (of multiple types) within a given region.
+ */
+class Force{
+    
+	constructor(region_id){
+		this._region = region_id;
+        this._side = game_setup[region_id]["side"];
+        this._unitList = [];
+        let units = game_setup[region_id]["force"];
+
+        troop_type_names.forEach((unitType) => {
+            if (units[troop_type_names.indexOf(unitType)] > 0) {
+                this._unitList.push( new Unit(unitType, this._region, units[troop_type_names.indexOf(unitType)], this._side ) );
+                GameUI.updateUnitDisplay( this.unitList[troop_type_names.indexOf(unitType)] );
+            } else
+                this._unitList.push( null );
+        });
+
+        GameUI.setRegionOwner(this.region, this.side);
+	}
+
+	//getters
+	get side(){
+        return this._side;
+	}
+	get region(){
+		return this._region;
+	}
+    get region_phonetic(){
+        return region_phonetic_key[this._region];
+    }
+	get unitList(){
+		return this._unitList;
+	}
+	get infantry(){
+		return this._unitList[0];
+	}
+	get helicopter(){
+		return this._unitList[1];
+	}
+	get armor(){
+		return this._unitList[2];
+	}
+	get infantryCount(){
+		return (this._unitList[0] == null) ? 0 : this._unitList[0].count;
+	}
+	get helicopterCount(){
+		return (this._unitList[1] == null) ? 0 : this._unitList[1].count;
+	}
+	get armorCount(){
+		return (this._unitList[2] == null) ? 0 : this._unitList[2].count;
+	}
+
+    get totalCount() {
+        return this.infantryCount + this.helicopterCount + this.armorCount;
+    }
+
+	//setters
+    set region(p){
+		this._region = p;
+	}
+	set unitList(uts){
+		this._unitList = uts;
+        this._determineSide();
+	}
+
+	/**
+     * @brief Uses the provided list to update the units in the force.
+     *        Then, calls determineSide() to ensure the region owner is correct.
+     * @param {array} list 
+     */
+	alterForce(list){
+		for(let i = 0; i < 3; i++){
+			if(this._unitList[i] != null){
+				this._unitList[i].alterUnits(list[i]);
+                GameUI.updateUnitDisplay(this._unitList[i]);
+			} else {
+                this._unitList[i] = new Unit(
+                    troop_type_names[i],
+                    this._region,
+                    list[i],
+                    this._side
+                );
+                GameUI.updateUnitDisplay(this._unitList[i]);
+            }
+		}
+
+        // Remove empty units
+        for(let i = 0; i < this._unitList.length; i++){
+			if(this._unitList[i].count == 0){
+                this._unitList[i] = null;
+            }
+        }
+
+        this._determineSide();
+	}
+
+    /**
+     * @brief Given a number, distribute that amount of damage to the units in the force.
+     *        Applies a balancing factor to split damage between infantry and vehicles.
+     * @param {Number} damage 
+     * @todo   make "damage" an array to tell what fraction is from inf, hel, armor,
+     *         and give the respective buffs / debuffs vs other units. 
+     */
+    distributeDamage( damage )
+    {
+
+        let types_present = 0;
+        let newIc = 0;
+        let newHc = 0;
+        let newAc = 0;
+        let af = [ 0, 0, 0 ];
+
+        // random number between 0 and 1 to determine how to distribute damage between infantry
+        // and vehicles. Infantry damage is multiplied by balanceFactor, while vehicle damage 
+        // is divided by it.
+        let balanceFactor = Math.random();
+
+        if (this.infantryCount > 0)
+            types_present++;
+        if (this.armorCount > 0)
+            types_present++;
+        if (this.helicopterCount > 0)
+            types_present++;
+        
+        let damageMatrix = [
+            balanceFactor * (this.infantryCount / this.totalCount),
+            (1/balanceFactor) * (this.helicopterCount / this.totalCount),
+            (1/balanceFactor) * (this.armorCount / this.totalCount)
+        ];
+
+        if (this.infantryCount > 0)
+        {
+            newIc = this.infantryCount - ((damageMatrix[0] * damage) / this.infantry.hpMod);
+            if (newIc < 0) {
+                newIc = 0;
+            }
+            af[0] = (newIc - this.infantryCount);
+        }
+
+        if (this.helicopterCount > 0)
+        {
+            newHc = this.helicopterCount - ((damageMatrix[1] * damage) / this.helicopter.hpMod);
+            if (newHc < 0) {
+                newHc = 0;
+            }
+            af[1] = (newHc - this.helicopterCount);
+        }
+
+        if (this.armorCount > 0)
+        {
+            newAc = this.armorCount - ((damageMatrix[2] * damage) / this.armor.hpMod);
+            if (newAc < 0) {
+                newAc = 0;
+            }
+            af[2] = (newAc - this.armorCount);
+        }
+
+        this.alterForce(af);
+    }
+
+    /**
+     * @brief Determines which team the force belongs to. Optionally updates the region display.
+     * @param {bool} updateRegionOwner = true
+     *        When true, updates the region display to match the current owner using GameUI
+     *        setRegionOwner(). When false, no changes are made to the map when the function is
+     *        called.
+     */
+    _determineSide( updateRegionOwner = true )
+    {
+        // Track the previous side value
+        let prev_side = this._side;
+
+        // Default to "neutral"
+        this._side = "neutral";
+        
+        // Determine the side based on the units in the region
+        for (let i = 0; i < troop_type_names.length; i++)
+            if (this._unitList[i] != null)
+                this._side = this._unitList[i].side;
+
+        // Preserve ownership of capitals even when they become empty
+        if (this._side == "neutral" && isCapitalRegion(this._region) && prev_side != "neutral")
+            this._side = prev_side;
+        
+        // Conditionally update the map display based on argument
+        if (updateRegionOwner)
+            GameUI.setRegionOwner(this._region, this._side);
+    }
 }
 
+/**
+ * @brief Using two opposing forces, provided to the constructor, conducts a
+ *        battle until one of the forces is defeated.
+ */
 class Battle {
 
     /**
@@ -1650,6 +1701,8 @@ class Battle {
 
         this._battle_number = battle_ct;
         battle_ct++;
+
+        this._tickInterval = [200];
 
         this._off = attacking_force;
         this._offRefCt = [
@@ -1764,15 +1817,38 @@ class Battle {
         this._drawBattleWindow();
     }
 
-    start()
+    /**
+     * @brief Function that calls the battle's "_tick" method to perform a single 
+     *        "round" of combat. Intended to be called using Battle.start()
+     * @param {*} battle 
+     */
+    static run_battle( battle )
     {
-        // game.battleIncrement();
-        this._interval = setInterval(battleCb, [200], this);
+        battle._tick();
     }
 
+    /**
+     * @brief Begins the battle by setting "_tick()" to be called at a fixed 
+     *        interval. 
+     * @details Once called, nothing else needs to be done to this object 
+     *          externally. The battle will run until one side has been defeated.
+     */
+    start()
+    {
+        this._interval = setInterval(Battle.run_battle, this._tickInterval, this);
+    }
 
-    // called by the move handler fn when opposing armies try to 
-    // occupy the same cell. 
+    /**
+     * @brief Handles the end of the battle.
+     * @details
+     *  Upon the battle end, determines the amount of casualties regained by each
+     *  side and posts a log message describing the battle's costs. Then, alters
+     *  the participating forces accordingly. Finally, posts the winner to the log
+     *  and calls game.battleIncrement() to either start the next battle or end 
+     *  the current player's turn.
+     * 
+     * @returns void
+     */
     end()
     {
         clearInterval(this._interval);
@@ -1782,7 +1858,6 @@ class Battle {
         let troopLossRecord = "";
 
         let defCasualtyBonus = (this._defIsCapital) ? Math.random() : 0;
-
 
         if (this._off.totalCount == 0)
         {
@@ -1835,7 +1910,7 @@ class Battle {
                 def_restored = [0,0,0];
 
 
-            // restore attacker losses 
+            // restore attacker losses
             this._off.alterForce(
                 [
                     Math.floor((2/3)*(this._offRefCt[0]-this._off.infantryCount)*Math.random()),
@@ -1871,7 +1946,6 @@ class Battle {
                     this._off.armorCount
                 ]
             );
-
             this._off.alterForce(
                 [
                     (-1)*this._off.infantryCount,
@@ -1881,13 +1955,8 @@ class Battle {
             );
         }
 
-        
         gameLog( winside + " " + verb + " control of " + this._def.region + "." + troopLossRecord);
-
-        //battle_ct++;
         GameUI.removeCombatAnimations( this._battle_number );
-        // game.battleEndCb();
-
         game.battleIncrement();
     	return;
     }
@@ -2030,12 +2099,6 @@ class Battle {
             }
         }
 
-        // Deal damage to offense
-        // this._off.distributeDamage(dmgd);
-
-        // Deal damage to defense
-        // this._def.distributeDamage(dmgo);
-
         if ( this._off.totalCount <= 0 || this._def.totalCount <= 0 )
         {
             GameUI.removeCombatAnimations( this._battle_number );
@@ -2046,6 +2109,15 @@ class Battle {
         return;
     }
 
+    /**
+     * @brief When the origin flank is opposed by an empty flank, finds a
+     *        new candidate flank such that the origin can move there and 
+     *        fight enemies.
+     * @param {string} originFlank
+     *        Left, right, or middle 
+     * @param {string} side
+     *        Attacker or defender.
+     */
     _findCandidateFlank( originFlank, side )
     {
         let flanks = ["left", "middle", "right"];
@@ -2086,6 +2158,10 @@ class Battle {
         return fc;
     }
 
+    /**
+     * @brief Calls GameUI.animateUnitCombat() with the appropriate parameters, 
+     *        based on the units currently engaged in combat.
+     */
     _animateCombat()
     {
         let off_target = [
@@ -2109,6 +2185,12 @@ class Battle {
         });
     }
 
+    /**
+     * @brief Updates the battle progress indicator in the game log (UI element)
+     *        to reflect total troop counts at the end of the tick.
+     * @note  May be more indicative to draw progress based on health than total count
+     *        but then "comebacks" would be rarer.
+     */
     _drawProgress()
     {
         if (this._off.side == "of")
@@ -2119,17 +2201,21 @@ class Battle {
         }
     }
 
-    _drawBattleWindow () 
+    /**
+     * @brief Draws a modal where the user determines how their troops should be
+     *        organized into flanks at the start of the battle.
+     * 
+     * @post  BattleWindow is visible
+     * @post  BattleWindow has icons and count indicators matching starting force
+     * @post  Icon GAINS EventListener("click", Battle.startAllocCB, [false, true]);
+     */
+    _drawBattleWindow() 
     {
         const drawBattleDisplay = true;
-        // Get the modal
         let modal = document.getElementById("battleWindow");
             modal.innerHTML = bwContent;
-        // Get the element that closes the modal
         let span = document.getElementById("bw_close");
-
         let spenser = document.getElementById("bw_auto");
-
         let display = document.getElementById("bw_display");
 
         let attackers = this._off;
@@ -2151,7 +2237,7 @@ class Battle {
         if (drawBattleDisplay) {
             let ar = document.getElementById(attackers._region);
             let dr = document.getElementById(defender._region );
-            ["countries-inert", "regions", "plains", "forest", "urban-dense", "water", "crater-layer", "clouds"].forEach(
+            ["countries-inert", "regions", "plains", "forest", "urban-dense", "water", "crater-layer", "arrow-container", "clouds"].forEach(
                 (terrain) => {
                     let t_n = document.getElementById(terrain);
                     let clone = t_n.cloneNode(true);
@@ -2216,9 +2302,6 @@ class Battle {
                     tt_ct++;
                 }
             }
-
-            
-
         });
 
         modal.style.display = "block";
@@ -2226,35 +2309,31 @@ class Battle {
         // todo - right event listener options?
         span.addEventListener("click", Battle.closeWindowCB, [true, true]);
         span.obj = this;
-
         spenser.addEventListener("click", Battle._offenseFlanksAi, [true, true]);
         spenser.obj = this;
-        // spenser.onclick = this._offenseFlanksAi();
-
     }
 
     /**
      * @brief When the user clicks one of their available troop allocation icons, highlight the flanks and allow them
      *        to place the troops there
-     * @param {event} e 
+     * @param {Event} e 
+     * 
+     * @post  Icon LOSES EventListener("click", Battle.startAllocCB, [false, true]);
+     * @post  Icon GAINS EventListener("click", Battle.cancelAllocCB, [false, true]);
+     * @post  Flank GAINS EventListener("click", Battle.promptAllocCb, [false, true] );
      */
     static startAllocCB( e )
     {
         let battle = e.currentTarget.obj;
+        let icon = e.currentTarget;
+        let fl = document.getElementById("fl"),
+            fm = document.getElementById("fm"),
+            fr = document.getElementById("fr");
 
         // Ignore if a different troop is already being moved
         if (battle.state == "allocWait")
             return;
         battle.state = "allocWait";
-
-        let icon = e.currentTarget;
-
-        console.log(icon);
-
-        // let modal = document.getElementById("battleWindow"); 
-        let fl = document.getElementById("fl"),
-            fm = document.getElementById("fm"),
-            fr = document.getElementById("fr");
 
         while (!icon.classList.contains("t"))
         {
@@ -2266,11 +2345,8 @@ class Battle {
         }
         icon.classList.toggle("selected", true);
         icon.classList.toggle("available", false);
-        // icon.removeEventListener("click", Battle.startAllocCB, [false, true]);
         icon.addEventListener("click", Battle.cancelAllocCB, [false, true]);
         icon.obj = battle;
-
-        // tt = tt.parentElement;
 
         let tt_name = icon.getAttribute("data-type");
         ["fl","fm","fr"].forEach((flank) => {
@@ -2280,21 +2356,29 @@ class Battle {
         });
 
         [fl, fm, fr].forEach((flank) => {
-            // if (!isset( icon.forbid ) || flank != icon.forbid ) 
-            // {
-                flank.classList.toggle("validalloc", true);
-                // flank.addEventListener("click", Battle.applyAllocCB, [false, true])
-                flank.addEventListener("click", Battle.promptAllocCb, [false, true] );
-                flank.obj = battle;
-                flank.toAdd = icon;
-            // }
+            flank.classList.toggle("validalloc", true);
+            flank.addEventListener("click", Battle.promptAllocCb, [false, true] );
+            flank.obj = battle;
+            flank.toAdd = icon;
         });
     }
 
+    /**
+     * @brief If a selected icon is clicked again, cancel the movement.
+     * @param {Event} e 
+     * @returns void
+     * 
+     * @post Icon LOSES EventListener("click", Battle.cancelAllocCB, [false, true]);
+     * @post Icon GAINS EventListener("click", Battle.startAllocCB, [false, true]);
+     * @post Flank LOSES flank.removeEventListener("click", Battle.applyAllocCB, [false, true]);
+     */
     static cancelAllocCB( e )
     {
         let battle = e.currentTarget.obj;
         let icon = e.target;
+        let fl = document.getElementById("fl"),
+            fm = document.getElementById("fm"),
+            fr = document.getElementById("fr");
 
         while (!icon.classList.contains("t"))
         {
@@ -2310,7 +2394,6 @@ class Battle {
         battle.state = "initial";
 
         // Reset icon
-        // icon.removeEventListener("click", Battle.cancelAllocCB, [false, true]);
         icon.addEventListener("click", Battle.startAllocCB, [false, true]);
         icon.classList.toggle("selected", false);
         icon.classList.toggle("available", true);
@@ -2325,12 +2408,22 @@ class Battle {
         // Remove listeners on the flanks
         [fl, fm, fr].forEach((flank) => {
             flank.classList.toggle("validalloc", false);
-            flank.removeEventListener("click", Battle.applyAllocCB, [false, true])
+            flank.removeEventListener("click", Battle.applyAllocCB, [false, true]);
             flank.obj = null;
             flank.toAdd = null;
         });
     }
 
+    /**
+     * @brief Called when a flank is clicked to allocate the selected icon's troop type
+     * @param {Event} e 
+     * @returns void
+     * 
+     * @post Troop split modal is opened with Battle.applyIndep as callback
+     * @post Icon LOSES EventListener("click", Battle.cancelAllocCB, [false, true]);
+     * @post Flank LOSES EventListener("click", Battle.applyAllocCB, [false, true]);
+     * @post Await ApplyIndep
+     */
     static promptAllocCb( e )
     {
         console.log(e);
@@ -2338,6 +2431,9 @@ class Battle {
         let battle = e.currentTarget.obj;
         let icon = e.currentTarget.toAdd;
         let flank = e.target;
+        let fl = document.getElementById("fl"),
+            fm = document.getElementById("fm"),
+            fr = document.getElementById("fr");
 
         while (!icon.classList.contains("t"))
         {
@@ -2347,6 +2443,18 @@ class Battle {
 
             icon = icon.parentElement;
         }
+
+        // Remove cancel listener on the icon
+        icon.classList.toggle("selected", false);
+        icon.removeEventListener("click", Battle.cancelAllocCB, [false, true]);
+
+        // Remove listeners on the flanks
+        [fl, fm, fr].forEach((flank) => {
+            flank.classList.toggle("validalloc", false);
+            flank.removeEventListener("click", Battle.applyAllocCB, [false, true]);
+            flank.obj = null;
+            flank.toAdd = null;
+        });
 
         let unit_ct = [];
 
@@ -2362,6 +2470,17 @@ class Battle {
         GameUI.troopSplitModal( unit_ct, Battle.applyIndep, [battle, icon, flank] );
     }
 
+    /**
+     * @brief Applies the allocation
+     * @param {array} unit_cts
+     *        Array of unit counts, provided by GameUI.troopSplitModal handler
+     * @param {*} params 
+     *        Params forwarded from Battle.promptAllocCb by GameUI troopSplitModal handler
+     * @returns void
+     * 
+     * @post Icon GAINS EventListener("click", Battle.startAllocCB, [false, true]); if still
+     *       present on allocation sidebar.
+     */
     static applyIndep( unit_cts, params )
     {
         console.log(unit_cts);
@@ -2390,7 +2509,6 @@ class Battle {
 
         icon.classList.toggle("selected", false);
         icon.classList.toggle("allocated", true);
-        icon.removeEventListener("click", Battle.cancelAllocCB, [false, true]);
         icon.setAttribute("data-count", remaining_sz);
         
         let remaining = document.getElementById("off_alloc_" + icon_refid[5] + "_text");
@@ -2399,15 +2517,6 @@ class Battle {
         icon = icon.parentElement;
         flank.innerHTML += icon.outerHTML.replace(/id\=\"/gi, "id=\"ts" + ts + "_");
         document.getElementById("ts" + ts + "_" + icon_refid).setAttribute("data-count", new_sz);
-
-
-        // Remove listeners on the flanks
-        [fl, fm, fr].forEach((flank) => {
-            flank.classList.toggle("validalloc", false);
-            flank.removeEventListener("click", Battle.applyAllocCB, [false, true])
-            flank.obj = null;
-            flank.toAdd = null;
-        });
 
         if (remaining_sz == 0)
             icon.remove();
@@ -2419,7 +2528,8 @@ class Battle {
 
     /**
      * @brief When the user confirms their troop placements, collect the information and start the battle
-     * @param {event} e 
+     * @param {Event} e 
+     * @post Attacker flanks set using battle.setAttackerFlanks
      */
     static closeWindowCB( e )
     {
@@ -2454,6 +2564,10 @@ class Battle {
         battle.setAttackerFlanks( flanks );
     }
 
+    /**
+     * @brief sets attacker flanks based on the provided flanks object
+     * @param {*} flanks 
+     */
     setAttackerFlanks( flanks )
     {
         console.log(flanks);
@@ -2465,6 +2579,11 @@ class Battle {
         this.start();
     }
 
+    /**
+     * @brief Sets attacker flanks using the same algorithm as used for the 
+     *        defender's flanks.
+     * @param {Event} e 
+     */
     static _offenseFlanksAi( e )
     {
         console.log("sup bitches");
@@ -2511,6 +2630,9 @@ class Battle {
         battle.start();
     }
 
+    /**
+     * @brief Algorithmically determines defender's flanks
+     */
     _defenderFlanksAi()
     {
         let flank_key = [
@@ -2549,7 +2671,9 @@ class Battle {
     }
 }
 
-
+/**
+ * @todo implement or delete
+ */
 class Strike {
     constructor(strikeForce, target)
     {
@@ -2563,9 +2687,15 @@ class Strike {
     }
 }
 
+/**
+ * @brief Handles core game logic (players, turns, etc).
+ */
 class Game
 {
 
+    /**
+     * @brief constructs a game object
+     */
     constructor()
     {
         this.forces = [];
@@ -2582,9 +2712,6 @@ class Game
                 }
         });
 
-        // this._bfqmv = [];
-        // this._ofqmv = [];
-
         this._queuedActions_bf = [];
         this._queuedActions_of = [];
         this._battlect = 0;
@@ -2598,6 +2725,11 @@ class Game
         this._applyReinforcements();
     }
 
+    /**
+     * @brief Returns the force for the requested region
+     * @param {*} region_letter 
+     * @returns 
+     */
     getRegionForce(region_letter)
     {
         for (let i = 0; i < this.forces.length; i++)
@@ -2610,6 +2742,10 @@ class Game
         return null;
     }
 
+    /**
+     * @brief Initializes forces by crawling region_group_ids
+     * @details Forces initialize themselves using game_setup
+     */
     _initialize_forces()
     {
         region_group_ids.forEach((region) => {
@@ -2617,6 +2753,9 @@ class Game
         });
     }
 
+    /**
+     * @brief Initializes Headquarters / capital regions
+     */
     _initializeHeadquarters()
     {
         for (let i = 0; i < regions_capitals.length; i++)
@@ -2626,11 +2765,13 @@ class Game
         }
     }
 
+    /**
+     * @brief Adds event listeners to the current players regions. Should be
+     *        called after turns rotate.
+     */
     _initialize_listeners()
     {
-        // ADD LISTENER FOR REGION CLICK BY CURRENT PLAYER
         region_group_ids.forEach((id) => {
-            console.log("Added event listener for " + id);
             document.getElementById(id).addEventListener(
                 "click",
                 gameRegionClickCallback,
@@ -2640,6 +2781,13 @@ class Game
         });
     }
 
+    /**
+     * @brief Prepares to change the turn. Handles queued actions by the current
+     *        player. Note that turns don't change until _rotateTurn() is called
+     * @returns void
+     * 
+     * @todo rename
+     */
     _changeTurn()
     {
         turn_ct++;
@@ -2694,6 +2842,9 @@ class Game
         }
     }
 
+    /**
+     * @brief Changes the current turn.
+     */
     _rotateTurn()
     {
                 // Rotate turns
@@ -2734,6 +2885,9 @@ class Game
 
     }
 
+    /**
+     * @brief Applies appropriate reinforcements to the current player.
+     */
     _applyReinforcements()
     {
         // while (this._state != "initial")
@@ -2775,8 +2929,17 @@ class Game
         }
     }
 
+    /**
+     * @brief When reinforcing, handles a region click by applying reinforcements 
+     *        to that region.
+     * @param {Event} e 
+     * @returns 
+     */
     reinforcement_handler( e )
     {
+        if (this._state != "reinforcing")
+            return;
+
         let node = e.target;
         while (node.id.length != 2)
         {
@@ -2817,6 +2980,11 @@ class Game
         // console.log(e.target);
     }
 
+    /**
+     * @brief Applies fog of war to the map
+     * @details Current player can see their controlled territories as well
+     *          as all regions that are valid moves from those territories.
+     */
     _applyFogOfWar()
     {
         // Handle fog of war
@@ -2855,6 +3023,12 @@ class Game
         }
     }
 
+    /** 
+     * @brief Places all territories in control of the winteam, then displays 
+     *        a victory message.
+     * @param winteam {string}
+     *        Of or bf
+     */
     _handleWin( winteam )
     {
         let fow = document.getElementsByClassName("fow");
@@ -2868,12 +3042,18 @@ class Game
         });
 
         document.getElementById("turn-indicator").innerHTML = team_key[winteam] + " VICTORY";
-
         GameUI.notification(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
-
         gameLog(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
     }
 
+    /**
+     * @brief Handles a click by the current player on a region that they own. 
+     * @param {*} e 
+     * @returns void
+     * 
+     * @post Clicked region GAINS event listener (gameSelectedRegionClickCallback)
+     * @post Valid moves GAINS event listener (gameMoveRegionClickCallback)
+     */
     _regionClickHandler( e )
     {
         // Guard for state: ensure multiple regions cannot be selected
@@ -2904,8 +3084,6 @@ class Game
         // mark the region group as selected and add an event listener for
         // re-clicking on the region to cancel movement.
         realtarget.classList.add("selected");
-        // ADD LISTENER FOR CANCEL MOVEMENT
-        console.log("Added OTU event listener for " + realtarget + " click-to-cancel");
         realtarget.addEventListener(
             "click",
             gameSelectedRegionClickCallback,
@@ -2922,7 +3100,6 @@ class Game
                 node.classList.add("validmove");
 
                 // ADD LISTENER FOR MOVING TROOPS
-                console.log("Added OTU event listener for " + realtarget + " move to " + validMove);
                 node.addEventListener(
                     "click",
                     gameMoveRegionClickCallback,
@@ -2936,6 +3113,14 @@ class Game
         });
     }
 
+    /**
+     * @brief When the player clicks the selected region again, cancels the move
+     * @param {Event} e 
+     * @returns void
+     * 
+     * @post Valid moves LOSES EventListener
+     * @post Region LOSES EventListener
+     */
     _moveCancelHandler( e )
     {
         if (this._state != "waitForMoveSelect") 
@@ -2949,25 +3134,25 @@ class Game
             let node = document.getElementById(validMove);
             node.classList.remove("validmove");
 
-            console.log("Removed OTU event listener for " + node.id + " move from " + e.currentTarget.id);
             node.removeEventListener(
                 "click",
                 gameMoveRegionClickCallback,
                 [false, true]
             );
         });
-
-        // REMOVE LISTENER FOR MOVING TROOPS
-        console.log("Removed OTU event listener for " + e.currentTarget.id + " click-to-cancel");
-        e.currentTarget.removeEventListener(
-            "click",
-            gameSelectedRegionClickCallback,
-            [false, true]
-        );
     }
-    
-    //set this._currentPlayerTurn to "of" then back to "bf" in an alternating manner
 
+    /**
+     * @brief When player clicks validmove, move the troops from the selected 
+     *        region to that region
+     * @param {Event} e 
+     * @returns void
+     * 
+     * @post Removes selected class from selected cell
+     * @post Removes validmove class from valid moves
+     * @post Valid Moves LOSES click listener 
+     * @post Selected Region LOSES cancel listener
+     */
     _moveHandler( e )
     {
 
@@ -3033,7 +3218,9 @@ class Game
         } 
     }
 
-    // Sort actions into moves and battles. Then call handlePlayerMoves / handlePlayerBattles
+    /**
+     * @brief Sort actions into moves and battles. Then call handlePlayerMoves / handlePlayerBattles
+     */
     _handlePlayerActions()
     {
         let actions = this["_queuedActions_" + this._currentPlayerTurn];
@@ -3064,6 +3251,10 @@ class Game
         }
     }
     
+    /**
+     * @brief Applies queued moves
+     * @param {array} move_list 
+     */
     _handleMoves( move_list )
     {
         for (let i = 0; i < move_list.length; i++)
@@ -3098,15 +3289,14 @@ class Game
         {
             this["_queuedActions_" + this._currentPlayerTurn].pop();
         }
-
-        // Remove arrows 
-        let ac = document.getElementsByClassName("arrow " + this._currentPlayerTurn);
-        while (ac.length > 0)
-        {
-            ac[0].remove();
-        }
     }
 
+    /**
+     * @brief Handles queued battles 
+     * @param {array} battle_list 
+     * @post Battle increment called until all battles complete.
+     *       If no battles or all battles complete, rotates turns via battleEndCb().
+     */
     _handleBattles( battle_list )
     {
         this._state = "battle";
@@ -3124,6 +3314,9 @@ class Game
             this.battleIncrement();
     }
 
+    /**
+     * @brief Start the next queued battle, if it exists
+     */
     battleIncrement()
     {
         let bc = document.getElementsByClassName("cbtFire");
@@ -3144,19 +3337,25 @@ class Game
         }
     }
 
+    /**
+     * @brief Clean up after battles, then rotate turns
+     * @returns void
+     */
     battleEndCb()
     {
         if (this._state != "battle")
             return;
 
-        // if (this._battlect <= 0)
-        // {
-            this._state = "initial";
-            // this._changeTurn();
-            this._rotateTurn();
-        // } else {
-            // this.battleIncrement();
-        // }
+        // Remove arrows 
+        let ac = document.getElementsByClassName("arrow " + this._currentPlayerTurn);
+        while (ac.length > 0)
+        {
+            ac[0].remove();
+        }
+
+        // Do next turn
+        this._state = "initial";
+        this._rotateTurn();
     }
 }
 
