@@ -1748,7 +1748,7 @@ class Battle {
 
     start()
     {
-        game.battleIncrement();
+        // game.battleIncrement();
         this._interval = setInterval(battleCb, [200], this);
     }
 
@@ -1758,7 +1758,6 @@ class Battle {
     end()
     {
         clearInterval(this._interval);
-        game.battleDecrement();
 
         let winside = "";
         let verb = "";
@@ -1869,8 +1868,9 @@ class Battle {
 
         //battle_ct++;
         GameUI.removeCombatAnimations( this._battle_number );
-        game.battleEndCb();
+        // game.battleEndCb();
 
+        game.battleIncrement();
     	return;
     }
 
@@ -2618,42 +2618,46 @@ class Game
             this._handleWin("bf");
             return;
         }
+    }
 
-        // Rotate turns
-        if(this._currentPlayerTurn == "bf"){
-    		this._currentPlayerTurn = "of";
-            document.getElementById("turn-indicator").setAttribute("class", "opfor");
-            document.getElementById("team").innerHTML = "OPFOR (PACT)";
-    	}else if(this._currentPlayerTurn == "of"){
-    		this._currentPlayerTurn = "bf";
-            document.getElementById("turn-indicator").setAttribute("class", "blufor");
-            document.getElementById("team").innerHTML = "BLUFOR (NATO)";
-    	}
-
-        // Highlight current player's own forces
-        this.forces.forEach((force) => {
-            if (force.side == this._currentPlayerTurn)
-                {
-                    document.getElementById(force.region).classList.toggle("cpt", true);
+    _rotateTurn()
+    {
+                // Rotate turns
+                if(this._currentPlayerTurn == "bf"){
+                    this._currentPlayerTurn = "of";
+                    document.getElementById("turn-indicator").setAttribute("class", "opfor");
+                    document.getElementById("team").innerHTML = "OPFOR (PACT)";
+                }else if(this._currentPlayerTurn == "of"){
+                    this._currentPlayerTurn = "bf";
+                    document.getElementById("turn-indicator").setAttribute("class", "blufor");
+                    document.getElementById("team").innerHTML = "BLUFOR (NATO)";
                 }
-        });
+        
+                // Highlight current player's own forces
+                this.forces.forEach((force) => {
+                    if (force.side == this._currentPlayerTurn)
+                        {
+                            document.getElementById(force.region).classList.toggle("cpt", true);
+                        }
+                });
+        
+        
+                // Apply fog-of-war
+                this._applyFogOfWar();
+        
+                // Apply reinforcements
+                // Skip first two turns used to initialize the game
+                if (turn_ct > 2)
+                   this._applyReinforcements();
+        
+        
+                // need to make sure that this only happens after battles end
+                let bc = document.getElementsByClassName("cbtFire");
+                while (bc.length > 0)
+                {
+                    bc[0].remove();
+                }
 
-
-        // Apply fog-of-war
-        this._applyFogOfWar();
-
-        // Apply reinforcements
-        // Skip first two turns used to initialize the game
-        if (turn_ct > 2)
-           this._applyReinforcements();
-
-
-        // need to make sure that this only happens after battles end
-        let bc = document.getElementsByClassName("cbtFire");
-        while (bc.length > 0)
-        {
-            bc[0].remove();
-        }
     }
 
     _applyReinforcements()
@@ -2790,7 +2794,6 @@ class Game
         document.getElementById("turn-indicator").innerHTML = team_key[winteam] + " VICTORY";
 
         gameLog(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
-
     }
 
     _regionClickHandler( e )
@@ -2977,23 +2980,6 @@ class Game
                 battles[battles.length] = actions.shift();
         }
 
-        // filter battles; group by target cell
-        // for (let i = 0; i < battles.length; i++)
-        // {
-        //     let battle = battles[i];
-        //     for (let e = 0; e < battles.length; e++)
-        //     {
-        //         if (battle[2] == battles[e][2])
-        //         {
-        //             battle[1] = [battle[1], battles[e][1]];
-        //             battles.splice(e,1);
-        //         } else {
-        //             // convert to array with one element
-        //             // battle[2] = [battle[2]];
-        //         }
-        //     }
-        // }
-
         this._handleMoves(moves);
         this._handleBattles(battles);
         while(document.getElementsByClassName("invalid").length > 0){
@@ -3052,40 +3038,48 @@ class Game
             // Ensure that the move is still valid
             if (battle_list[i][0] != battle_list[i][1].side)
                 continue;
-
-            let srcForce = battle_list[i][1];
-            let dstForce = battle_list[i][2];
-            let battle = new Battle(dstForce, srcForce);
+            else {
+                this["_queuedActions_" + this._currentPlayerTurn].push( battle_list[i] );
+            }
             // battle.start();
         }
+        if (this["_queuedActions_" + this._currentPlayerTurn].length > 0)
+            this.battleIncrement();
     }
 
     battleIncrement()
     {
-        this._battlect++;
-    }
+        let bc = document.getElementsByClassName("cbtFire");
+        while (bc.length > 0)
+        {
+            bc[0].remove();
+        }
 
-    battleDecrement()
-    {
-        this._battlect--;
+        if ( this["_queuedActions_" + this._currentPlayerTurn].length > 0 ) 
+        {
+            this._battlect++;
+            let srcForce = this["_queuedActions_" + this._currentPlayerTurn][0][1];
+            let dstForce = this["_queuedActions_" + this._currentPlayerTurn][0][2];
+            this["_queuedActions_" + this._currentPlayerTurn].shift();
+            let battle = new Battle(dstForce, srcForce);
+        } else {
+            this.battleEndCb();
+        }
     }
-
 
     battleEndCb()
     {
         if (this._state != "battle")
             return;
 
-        if (this._battlect <= 0)
-        {
-            let bc = document.getElementsByClassName("cbtFire");
-            while (bc.length > 0)
-            {
-                bc[0].remove();
-            }
+        // if (this._battlect <= 0)
+        // {
             this._state = "initial";
-            this._changeTurn();
-        }
+            // this._changeTurn();
+            this._rotateTurn();
+        // } else {
+            // this.battleIncrement();
+        // }
     }
 }
 
