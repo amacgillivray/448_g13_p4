@@ -3124,6 +3124,13 @@ class Game
                 [false, true]
             );
         });
+
+        // Remove cancel handler
+        e.currentTarget.removeEventListener(
+            "click",
+            gameSelectedRegionClickCallback,
+            [false, true]
+        );
     }
 
     /**
