@@ -118,4 +118,6 @@ function test(){
     result = (bool_result) ? p : f;
     rsmessage = "handleWin() test: "+ result;
     gameLog(rsmessage);
+    gameLog("Each test will have a result of " +p+" or "+f);
+    gameLog("Tests end");
 }
