@@ -1380,6 +1380,52 @@ class GameUI {
           modal.style.display = "none";
         }
     }
+
+    /**
+     * @brief Changes HQ icons to show medic + headquarters instead of 
+     *        artillery + headquarters, reflecting their true functionality. 
+     * @returns void
+     */
+    static fixHeadQuarters()
+    {
+        for ( let i = 0; i < regions_capitals.length; i++)
+        {
+            let ids = ["hq_bf_" + regions_capitals[i][0],
+                       "hq_of_" + regions_capitals[i][0]];
+            for (let e = 0; e < ids.length; e++)
+            {
+                let id = ids[e];
+                let icon = document.getElementById(id);
+                let ref_class = icon.getAttribute("class");
+                icon.innerHTML = icon.innerHTML.replace(/<circle.*\<\/circle\>/i, "");
+
+                console.log(id);
+                console.log(icon);
+
+                if (icon.classList.contains("hq_np"))
+                {
+                    icon.classList.toggle("hq_np", false);
+                    icon.classList.toggle("hq", true);
+                }
+                
+                let bb = icon.getBBox();
+
+                let mx = bb.x + bb.width/2;
+                let my = bb.y + bb.height/2;
+
+                icon.innerHTML += '<line class="cls-4 ' + id.substr(3,2) + 
+                                  '" x1="' + mx + '" y1="' + bb.y + '"' +
+                                   ' x2="' + mx + '" y2="' + (bb.y+bb.height) + '" />';
+
+                icon.innerHTML += '<line class="cls-4 ' + id.substr(3,2) + 
+                                  '" x1="' + bb.x + '" y1="' + my + '"' +
+                                   ' x2="' + (bb.x + bb.width) + '" y2="' + my + '" />';
+
+                icon.setAttribute("class", ref_class);
+            }
+        }
+        return;
+    }
 }
 
 /**
@@ -2735,19 +2781,21 @@ class Game
         region_group_ids.forEach((region) => {
             this.forces.push( new Force(region) );
         });
+
+        GameUI.fixHeadQuarters();
     }
 
-    /**
-     * @brief Initializes Headquarters / capital regions
-     */
-    _initializeHeadquarters()
-    {
-        for (let i = 0; i < regions_capitals.length; i++)
-        {
-            let cap = regions_capitals[i];
-            let side = this.getRegionForce(cap).side;
-        }
-    }
+    // /**
+    //  * @brief Initializes Headquarters / capital regions
+    //  */
+    // _initializeHeadquarters()
+    // {
+    //     for (let i = 0; i < regions_capitals.length; i++)
+    //     {
+    //         let cap = regions_capitals[i];
+    //         let side = this.getRegionForce(cap).side;
+    //     }
+    // }
 
     /**
      * @brief Adds event listeners to the current players regions. Should be
