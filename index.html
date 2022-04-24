@@ -290,6 +290,9 @@
   <div class="top">
     <h1 id="title">NORTH ATLANTIC</h1>
     <p id="turn-indicator" class="blufor"><span id="team">BLUFOR</span> TURN<span id="battleind"></span></p>
+    <p align="center">
+      <button class="endturn" id="end-turn-button" onclick="changeTurn_cb()">END TURN</button>
+    </p>
   </div>
   <div id="container">
     <div id="data-panel">
@@ -27282,15 +27285,16 @@ I   - Company                - 41   to 250
       const bwContent = document.getElementById("battleWindow").innerHTML;
             document.getElementById("battleWindow").innerHTML = "";
     </script>
+    <p align ="right"><button class="test-suite" onclick="test()">Test Suite</button></p>
     <script type="text/javascript" src="./game.js"></script>
     <script type="text/javascript" src="./deps/svg-pan-zoom.js"></script>
+    <script type="text/javascript" src="./test.js"></script>
     <script>
       /* use 3rd-party pan-and-zoom lib to handle pan and zoom operations on the game map */
       /* the source code for this is in deps/svg-pan-zoom.js */
       let panZoom = svgPanZoom('#game'); 
     </script>
   </footer>
-
 </body>
 
 </html>

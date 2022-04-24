@@ -685,6 +685,34 @@ progress[value]::-webkit-progress-value {
   stroke: #cfaf4a !important;
 }
 
+.test-suite{
+  margin: 20px;
+  background-color: red;
+  color: white;
+  width: 150px;
+  height: 40px;
+  font-size: 18px;
+}
+
+.test-suite:hover{
+  background-color: rgb(159, 2, 2);
+}
+
+.endturn{
+  width: 300px;
+  height: 30px;
+  background-color: rgb(255, 228, 95);
+  font-size: 15px;
+}
+
+.endturn:hover{
+  background-color: rgb(161, 148, 0);
+  color: rgb(227, 227, 227);
+}
+
+.ywtext{
+  color: greenyellow;
+}
 .region.moved .sr {
   fill: #777 !important;
   stroke: #444 !important;
