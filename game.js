@@ -2554,18 +2554,23 @@ class Game
         // mark valid moves and add event listeners for their selection.
         region_connections[realtarget.id].forEach((validMove) => {
             let node = document.getElementById(validMove);
-            node.classList.add("validmove");
+            if(node.classList.contains("invalid")){
 
-            // ADD LISTENER FOR MOVING TROOPS
-            console.log("Added OTU event listener for " + realtarget + " move to " + validMove);
-            node.addEventListener(
-                "click",
-                gameMoveRegionClickCallback,
-                [false, true]
-            );
-            node.obj = this;
-            node.oc = realtarget.id;
-            node.cf = clickedForce;
+            }else{
+                node.classList.add("validmove");
+
+                // ADD LISTENER FOR MOVING TROOPS
+                console.log("Added OTU event listener for " + realtarget + " move to " + validMove);
+                node.addEventListener(
+                    "click",
+                    gameMoveRegionClickCallback,
+                    [false, true]
+                );
+                node.obj = this;
+                node.oc = realtarget.id;
+                node.cf = clickedForce;
+            }
+            
         });
     }
 
@@ -2623,10 +2628,19 @@ class Game
         origin.classList.remove("selected");
         origin.classList.add("moved");
 
+        let dstForce = this.getRegionForce(e.currentTarget.id);
+        let srcForce = this.getRegionForce(e.currentTarget.oc);
+
+        if(dstForce._side != srcForce._side && dstForce._side != "neutral"){
+            console.log("sup bitches");
+            e.currentTarget.classList.add("invalid");
+        }
+
         // Remove "validmove" class from move options
         region_connections[e.currentTarget.oc].forEach((validMove) => {
             let node = document.getElementById(validMove);
             node.classList.remove("validmove");
+            
             node.removeEventListener(
                 "click",
                 gameMoveRegionClickCallback,
@@ -2643,9 +2657,7 @@ class Game
 
         //console.log(e.currentTarget.id);
         console.log("dst: " + e.currentTarget.id);
-        let dstForce = this.getRegionForce(e.currentTarget.id);
         console.log("src: " + e.currentTarget.oc);
-        let srcForce = this.getRegionForce(e.currentTarget.oc);
 
         // draw mvmt arrow: 
         GameUI.drawMovementArrow(srcForce.side, e.currentTarget.oc, e.currentTarget.id);
@@ -2703,6 +2715,9 @@ class Game
 
         this._handleMoves(moves);
         this._handleBattles(battles);
+        while(document.getElementsByClassName("invalid").length > 0){
+            document.getElementsByClassName("invalid")[0].classList.remove("invalid");
+        }
     }
     
     _handleMoves( move_list )
