@@ -1742,6 +1742,7 @@ class Battle {
         });
         // Generate the defender's flanks using AI 
         this._defenderFlanksAi();
+
         // Get the attacker's flanks using the battle window
         this._drawBattleWindow();
     }
@@ -1984,6 +1985,8 @@ class Battle {
         // Get the element that closes the modal
         let span = document.getElementById("bw_close");
 
+        let spenser = document.getElementById("bw_auto");
+
         let display = document.getElementById("bw_display");
 
         let attackers = this._off;
@@ -2070,6 +2073,9 @@ class Battle {
                     tt_ct++;
                 }
             }
+
+            
+
         });
 
         modal.style.display = "block";
@@ -2077,6 +2083,11 @@ class Battle {
         // todo - right event listener options?
         span.addEventListener("click", Battle.closeWindowCB, [true, true]);
         span.obj = this;
+
+        spenser.addEventListener("click", Battle._offenseFlanksAi, [true, true]);
+        spenser.obj = this;
+        // spenser.onclick = this._offenseFlanksAi();
+
     }
 
     /**
@@ -2285,6 +2296,52 @@ class Battle {
         battle.start();
 
 
+    }
+
+    static _offenseFlanksAi( e )
+    {
+        console.log("sup bitches");
+        let battle = e.currentTarget.obj;
+        let modal = document.getElementById("battleWindow");
+        let flank_key = [
+            "left",
+            "middle",
+            "right"
+        ];
+
+        let offAlloc = [...battle._offRefCt];
+        for (let i = 0; i < troop_type_names.length; i++)
+        {
+            // let firstPass = true;
+            let min_buff = 1;
+
+            while (offAlloc[i] > 0)
+            {
+                for (let f = 0; f < 3; f++)
+                {
+                    let alloc = Math.ceil(Math.random() * offAlloc[i]);
+                    if (offAlloc[i] - alloc < 0)
+                        alloc = offAlloc[i];
+
+                    // Prioritize bonuses but be open to all terrain types
+                    if (terrain_mod[battle.terrain[f]][i] > min_buff)
+                    {
+                        battle._flanks[flank_key[f]]["attacker"][i] += alloc;
+                        offAlloc[i] -= alloc;
+                        if (offAlloc[i] == 0)
+                            break;
+                    }
+                }
+                // firstPass = false;
+                min_buff-=0.2;
+            } 
+        }
+
+        // Hide the window and start the battle
+        modal.style.display = "none";
+        
+        modal.innerHTML = "";
+        battle.start();
     }
 
     _defenderFlanksAi()
@@ -2764,7 +2821,6 @@ class Game
         let srcForce = this.getRegionForce(e.currentTarget.oc);
 
         if(dstForce._side != srcForce._side && dstForce._side != "neutral"){
-            console.log("sup bitches");
             e.currentTarget.classList.add("invalid");
         }
 
