@@ -2357,6 +2357,9 @@ class Game
             this._state = "initial";
             return;
         }
+        
+        //disable end turn button
+        document.getElementById("end-turn-button").disabled = true;
 
         // mark the region group as selected and add an event listener for
         // re-clicking on the region to cancel movement.
@@ -2408,6 +2411,9 @@ class Game
                 [false, true]
             );
         });
+        
+        //re-enable endturn button
+        document.getElementById("end-turn-button").disabled = false;
 
         // REMOVE LISTENER FOR MOVING TROOPS
         console.log("Removed OTU event listener for " + e.currentTarget.id + " click-to-cancel");
@@ -2484,6 +2490,9 @@ class Game
         {
             this._changeTurn();
         } 
+
+        //re-enable endturn button
+        document.getElementById("end-turn-button").disabled = false;
     }
 
     
