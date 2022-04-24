@@ -522,14 +522,6 @@ const game_setup = {
     j9: {side: "of", force: [500, 0, 8]},
 };
 
-//const terrain_mod = {
-    //terrain: [infantry, armor, helicopter]
-    //plains: [0.5, 2.0, 1.0],
-    //forest: [2.0, 0.5,0.5],
-    //water: [0.5,0.5,1.0],
-    //urban: [2.0, 1.5,1.0]
-//}
-
 /**
  * @brief Shorthand for "opfor" used in SVG node class names
  */
@@ -539,36 +531,6 @@ const opfor_prefix = "of";
  * @brief Shorthand for "blufor" used in SVG node class names
  */
 const blufor_prefix = "bf";
-
-/**
- * @brief Posts the provided message to the game's log (UI component)
- */
-function gameLog( message, classlist = "" )
-{
-    let log = document.getElementById("log");
-    let date = new Date;
-    let dateStr = "";
-    let container = document.createElement("p");
-    if ( classlist != "" ) 
-        container.setAttribute("class", classlist);
-    container.setAttribute("id", "l" + log_entries);
-
-    date.setTime(Date.now());
-    dateStr = (date.getHours().toString().length < 2) ? "0" + date.getHours().toString() : date.getHours().toString();
-    dateStr += ":"
-    dateStr += (date.getMinutes().toString().length < 2) ? "0" + date.getMinutes().toString() : date.getMinutes().toString();
-    dateStr += ":"
-    dateStr += (date.getSeconds().toString().length < 2) ? "0" + date.getSeconds().toString() : date.getSeconds().toString();
-
-    container.innerHTML = "<span class=\"date\">" + dateStr + "</span>" + message;
-
-    if (log_entries-1 < 0)
-        log.appendChild(container);
-    else 
-        log.insertBefore(container, document.getElementById("l" + (log_entries-1)));
-
-    log_entries++;
-}
 
 /**
  * @brief Determines the class name of the troop-size indicator most appropriate 
@@ -614,21 +576,6 @@ function getBestTroopCountSymbol( size )
     return "brigade";
 }
 
-function gameRegionClickCallback( e )
-{
-    e.currentTarget.obj._regionClickHandler(e);
-}
-
-function gameSelectedRegionClickCallback( e )
-{
-    e.currentTarget.obj._moveCancelHandler(e);
-}
-
-function gameMoveRegionClickCallback( e )
-{
-    e.currentTarget.obj._moveHandler(e);
-}
-
 /**
  * @brief Determines if the given region is the capital
  * @param {string} region_id 
@@ -641,29 +588,41 @@ function isCapitalRegion( region_id )
     return (region_id == regions_capitals_key[region_id[0]]);
 }
 
-function crater_cb( e )
-{    
-    document.getElementById(e.target.id).setAttribute("class", "crater_filled");
-}
-
-/**
- * @brief 
- * @param {*} e 
- */
-function reinforcements_cb( e )
-{
-    game.reinforcement_handler(e);
-}
-
-function changeTurn_cb( e )
-{
-    game._changeTurn();
-}
 
 /**
  * @brief Class containing static methods to work with the game's user interface
  */
 class GameUI {
+
+    /**
+     * @brief Posts the provided message to the game's log (UI component)
+     */
+    static log( message, classlist = "" )
+    {
+        let log = document.getElementById("log");
+        let date = new Date;
+        let dateStr = "";
+        let container = document.createElement("p");
+        if ( classlist != "" ) 
+            container.setAttribute("class", classlist);
+        container.setAttribute("id", "l" + log_entries);
+    
+        date.setTime(Date.now());
+        dateStr = (date.getHours().toString().length < 2) ? "0" + date.getHours().toString() : date.getHours().toString();
+        dateStr += ":"
+        dateStr += (date.getMinutes().toString().length < 2) ? "0" + date.getMinutes().toString() : date.getMinutes().toString();
+        dateStr += ":"
+        dateStr += (date.getSeconds().toString().length < 2) ? "0" + date.getSeconds().toString() : date.getSeconds().toString();
+    
+        container.innerHTML = "<span class=\"date\">" + dateStr + "</span>" + message;
+    
+        if (log_entries-1 < 0)
+            log.appendChild(container);
+        else 
+            log.insertBefore(container, document.getElementById("l" + (log_entries-1)));
+    
+        log_entries++;
+    }
 
     /**
      * @brief update the ownership of a region
@@ -982,9 +941,18 @@ class GameUI {
         let cc = document.getElementsByClassName("crater");
         for (let e = cc.length-1; e >= 0; e--)
         {
-            cc[e].addEventListener("animationend", crater_cb, true);
-            cc[e].addEventListener("animationiteration", crater_cb, true);
+            cc[e].addEventListener("animationend", GameUI.craterCb, true);
+            cc[e].addEventListener("animationiteration", GameUI.craterCb, true);
         }
+    }
+
+    /**
+     * @brief Removes the animation class from the crater
+     * @param {Event} e 
+     */
+    static craterCb( e )
+    {    
+        document.getElementById(e.target.id).setAttribute("class", "crater_filled");
     }
 
     /**
@@ -1539,6 +1507,8 @@ class GameUI {
 	alterUnits(cnt){
         // console.log("Adding " + cnt + " to " + this._id);
 		this._health += (this.hpMod * cnt);
+        if (document.getElementById(this._id) == null)
+            debugger;
         document.getElementById(this._id).setAttribute("data-count", this.count);
 	}
 }
@@ -1834,7 +1804,7 @@ class Battle {
         // Battle.drawBattleWindow( this );
 
         // Put information about the battle in the game log
-        gameLog( 
+        GameUI.log( 
             team_key[this._off.side] + 
             " attacks " + this._def.region + 
             " from " + this._off.region + 
@@ -2009,7 +1979,7 @@ class Battle {
             );
         }
 
-        gameLog( winside + " " + verb + " control of " + this._def.region + "." + troopLossRecord);
+        GameUI.log( winside + " " + verb + " control of " + this._def.region + "." + troopLossRecord);
         GameUI.removeCombatAnimations( this._battle_number );
         game.battleIncrement();
     	return;
@@ -2641,7 +2611,6 @@ class Battle {
      */
     static _offenseFlanksAi( e )
     {
-        console.log("sup bitches");
         let battle = e.currentTarget.obj;
         let modal = document.getElementById("battleWindow");
         let flank_key = [
@@ -2680,7 +2649,6 @@ class Battle {
 
         // Hide the window and start the battle
         modal.style.display = "none";
-        
         modal.innerHTML = "";
         battle.start();
     }
@@ -2732,6 +2700,35 @@ class Battle {
 class Game
 {
 
+    static changeTurn_cb( e )
+    {
+        game._changeTurn();
+    }
+
+    /**
+     * @brief 
+     * @param {*} e 
+     */
+    static reinforcements_cb( e )
+    {
+        game.reinforcement_handler(e);
+    }
+
+    static moveStartCb( e )
+    {
+        e.currentTarget.obj._regionClickHandler(e);
+    }
+
+    static moveRegionCb( e )
+    {
+        e.currentTarget.obj._moveHandler(e);
+    }
+
+    static moveCancelCb( e )
+    {
+        e.currentTarget.obj._moveCancelHandler(e);
+    }
+
     /**
      * @brief constructs a game object
      */
@@ -2755,7 +2752,7 @@ class Game
         this._queuedActions_of = [];
         this._battlect = 0;
 
-        document.getElementById("turn-indicator").addEventListener("click", changeTurn_cb, [false, false]);
+        document.getElementById("turn-indicator").addEventListener("click", Game.changeTurn_cb, [false, false]);
         this._changeTurn();
         this._changeTurn();
 
@@ -2794,18 +2791,6 @@ class Game
         GameUI.fixHeadQuarters();
     }
 
-    // /**
-    //  * @brief Initializes Headquarters / capital regions
-    //  */
-    // _initializeHeadquarters()
-    // {
-    //     for (let i = 0; i < regions_capitals.length; i++)
-    //     {
-    //         let cap = regions_capitals[i];
-    //         let side = this.getRegionForce(cap).side;
-    //     }
-    // }
-
     /**
      * @brief Adds event listeners to the current players regions. Should be
      *        called after turns rotate.
@@ -2815,7 +2800,7 @@ class Game
         region_group_ids.forEach((id) => {
             document.getElementById(id).addEventListener(
                 "click",
-                gameRegionClickCallback,
+                Game.moveStartCb,
                 [false, false]
             );
             document.getElementById(id).obj = this;
@@ -2947,7 +2932,7 @@ class Game
 
         GameUI.notification("You have recieved " + this._cptReinforcements[0] + " infantry, " + this._cptReinforcements[1] + " helicopter, and " + this._cptReinforcements[2] + " armored vehicle reinforcements from your controlled capitals. These troops will be deployed to the next region you select.");
 
-        gameLog(team_key[this._currentPlayerTurn] + " has reinforcements: " +
+        GameUI.log(team_key[this._currentPlayerTurn] + " has reinforcements: " +
                 "<pre>" 
                 + troop_type_names[0].toUpperCase() + ":\t" + this._cptReinforcements[0] + "\n"
                 + troop_type_names[1].toUpperCase() + ":\t" + this._cptReinforcements[1] + "\n"
@@ -2959,7 +2944,7 @@ class Game
         for (let i = 0; i < rc.length; i++)
         {
             rc[i].classList.add("reinforceable");
-            rc[i].addEventListener("click", reinforcements_cb, [false, false]);
+            rc[i].addEventListener("click", Game.reinforcements_cb, [false, false]);
         }
     }
 
@@ -3000,7 +2985,7 @@ class Game
             let rc = document.getElementsByClassName("reinforceable");
             for (let i = rc.length-1; i >= 0; i--)
             {
-                rc[i].removeEventListener("click", reinforcements_cb, [false, false]);
+                rc[i].removeEventListener("click", Game.reinforcements_cb, [false, false]);
                 rc[i].classList.remove("reinforceable");
             }
             this._state = "waitForMoveSelect";
@@ -3070,7 +3055,7 @@ class Game
 
         document.getElementById("turn-indicator").innerHTML = team_key[winteam] + " VICTORY";
         GameUI.notification(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
-        gameLog(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
+        GameUI.log(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
     }
 
     /**
@@ -3078,8 +3063,8 @@ class Game
      * @param {*} e 
      * @returns void
      * 
-     * @post Clicked region GAINS event listener (gameSelectedRegionClickCallback)
-     * @post Valid moves GAINS event listener (gameMoveRegionClickCallback)
+     * @post Clicked region GAINS event listener (Game.moveCancelCb)
+     * @post Valid moves GAINS event listener (Game.moveRegionCb)
      */
     _regionClickHandler( e )
     {
@@ -3113,7 +3098,7 @@ class Game
         realtarget.classList.add("selected");
         realtarget.addEventListener(
             "click",
-            gameSelectedRegionClickCallback,
+            Game.moveCancelCb,
             [false, true]
         );
         realtarget.obj = this;
@@ -3129,7 +3114,7 @@ class Game
                 // ADD LISTENER FOR MOVING TROOPS
                 node.addEventListener(
                     "click",
-                    gameMoveRegionClickCallback,
+                    Game.moveRegionCb,
                     [false, true]
                 );
                 node.obj = this;
@@ -3163,18 +3148,15 @@ class Game
 
             node.removeEventListener(
                 "click",
-                gameMoveRegionClickCallback,
+                Game.moveRegionCb,
                 [false, true]
             );
         });
         
-        //re-enable endturn button
-        document.getElementById("end-turn-button").disabled = false;
-
         // Remove cancel handler
         e.currentTarget.removeEventListener(
             "click",
-            gameSelectedRegionClickCallback,
+            Game.moveCancelCb,
             [false, true]
         );
     }
@@ -3203,7 +3185,7 @@ class Game
         
         e.currentTarget.addEventListener(
             "click",
-            gameRegionClickCallback,
+            Game.moveStartCb,
             false
         );
         e.currentTarget.obj = this;
@@ -3226,7 +3208,7 @@ class Game
             
             node.removeEventListener(
                 "click",
-                gameMoveRegionClickCallback,
+                Game.moveRegionCb,
                 [false, true]
             );
         });
@@ -3234,7 +3216,7 @@ class Game
         // console.log("Removed OTU event listener for " + e.currentTarget.oc + " click-to-cancel");
         document.getElementById(e.currentTarget.oc).removeEventListener(
             "click",
-            gameSelectedRegionClickCallback,
+            Game.moveCancelCb,
             [false, true]
         );
 
@@ -3252,10 +3234,7 @@ class Game
         if (this["_queuedActions_" + this._currentPlayerTurn].length >= Math.min(3, this._currentPlayerForces))
         {
             this._changeTurn();
-        } 
-
-        //re-enable endturn button
-        document.getElementById("end-turn-button").disabled = false;
+        }
     }
 
     /**
@@ -3314,7 +3293,7 @@ class Game
                 dstForce._side = srcForce.side;
 
             //log.innerHTML += "<p>" + this._currentPlayerTurn.toUpperCase() + " moved from " + srcForce.region_phonetic + " to " + dstForce.region_phonetic + "</p>\n";
-            gameLog( team_key[this._currentPlayerTurn] + " moves from " + srcForce.region + " to " + dstForce.region );
+            GameUI.log( team_key[this._currentPlayerTurn] + " moves from " + srcForce.region + " to " + dstForce.region );
 
             // Add the units to the destination, remove them from the source
             let units = [];
