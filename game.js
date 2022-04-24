@@ -3230,6 +3230,7 @@ class Game
 
         this._handleMoves(moves);
         this._handleBattles(battles);
+
         while(document.getElementsByClassName("invalid").length > 0){
             document.getElementsByClassName("invalid")[0].classList.remove("invalid");
         }
@@ -3296,6 +3297,8 @@ class Game
         }
         if (this["_queuedActions_" + this._currentPlayerTurn].length > 0)
             this.battleIncrement();
+        else 
+            this.battleEndCb();
     }
 
     /**
