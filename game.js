@@ -2672,22 +2672,6 @@ class Battle {
 }
 
 /**
- * @todo implement or delete
- */
-class Strike {
-    constructor(strikeForce, target)
-    {
-        this._sf = strikeForce;
-        this._tgt = target;
-    }
-
-    apply()
-    {
-        
-    }
-}
-
-/**
  * @brief Handles core game logic (players, turns, etc).
  */
 class Game
