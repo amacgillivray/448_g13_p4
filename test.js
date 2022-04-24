@@ -1,7 +1,9 @@
 function test(){
     let bool_result=true;
-    let result = "FAILED";
     let rsmessage;
+    let p = "<span class='ywtext'>PASSED</span>";
+    let f = "<span class='redtext'>FAILED</span>";
+    let result = f;
 
     //gameLog() test
     //no one should see the message in gamelog if the function is not working
@@ -9,14 +11,14 @@ function test(){
 
     //getBestTroopCountSymbol() test
     //getBestTroopCountSymbol(300) should re turn "battalion".
-    if( getBestTroopCountSymbol(300) == "battalion") result = "PASSED";
+    if( getBestTroopCountSymbol(300) == "battalion") result = p;
     rsmessage = "getBestTroopCountSymbol() test: " + result;
     gameLog(rsmessage);
 
     //Iscapital() test
     //A6 is a capital and A5 is not a capital
-    if(isCapitalRegion("A6") && !isCapitalRegion("A5")) result = "PASSED";
-    else result = "FAILED";
+    if(isCapitalRegion("A6") && !isCapitalRegion("A5")) result = p;
+    else result = f;
     rsmessage = "isCapitalRegion() test: "+ result;
     gameLog(rsmessage);
 
@@ -24,8 +26,8 @@ function test(){
     //set region A2 to red.
     GameUI.setRegionOwner("a2","of");
     //if region A2 is red. The function works
-    if(document.getElementById("a2").classList.contains("of")) result = "PASSED";
-    else result = "FAILED";
+    if(document.getElementById("a2").classList.contains("of")) result = p;
+    else result = f;
     rsmessage = "setRegionOwner() test: "+result;
     gameLog(rsmessage);
 
@@ -51,7 +53,7 @@ function test(){
         let arm_count = document.getElementById(arm_id).dataset.count;
         if (test_unit[2]._id != arm_id || test_unit[2].count != arm_count) bool_result=false;
     }
-    result = (bool_result) ? "PASSED" : "FAILED";
+    result = (bool_result) ? p : f;
     gameLog("getUnitsInRegion() test: "+ result);
 
     //Force.alterForce() test
@@ -79,7 +81,7 @@ function test(){
     if((inf_cnt+1400) != test_force.unitList[0].count ||
          (heli_cnt+20) != test_force.unitList[1].count ||
          (arm_cnt+20) != test_force.unitList[2].count) bool_result = false; 
-    result = (bool_result) ? "PASSED" : "FAILED";
+    result = (bool_result) ? p : f;
     gameLog("alterForce() test: "+ result);
 
     //Unit.updateHealth() test
@@ -88,8 +90,8 @@ function test(){
     //function call
     inf_unit.updateHealth(100);// -100
     //if the health after function called correct with the calculated health, the function works
-    if( inf_unit.health == 300) result = "PASSED";
-    else result = "FAILED";
+    if( inf_unit.health == 300) result = p;
+    else result = f;
     gameLog("updateHealth() test: "+result);
 
     //Game: change turn, handle win, handle playermoves 
@@ -102,7 +104,7 @@ function test(){
     let af = game._currentPlayerTurn;
     //if the player's turn did not change, the function failed
     if(bf == af) bool_result = false;
-    result = (bool_result) ? "PASSED" : "FAILED";
+    result = (bool_result) ? p : f;
     rsmessage = "Player turns have changed (as screen below shows). ChangeTurn test: " + result;
     gameLog(rsmessage);
 
@@ -113,7 +115,7 @@ function test(){
     //check if the whole map is red
     for(let reg = 0; reg<subreg.length; reg++)
         for(let area = 0; area<subreg[reg].length; area++) if (!subreg[reg][area].classList.contains("of")) bool_result = false;
-    result = (bool_result) ? "PASSED" : "FAILED";
+    result = (bool_result) ? p : f;
     rsmessage = "handleWin() test: "+ result;
     gameLog(rsmessage);
 }

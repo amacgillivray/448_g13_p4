@@ -675,3 +675,7 @@ progress[value]::-webkit-progress-value {
   background-color: rgb(161, 148, 0);
   color: rgb(227, 227, 227);
 }
+
+.ywtext{
+  color: greenyellow;
+}
