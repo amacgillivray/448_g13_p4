@@ -2886,13 +2886,6 @@ class Game
 
         this._currentPlayerForces = 0;
 
-        this.forces.forEach((force) => {
-            if (force.side == this._currentPlayerTurn) {
-                document.getElementById(force.region).classList.toggle("cpt", false);
-                this._currentPlayerForces++;
-            }
-        });
-
         // If the player ended their turn without reinforcing, remove the reinforceable class
         if (this._state == "reinforcing")
         {
@@ -2959,6 +2952,14 @@ class Game
             document.getElementById("team").innerHTML = "BLUFOR (NATO)";
         }
 
+        // Apply cpt style and calcuate currentPlayerForces
+        this.forces.forEach((force) => {
+            if (force.side == this._currentPlayerTurn) {
+                document.getElementById(force.region).classList.toggle("cpt", false);
+                this._currentPlayerForces++;
+            }
+        });
+
         // Highlight current player's own forces
         this.forces.forEach((force) => {
             if (force.side == this._currentPlayerTurn)
@@ -2966,7 +2967,6 @@ class Game
                     document.getElementById(force.region).classList.toggle("cpt", true);
                 }
         });
-
 
         // Apply fog-of-war
         this._applyFogOfWar();
@@ -3342,30 +3342,18 @@ class Game
         {
             // let force = document.getElementById(regions_capitals[i]);
             let force = this.getRegionForce( regions_capitals[i] );
-
-            if (tf_ct < 5) {
-                console.log(force);
-                console.log(regions_capitals[i]);
-            }
-
             if ( ( force.side == this._currentPlayerTurn ) && ( force.totalCount == 0 ) )
-            {    tf_ct--;
-                if (tf_ct < 5) {
-                    console.log(force);
-                    console.log(regions_capitals[i]);
-                }
+            {
+                tf_ct--;
             }
 
         }
 
-        // TODO - REMOVE OUTER IF
-        if (turn_ct > 4){
         if (this["_queuedActions_" + this._currentPlayerTurn].length >= Math.min(3, tf_ct))
         {
             if (debug) console.log("tf_ct: " + tf_ct);
             if (debug) console.log("cpfs:" + this._currentPlayerForces );
             this._changeTurn();
-        }
         }
     }
 
