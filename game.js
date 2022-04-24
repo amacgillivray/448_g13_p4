@@ -2922,13 +2922,6 @@ class Game
      */
     _applyReinforcements()
     {
-        // while (this._state != "initial")
-        // {
-        //     // wait
-        // }
-
-        this._state = "reinforcing";
-
         this._cptReinforcements = [0,0,0];
 
         for (let i = 0; i < regions_capitals.length; i++)
@@ -2969,9 +2962,6 @@ class Game
      */
     reinforcement_handler( e )
     {
-        if (this._state != "reinforcing")
-            return;
-
         let node = e.target;
         while (node.id.length != 2)
         {
