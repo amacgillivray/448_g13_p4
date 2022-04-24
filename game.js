@@ -1340,16 +1340,31 @@ class GameUI {
     /**
      * @brief takes a message and puts it in the notification modal, which is
      *        then displayed on the screen for the player.
+     * @note hacky solution to reinforcement popup every turn: hard-coded check
+     *       of msg content controls some behavior
      */
     static notification(message){
         // Get the modal
-        var modal = document.getElementById("notif");
+        let modal = document.getElementById("notif");
 
         document.getElementById("notif-item").innerHTML = message;
 
         // Get the <span> element that closes the modal
-        var span = document.getElementById("notif-close");
+        let span = document.getElementById("notif-close");
         modal.style.display = "block";
+
+        let optional = document.getElementById("notif-ignore");
+
+        // if this is for reinforcements, do custom behavior
+        if (message.substr(0, "You have recieved".length) == "You have recieved")
+        {
+            optional.onclick = function() {
+                game.ignoreReinforcementsNotif();
+                modal.style.display = "none";
+            }   
+        } else {
+            optional.remove();
+        }
 
         // When the user clicks on <span> (x), close the modal
         span.onclick = function() {
@@ -1720,6 +1735,7 @@ class Battle {
     constructor( defending_force, attacking_force )
     {
         this.state = "initial";
+        this.readyToEnd = false;
         
         GameUI.craterFix();
 
@@ -2082,10 +2098,6 @@ class Battle {
                 oref[i].push( off[e] );
                 dref[i].push( def[e] );
 
-                // console.log(this._def[troop_type_names[e]].dmgMod);
-                // console.log(Math.min(def[e], troop_combat_width[e]));
-                // console.log((Math.random()/2) + this._off_mod + terrain_mod[this.terrain[i]][e]);
-
                 // debugger;
                 if (this._off[troop_type_names[e]] != null) {
                     omax[i] += def[e] * this._off[troop_type_names[e]].hpMod;
@@ -2236,8 +2248,12 @@ class Battle {
     _drawBattleWindow() 
     {
         const drawBattleDisplay = true;
+        
+        // Generate the window by inserting HTML from bwContent const (from index.html)
         let modal = document.getElementById("battleWindow");
             modal.innerHTML = bwContent;
+
+        // Get window controls
         let span = document.getElementById("bw_close");
         let spenser = document.getElementById("bw_auto");
         let display = document.getElementById("bw_display");
@@ -2292,6 +2308,7 @@ class Battle {
             display.setAttribute("viewBox", xmin + ' ' + ymin + ' ' + xmax + ' ' + ymax);
         }
 
+        // Show the attacking and defending troop icons & their counts
         ["off", "def"].forEach((prefix) => 
         {
             let side = (prefix[0] == "o") ? attackers : defender;
@@ -2309,7 +2326,8 @@ class Battle {
 
                     icon.classList.toggle("t_np", false);
                     icon.classList.toggle("t", true);
-                    icon.classList.toggle("available", true);
+                    if (prefix[0] == "o") 
+                        icon.classList.toggle("available", true);
                     icon.setAttribute("data-type", troop_type_names[i]);
                     icon.setAttribute("data-count", side[troop_type_names[i] + "Count"]);
                     // console.log(prefix + "_alloc_" + tt_ct + "_text");
@@ -2320,7 +2338,7 @@ class Battle {
                         icon.obj = this;
                         text.innerHTML += side[troop_type_names[i] + "Count"]; 
                     } else {
-                        text.innerHTML += troop_sizes[getBestTroopCountSymbol( side[troop_type_names[i] + "Count"]) ]; 
+                        text.innerHTML += "Estd. " + troop_sizes[getBestTroopCountSymbol( side[troop_type_names[i] + "Count"]) ]; 
                     }
 
                     tt_ct++;
@@ -2328,11 +2346,17 @@ class Battle {
             }
         });
 
+        // Reveal the window after setting its content
         modal.style.display = "block";
 
         // todo - right event listener options?
+        
+        // Add event listener for close/confirm button
+        span.style.backgroundColor = "#777";
         span.addEventListener("click", Battle.closeWindowCB, [true, true]);
         span.obj = this;
+
+        // Add event listener for auto-distribute button
         spenser.addEventListener("click", Battle._offenseFlanksAi, [true, true]);
         spenser.obj = this;
     }
@@ -2372,6 +2396,7 @@ class Battle {
         icon.addEventListener("click", Battle.cancelAllocCB, [false, true]);
         icon.obj = battle;
 
+        // Display selected troop type's effectiveness bonus, in each flank, to the user
         let tt_name = icon.getAttribute("data-type");
         ["fl","fm","fr"].forEach((flank) => {
             let fn = ["fl", "fm", "fr"].indexOf(flank);
@@ -2379,6 +2404,7 @@ class Battle {
             advantageDisplay.innerHTML = tt_name + " Effectiveness:<br/> x" + terrain_mod[battle.terrain[fn]][troop_type_names.indexOf(tt_name)];
         });
 
+        // Add event listener to each flank, to prompt for how many troops to add when clicked
         [fl, fm, fr].forEach((flank) => {
             flank.classList.toggle("validalloc", true);
             flank.addEventListener("click", Battle.promptAllocCb, [false, true] );
@@ -2456,9 +2482,19 @@ class Battle {
         let battle = e.currentTarget.obj;
         let icon = e.currentTarget.toAdd;
         let flank = e.target;
+
+        // Get to the root flank element if a child of it was the event target
+        while (!flank.classList.contains("flex"))
+        {
+            flank = flank.parentElement;
+        }
+
         let fl = document.getElementById("fl"),
             fm = document.getElementById("fm"),
             fr = document.getElementById("fr");
+
+        if (icon == null)
+            return;
 
         while (!icon.classList.contains("t"))
         {
@@ -2492,6 +2528,7 @@ class Battle {
                 unit_ct[i] = 0;
             }
         }
+        
         GameUI.troopSplitModal( unit_ct, Battle.applyIndep, [battle, icon, flank] );
     }
 
@@ -2518,6 +2555,7 @@ class Battle {
         let remaining_sz = 0;
         let new_sz = 0;
         let flank = params[2];
+        let abort = false;
 
         if (battle.state != "allocWait")
             return;
@@ -2529,10 +2567,18 @@ class Battle {
             {
                 remaining_sz = icon_refsz - unit_cts[i];
                 new_sz = unit_cts[i];
+
+                if (unit_cts[i] == 0)
+                    abort = true;
             }
         }
 
         icon.classList.toggle("selected", false);
+
+        // If adding 0 troops, skip the rest of the logic
+        if (abort)
+            return;
+
         icon.classList.toggle("allocated", true);
         icon.setAttribute("data-count", remaining_sz);
         
@@ -2542,6 +2588,13 @@ class Battle {
         icon = icon.parentElement;
         flank.innerHTML += icon.outerHTML.replace(/id\=\"/gi, "id=\"ts" + ts + "_");
         document.getElementById("ts" + ts + "_" + icon_refid).setAttribute("data-count", new_sz);
+
+        // If no troops left to allocate, indicate that the cancel button can be clicked.
+        if (document.getElementsByClassName("available").length == 0)
+        {
+            let span = document.getElementById("bw_close");
+                span.removeAttribute("style");
+        }
 
         if (remaining_sz == 0)
             icon.remove();
@@ -2567,6 +2620,14 @@ class Battle {
             fr: []
         };
 
+        debugger;
+
+        // Ignore if not all troops have been allocated.
+        let allocCheck = document.getElementsByClassName("available");
+        if (allocCheck.length > 0)
+            return;
+
+
         for (let i = 0; i < troop_type_names.length; i++)
         {
             flanks["fl"][i] = 0;
@@ -2579,7 +2640,7 @@ class Battle {
         while (troops.length > 0)
         {
             let flank = troops[0].parentElement.parentElement.getAttribute("id");
-            flanks[flank][troop_type_names.indexOf(troops[0].getAttribute("data-type"))] = parseInt(troops[0].getAttribute("data-count"));
+            flanks[flank][troop_type_names.indexOf(troops[0].getAttribute("data-type"))] += parseInt(troops[0].getAttribute("data-count"));
             troops[0].remove();
         }
 
@@ -2751,6 +2812,11 @@ class Game
         this._queuedActions_bf = [];
         this._queuedActions_of = [];
         this._battlect = 0;
+
+        this._showReinforcementsNotif = {
+            bf: true,
+            of: true
+        };
 
         document.getElementById("turn-indicator").addEventListener("click", Game.changeTurn_cb, [false, false]);
         this._changeTurn();
@@ -2930,7 +2996,8 @@ class Game
             }
         }
 
-        GameUI.notification("You have recieved " + this._cptReinforcements[0] + " infantry, " + this._cptReinforcements[1] + " helicopter, and " + this._cptReinforcements[2] + " armored vehicle reinforcements from your controlled capitals. These troops will be deployed to the next region you select.");
+        if (this._showReinforcementsNotif[this._currentPlayerTurn])
+            GameUI.notification("You have recieved " + this._cptReinforcements[0] + " infantry, " + this._cptReinforcements[1] + " helicopter, and " + this._cptReinforcements[2] + " armored vehicle reinforcements from your controlled capitals.<br/>&nbsp;<br/>These troops will be deployed to the next region you select.<br/><br/><small>Click don't show again and this message will only appear in the log to the right.</small>");
 
         GameUI.log(team_key[this._currentPlayerTurn] + " has reinforcements: " +
                 "<pre>" 
@@ -2946,6 +3013,11 @@ class Game
             rc[i].classList.add("reinforceable");
             rc[i].addEventListener("click", Game.reinforcements_cb, [false, false]);
         }
+    }
+
+    ignoreReinforcementsNotif()
+    {
+        this._showReinforcementsNotif[this._currentPlayerTurn] = false;
     }
 
     /**
@@ -3243,8 +3315,20 @@ class Game
         this["_queuedActions_" + this._currentPlayerTurn][l] = [srcForce.side, srcForce, dstForce];
 
         // After player has made 3 moves, end their turn
-        if (this["_queuedActions_" + this._currentPlayerTurn].length >= Math.min(3, this._currentPlayerForces))
+        let tf_ct = this._currentPlayerForces;
+        for (let i = 0; i < regions_capitals.length; i++)
         {
+            // let force = document.getElementById(regions_capitals[i]);
+            let force = this.getRegionForce( regions_capitals[i] );
+            if ( ( force.side == this._currentPlayerTurn ) && ( force.totalCount == 0 ) )
+                tf_ct--;
+        
+        }
+        if (this["_queuedActions_" + this._currentPlayerTurn].length >= Math.min(3, tf_ct))
+        {
+            // debugger;
+            console.log("tf_ct: " + tf_ct);
+            console.log("cpfs:" + this._currentPlayerForces );
             this._changeTurn();
         }
     }
