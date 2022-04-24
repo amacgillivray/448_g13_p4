@@ -5,6 +5,10 @@ body {
   background-color: #7e7e7e;
 }
 
+* {
+  user-select: none;
+}
+
 svg {
   display: block;
   width: auto;
@@ -779,4 +783,8 @@ progress[value]::-webkit-progress-value {
   left: 50%;
   transform: translate(-50%, -50%);
   height: unset;
+}
+
+pre {
+  user-select:contain !important;
 }
