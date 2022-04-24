@@ -541,36 +541,6 @@ const opfor_prefix = "of";
 const blufor_prefix = "bf";
 
 /**
- * @brief Posts the provided message to the game's log (UI component)
- */
-function gameLog( message, classlist = "" )
-{
-    let log = document.getElementById("log");
-    let date = new Date;
-    let dateStr = "";
-    let container = document.createElement("p");
-    if ( classlist != "" ) 
-        container.setAttribute("class", classlist);
-    container.setAttribute("id", "l" + log_entries);
-
-    date.setTime(Date.now());
-    dateStr = (date.getHours().toString().length < 2) ? "0" + date.getHours().toString() : date.getHours().toString();
-    dateStr += ":"
-    dateStr += (date.getMinutes().toString().length < 2) ? "0" + date.getMinutes().toString() : date.getMinutes().toString();
-    dateStr += ":"
-    dateStr += (date.getSeconds().toString().length < 2) ? "0" + date.getSeconds().toString() : date.getSeconds().toString();
-
-    container.innerHTML = "<span class=\"date\">" + dateStr + "</span>" + message;
-
-    if (log_entries-1 < 0)
-        log.appendChild(container);
-    else 
-        log.insertBefore(container, document.getElementById("l" + (log_entries-1)));
-
-    log_entries++;
-}
-
-/**
  * @brief Determines the class name of the troop-size indicator most appropriate 
  *        for the given number of troops.
  * @param {number} size 
@@ -664,6 +634,36 @@ function changeTurn_cb( e )
  * @brief Class containing static methods to work with the game's user interface
  */
 class GameUI {
+
+    /**
+     * @brief Posts the provided message to the game's log (UI component)
+     */
+    static log( message, classlist = "" )
+    {
+        let log = document.getElementById("log");
+        let date = new Date;
+        let dateStr = "";
+        let container = document.createElement("p");
+        if ( classlist != "" ) 
+            container.setAttribute("class", classlist);
+        container.setAttribute("id", "l" + log_entries);
+    
+        date.setTime(Date.now());
+        dateStr = (date.getHours().toString().length < 2) ? "0" + date.getHours().toString() : date.getHours().toString();
+        dateStr += ":"
+        dateStr += (date.getMinutes().toString().length < 2) ? "0" + date.getMinutes().toString() : date.getMinutes().toString();
+        dateStr += ":"
+        dateStr += (date.getSeconds().toString().length < 2) ? "0" + date.getSeconds().toString() : date.getSeconds().toString();
+    
+        container.innerHTML = "<span class=\"date\">" + dateStr + "</span>" + message;
+    
+        if (log_entries-1 < 0)
+            log.appendChild(container);
+        else 
+            log.insertBefore(container, document.getElementById("l" + (log_entries-1)));
+    
+        log_entries++;
+    }
 
     /**
      * @brief update the ownership of a region
@@ -1834,7 +1834,7 @@ class Battle {
         // Battle.drawBattleWindow( this );
 
         // Put information about the battle in the game log
-        gameLog( 
+        GameUI.log( 
             team_key[this._off.side] + 
             " attacks " + this._def.region + 
             " from " + this._off.region + 
@@ -2009,7 +2009,7 @@ class Battle {
             );
         }
 
-        gameLog( winside + " " + verb + " control of " + this._def.region + "." + troopLossRecord);
+        GameUI.log( winside + " " + verb + " control of " + this._def.region + "." + troopLossRecord);
         GameUI.removeCombatAnimations( this._battle_number );
         game.battleIncrement();
     	return;
@@ -2641,7 +2641,6 @@ class Battle {
      */
     static _offenseFlanksAi( e )
     {
-        console.log("sup bitches");
         let battle = e.currentTarget.obj;
         let modal = document.getElementById("battleWindow");
         let flank_key = [
@@ -2680,7 +2679,6 @@ class Battle {
 
         // Hide the window and start the battle
         modal.style.display = "none";
-        
         modal.innerHTML = "";
         battle.start();
     }
@@ -2947,7 +2945,7 @@ class Game
 
         GameUI.notification("You have recieved " + this._cptReinforcements[0] + " infantry, " + this._cptReinforcements[1] + " helicopter, and " + this._cptReinforcements[2] + " armored vehicle reinforcements from your controlled capitals. These troops will be deployed to the next region you select.");
 
-        gameLog(team_key[this._currentPlayerTurn] + " has reinforcements: " +
+        GameUI.log(team_key[this._currentPlayerTurn] + " has reinforcements: " +
                 "<pre>" 
                 + troop_type_names[0].toUpperCase() + ":\t" + this._cptReinforcements[0] + "\n"
                 + troop_type_names[1].toUpperCase() + ":\t" + this._cptReinforcements[1] + "\n"
@@ -3070,7 +3068,7 @@ class Game
 
         document.getElementById("turn-indicator").innerHTML = team_key[winteam] + " VICTORY";
         GameUI.notification(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
-        gameLog(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
+        GameUI.log(team_key[winteam] + " VICTORY.\nRefresh the page to play again!");
     }
 
     /**
@@ -3168,9 +3166,6 @@ class Game
             );
         });
         
-        //re-enable endturn button
-        document.getElementById("end-turn-button").disabled = false;
-
         // Remove cancel handler
         e.currentTarget.removeEventListener(
             "click",
@@ -3252,10 +3247,7 @@ class Game
         if (this["_queuedActions_" + this._currentPlayerTurn].length >= Math.min(3, this._currentPlayerForces))
         {
             this._changeTurn();
-        } 
-
-        //re-enable endturn button
-        document.getElementById("end-turn-button").disabled = false;
+        }
     }
 
     /**
@@ -3314,7 +3306,7 @@ class Game
                 dstForce._side = srcForce.side;
 
             //log.innerHTML += "<p>" + this._currentPlayerTurn.toUpperCase() + " moved from " + srcForce.region_phonetic + " to " + dstForce.region_phonetic + "</p>\n";
-            gameLog( team_key[this._currentPlayerTurn] + " moves from " + srcForce.region + " to " + dstForce.region );
+            GameUI.log( team_key[this._currentPlayerTurn] + " moves from " + srcForce.region + " to " + dstForce.region );
 
             // Add the units to the destination, remove them from the source
             let units = [];
