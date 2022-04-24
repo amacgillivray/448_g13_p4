@@ -1239,6 +1239,76 @@ class GameUI {
         }
     }
 
+    static troopSplitModal( unit_cts, callback, cbparms )
+    {
+        let modal = document.getElementById("troopSplitter");
+        let content = document.getElementById("ts_content");
+        let close = document.getElementById("ts_close").outerHTML;
+        let fields = [];
+        // let inputs = [];
+        
+        console.log(unit_cts);
+        content.innerHTML = "";
+
+        for ( let i = 0; i < troop_type_names.length; i++ )
+        {
+            if (unit_cts[i] > 0) {
+                content.innerHTML += '<p class="ts_p">' + 
+                                '<label for="' + troop_type_names[i] + '">' + troop_type_names[i] + '</label>' +
+                                '<input name="' + troop_type_names[i] + '" id="' + troop_type_names[i] + '" type="number" value="' + unit_cts[i] + '" data-max="' + unit_cts[i] + '" />' +
+                                '</p>';
+                fields.push(troop_type_names[i]);
+            }
+        }
+
+        content.innerHTML += close;
+        modal.style.display = "block";
+        close = document.getElementById("ts_close");
+        close.addEventListener("click", GameUI.troopSplitModalCB, [false, true]);
+        close.fields = fields;
+        close.callback = callback;
+        close.cbparms = cbparms;
+    }
+
+    static troopSplitModalCB( e )
+    {
+        let fields = e.currentTarget.fields;
+        let callback = e.currentTarget.callback;
+        let cbparms = e.currentTarget.cbparms;
+        let values = [];
+
+        for (let i = 0; i < troop_type_names.length; i++)
+        {
+            values[i] = 0;
+        }
+
+        for (let e = 0; e < fields.length; e++)
+        {
+            let i = troop_type_names.indexOf(fields[e]);
+            let input = document.getElementById(fields[e]);
+            let max = parseInt(Number(input.getAttribute("data-max")));
+            values[i] = parseInt(Number(input.value));
+            if (values[i] >= max)
+                values[i] = max;
+            if (values[i] < 0)
+                values[i] = 0;
+            if (isNaN(values[i]))
+                values[i] = 0;
+        }
+
+        callback(values, cbparms);
+
+        let modal = document.getElementById("troopSplitter");
+        let close = document.getElementById("ts_close");
+            modal.innerHtml = close;
+        
+        modal.style.display = "none";
+
+        e.preventDefault();
+
+        ts++;
+    }
+
 }
 
 /**
@@ -2024,6 +2094,9 @@ class Battle {
         battle.state = "allocWait";
 
         let icon = e.currentTarget;
+
+        console.log(icon);
+
         // let modal = document.getElementById("battleWindow"); 
         let fl = document.getElementById("fl"),
             fm = document.getElementById("fm"),
@@ -2039,7 +2112,7 @@ class Battle {
         }
         icon.classList.toggle("selected", true);
         icon.classList.toggle("available", false);
-        icon.removeEventListener("click", Battle.startAllocCB, [false, true]);
+        // icon.removeEventListener("click", Battle.startAllocCB, [false, true]);
         icon.addEventListener("click", Battle.cancelAllocCB, [false, true]);
         icon.obj = battle;
 
@@ -2056,7 +2129,8 @@ class Battle {
             // if (!isset( icon.forbid ) || flank != icon.forbid ) 
             // {
                 flank.classList.toggle("validalloc", true);
-                flank.addEventListener("click", Battle.applyAllocCB, [false, true])
+                // flank.addEventListener("click", Battle.applyAllocCB, [false, true])
+                flank.addEventListener("click", Battle.promptAllocCb, [false, true] );
                 flank.obj = battle;
                 flank.toAdd = icon;
             // }
@@ -2082,7 +2156,7 @@ class Battle {
         battle.state = "initial";
 
         // Reset icon
-        icon.removeEventListener("click", Battle.cancelAllocCB, [false, true]);
+        // icon.removeEventListener("click", Battle.cancelAllocCB, [false, true]);
         icon.addEventListener("click", Battle.startAllocCB, [false, true]);
         icon.classList.toggle("selected", false);
         icon.classList.toggle("available", true);
@@ -2103,31 +2177,75 @@ class Battle {
         });
     }
 
-    static applyAllocCB( e )
+    static promptAllocCb( e )
     {
+        console.log(e);
+
         let battle = e.currentTarget.obj;
-        let toAdd  = e.currentTarget.toAdd;
-        let icon = null;
-        let refID = toAdd.getAttribute("id");
+        let icon = e.currentTarget.toAdd;
         let flank = e.target;
+
+        while (!icon.classList.contains("t"))
+        {
+            // if we went too far, give up
+            if (icon.classList.contains("alloc"))
+                return;
+
+            icon = icon.parentElement;
+        }
+
+        let unit_ct = [];
+
+        for ( let i = 0; i < troop_type_names.length; i++ )
+        {
+            if (troop_type_names[i] == icon.getAttribute("data-type"))
+            {
+                unit_ct[i] = icon.getAttribute("data-count");
+            } else {
+                unit_ct[i] = 0;
+            }
+        }
+        GameUI.troopSplitModal( unit_ct, Battle.applyIndep, [battle, icon, flank] );
+    }
+
+    static applyIndep( unit_cts, params )
+    {
+        console.log(unit_cts);
+        console.log(params);
+
+        let battle = params[0];
+        let icon = params[1];
+        let icon_refsz = parseInt(icon.getAttribute("data-count"));
+        let icon_refid = icon.getAttribute("id");
+        let remaining_sz = 0;
+        let new_sz = 0;
+        let flank = params[2];
 
         if (battle.state != "allocWait")
             return;
         battle.state = "initial";
 
-        toAdd.classList.toggle("selected", false);
-        toAdd.classList.toggle("available", true);
-        toAdd = toAdd.parentElement;
-        flank.innerHTML += toAdd.outerHTML;
-        toAdd.remove();
+        for ( let i = 0; i < troop_type_names.length; i++ )
+        {
+            if (troop_type_names[i] == icon.getAttribute("data-type"))
+            {
+                remaining_sz = icon_refsz - unit_cts[i];
+                new_sz = unit_cts[i];
+            }
+        }
 
-        // Allow the player to revise their move if they so choose
-        // console.log(refID);
-        // icon = document.getElementById(refID);
-        // console.log(icon);
-        // icon.addEventListener("click", Battle.startAllocCB, [false, true]);
-        // icon.obj = battle;
-        // icon.forbid = flank.id;
+        icon.classList.toggle("selected", false);
+        icon.classList.toggle("available", true);
+        icon.removeEventListener("click", Battle.cancelAllocCB, [false, true]);
+        icon.setAttribute("data-count", remaining_sz);
+        
+        let remaining = document.getElementById("off_alloc_" + icon_refid[5] + "_text");
+            remaining.innerHTML = "<b>" + icon.getAttribute("data-type") + "</b><br/>" + remaining_sz; 
+        
+        icon = icon.parentElement;
+        flank.innerHTML += icon.outerHTML.replace(/id\=\"/gi, "id=\"ts" + ts + "_");
+        document.getElementById("ts" + ts + "_" + icon_refid).setAttribute("data-count", new_sz);
+
 
         // Remove listeners on the flanks
         [fl, fm, fr].forEach((flank) => {
@@ -2136,6 +2254,13 @@ class Battle {
             flank.obj = null;
             flank.toAdd = null;
         });
+
+        if (remaining_sz == 0)
+            icon.remove();
+        else {
+            icon.addEventListener("click", Battle.startAllocCB, [false, true]);
+            icon.obj = battle;
+        }
     }
 
     /**
@@ -2153,12 +2278,13 @@ class Battle {
             right: []
         };
 
-        
-
         // Hide the window and start the battle
         modal.style.display = "none";
+        
         modal.innerHTML = "";
         battle.start();
+
+
     }
 
     _defenderFlanksAi()
@@ -2802,5 +2928,6 @@ class Game
 let log_entries = 0;
 let battle_ct = 0;
 let turn_ct = 0;
+let ts = 0;
 let game = new Game;
 

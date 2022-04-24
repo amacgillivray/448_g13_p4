@@ -531,6 +531,13 @@ progress[value]::-webkit-progress-value {
 	  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 	}
 
+  #troopSplitter {
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
 	/* Modal Content/Box */
 	.modal-content {
 	  background-color: #fefefe;
@@ -669,4 +676,11 @@ progress[value]::-webkit-progress-value {
 .allocpair p {
   width: 10ch;
   text-transform: capitalize;
+}
+
+#ts_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 }
