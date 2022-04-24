@@ -5,22 +5,22 @@ function test(){
     let f = "<span class='redtext'>FAILED</span>";
     let result = f;
 
-    //gameLog() test
+    //GameUI.log() test
     //no one should see the message in gamelog if the function is not working
-    gameLog("Gamelog is working");
+    GameUI.log("Gamelog is working");
 
     //getBestTroopCountSymbol() test
     //getBestTroopCountSymbol(300) should re turn "battalion".
     if( getBestTroopCountSymbol(300) == "battalion") result = p;
     rsmessage = "getBestTroopCountSymbol() test: " + result;
-    gameLog(rsmessage);
+    GameUI.log(rsmessage);
 
     //Iscapital() test
     //A6 is a capital and A5 is not a capital
     if(isCapitalRegion("A6") && !isCapitalRegion("A5")) result = p;
     else result = f;
     rsmessage = "isCapitalRegion() test: "+ result;
-    gameLog(rsmessage);
+    GameUI.log(rsmessage);
 
     //GameUI.setRegionOwner() test
     //set region A2 to red.
@@ -29,7 +29,7 @@ function test(){
     if(document.getElementById("a2").classList.contains("of")) result = p;
     else result = f;
     rsmessage = "setRegionOwner() test: "+result;
-    gameLog(rsmessage);
+    GameUI.log(rsmessage);
 
     //GameUI.getUnitsInRegion() test
     let test_reg = "i5"
@@ -54,7 +54,7 @@ function test(){
         if (test_unit[2]._id != arm_id || test_unit[2].count != arm_count) bool_result=false;
     }
     result = (bool_result) ? p : f;
-    gameLog("getUnitsInRegion() test: "+ result);
+    GameUI.log("getUnitsInRegion() test: "+ result);
 
     //Force.alterForce() test
     let test_force_reg= "i3";
@@ -82,7 +82,7 @@ function test(){
          (heli_cnt+20) != test_force.unitList[1].count ||
          (arm_cnt+20) != test_force.unitList[2].count) bool_result = false; 
     result = (bool_result) ? p : f;
-    gameLog("alterForce() test: "+ result);
+    GameUI.log("alterForce() test: "+ result);
 
     //Unit.updateHealth() test
     //get the health before function call
@@ -92,21 +92,21 @@ function test(){
     //if the health after function called correct with the calculated health, the function works
     if( inf_unit.health == 300) result = p;
     else result = f;
-    gameLog("updateHealth() test: "+result);
+    GameUI.log("updateHealth() test: "+result);
 
     //Game: change turn, handle win, handle playermoves 
     bool_result = true;
     //get current player's turn before function call
     let bf = game._currentPlayerTurn;
     //change turn
-    changeTurn_cb();
+    game._changeTurn();
     //get current player's turn after function call
     let af = game._currentPlayerTurn;
     //if the player's turn did not change, the function failed
     if(bf == af) bool_result = false;
     result = (bool_result) ? p : f;
     rsmessage = "Player turns have changed (as screen below shows). ChangeTurn test: " + result;
-    gameLog(rsmessage);
+    GameUI.log(rsmessage);
 
     //handleWin() test
     //annouce red team win
@@ -117,7 +117,7 @@ function test(){
         for(let area = 0; area<subreg[reg].length; area++) if (!subreg[reg][area].classList.contains("of")) bool_result = false;
     result = (bool_result) ? p : f;
     rsmessage = "handleWin() test: "+ result;
-    gameLog(rsmessage);
-    gameLog("Each test will have a result of " +p+" or "+f);
-    gameLog("Tests end");
+    GameUI.log(rsmessage);
+    GameUI.log("Each test will have a result of " +p+" or "+f);
+    GameUI.log("Tests end");
 }

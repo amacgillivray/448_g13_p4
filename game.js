@@ -202,7 +202,7 @@ const region_connections = {
     d8: ["d4", "d6", "d7", "d9", "e9"],
     d9: ["d7", "d8", "e9", "f2"],
     e0: ["e1", "e4", "d1", "b0", "a8"],
-    e1: ["a8", "e0", "e2", "e3", "j0", "j7"],
+    e1: ["e0", "e2", "e3", "j0", "j7"],
     e2: ["e1", "e3", "e6", "j8", "i0", "i1"], 
     e3: ["e1", "e2", "e4", "e5"],
     e4: ["e0", "e3", "e5", "d2", "d1"],
@@ -216,7 +216,7 @@ const region_connections = {
     f2: ["e9", "f1", "f3", "d7", "d9"], 
     f3: ["d7", "f2",  "f4"],
     f4: ["f3", "f5", "f7", "f9"],
-    f5: ["f0", "f1", "f3", "f4", "f6", "f7"],
+    f5: ["f0", "f1", "f4", "f6", "f7"],
     f6: ["f0", "f5", "f7", "f8", "g4", "g3"],
     f7: ["f4", "f5", "f6", "f8", "f9"],
     f8: ["g4", "f6", "f7", "f9"],
@@ -2420,7 +2420,7 @@ class Battle {
      * 
      * @post Icon LOSES EventListener("click", Battle.cancelAllocCB, [false, true]);
      * @post Icon GAINS EventListener("click", Battle.startAllocCB, [false, true]);
-     * @post Flank LOSES flank.removeEventListener("click", Battle.applyAllocCB, [false, true]);
+     * @post Flank LOSES flank.removeEventListener("click", Battle.promptAllocCb, [false, true]);
      */
     static cancelAllocCB( e )
     {
@@ -2459,7 +2459,7 @@ class Battle {
         // Remove listeners on the flanks
         [fl, fm, fr].forEach((flank) => {
             flank.classList.toggle("validalloc", false);
-            flank.removeEventListener("click", Battle.applyAllocCB, [false, true]);
+            flank.removeEventListener("click", Battle.promptAllocCb, [false, true]);
             flank.obj = null;
             flank.toAdd = null;
         });
@@ -2472,7 +2472,7 @@ class Battle {
      * 
      * @post Troop split modal is opened with Battle.applyIndep as callback
      * @post Icon LOSES EventListener("click", Battle.cancelAllocCB, [false, true]);
-     * @post Flank LOSES EventListener("click", Battle.applyAllocCB, [false, true]);
+     * @post Flank LOSES EventListener("click", Battle.promptAllocCb, [false, true]);
      * @post Await ApplyIndep
      */
     static promptAllocCb( e )
@@ -2512,7 +2512,7 @@ class Battle {
         // Remove listeners on the flanks
         [fl, fm, fr].forEach((flank) => {
             flank.classList.toggle("validalloc", false);
-            flank.removeEventListener("click", Battle.applyAllocCB, [false, true]);
+            flank.removeEventListener("click", Battle.promptAllocCb, [false, true]);
             flank.obj = null;
             flank.toAdd = null;
         });
@@ -3174,6 +3174,10 @@ class Game
             [false, true]
         );
         realtarget.obj = this;
+        
+        //disable turn-indicator
+        document.getElementById("turn-indicator").removeEventListener("click", Game.changeTurn_cb, [false, false]);
+        document.getElementById("turn-indicator").style.color = "#999";
 
         // mark valid moves and add event listeners for their selection.
         region_connections[realtarget.id].forEach((validMove) => {
@@ -3225,6 +3229,10 @@ class Game
             );
         });
         
+        //re-enable turn-indicator
+        document.getElementById("turn-indicator").addEventListener("click", Game.changeTurn_cb, [false, false]);
+        document.getElementById("turn-indicator").style.color = "white";
+
         // Remove cancel handler
         e.currentTarget.removeEventListener(
             "click",
@@ -3284,6 +3292,10 @@ class Game
                 [false, true]
             );
         });
+
+        //re-enable turn-indicator
+        document.getElementById("turn-indicator").addEventListener("click", Game.changeTurn_cb, [false, false]);
+        document.getElementById("turn-indicator").style.color = "white";
 
         // console.log("Removed OTU event listener for " + e.currentTarget.oc + " click-to-cancel");
         document.getElementById(e.currentTarget.oc).removeEventListener(
