@@ -1735,6 +1735,7 @@ class Battle {
     constructor( defending_force, attacking_force )
     {
         this.state = "initial";
+        this.readyToEnd = false;
         
         GameUI.craterFix();
 
@@ -2340,13 +2341,11 @@ class Battle {
                         icon.obj = this;
                         text.innerHTML += side[troop_type_names[i] + "Count"]; 
                     } else {
-                        text.innerHTML += troop_sizes[getBestTroopCountSymbol( side[troop_type_names[i] + "Count"]) ]; 
+                        text.innerHTML += "Estd. " + troop_sizes[getBestTroopCountSymbol( side[troop_type_names[i] + "Count"]) ]; 
                     }
 
                     tt_ct++;
                 }
-
-                // todo - set innerhtml to blank if no troop present for an icon
             }
         });
 
