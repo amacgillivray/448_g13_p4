@@ -758,6 +758,10 @@ progress[value]::-webkit-progress-value {
   /* box-shadow: 0px 0px 4px #0005; */
 }
 
+#notif-close {
+  display: block;
+}
+
 #battleWindow {
   top: 50%;
   left: 50%;
