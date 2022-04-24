@@ -2489,6 +2489,9 @@ class Battle {
             fm = document.getElementById("fm"),
             fr = document.getElementById("fr");
 
+        if (icon == null)
+            return;
+
         while (!icon.classList.contains("t"))
         {
             // if we went too far, give up
@@ -2609,7 +2612,7 @@ class Battle {
         while (troops.length > 0)
         {
             let flank = troops[0].parentElement.parentElement.getAttribute("id");
-            flanks[flank][troop_type_names.indexOf(troops[0].getAttribute("data-type"))] = parseInt(troops[0].getAttribute("data-count"));
+            flanks[flank][troop_type_names.indexOf(troops[0].getAttribute("data-type"))] += parseInt(troops[0].getAttribute("data-count"));
             troops[0].remove();
         }
 
