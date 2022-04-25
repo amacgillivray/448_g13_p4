@@ -9,6 +9,8 @@
 
 "use strict";
 
+const debug = false;
+
 /**
  * @brief Name of the attribute that specifies how many troops are present in the region
  */
@@ -519,7 +521,7 @@ const game_setup = {
     j6: {side: "neutral", force: [0, 0, 0]},
     j7: {side: "neutral", force: [0, 0, 0]},
     j8: {side: "neutral", force: [0, 0, 0]},
-    j9: {side: "of", force: [500, 0, 8]},
+    j9: {side: "neutral", force: [0, 0, 0]},
 };
 
 /**
@@ -702,7 +704,7 @@ class GameUI {
         troop_type_names.forEach((unitType) => {
             // node id format: [teamprefix]_[regionletter]_[trooptype]
             let selector = team + "_" + region_letter + "_" + unitType;
-            // console.log(selector);
+            // if (debug) console.log(selector);
             let node = document.getElementById(selector);
             if (node.classList.contains("t"))
             {
@@ -719,10 +721,10 @@ class GameUI {
     static updateUnitDisplay(unit)
     {
         let node = unit.side + "_" + unit.region + "_" + unit.type;
-        console.log(node);
+        if (debug) console.log(node);
         // node = document.getElementById(node);
 
-        //console.log("Troop count: " + unit.count);
+        //if (debug) console.log("Troop count: " + unit.count);
         if (unit.side == "neutral")
             return;
 
@@ -730,7 +732,7 @@ class GameUI {
 
         // Hide or unhide the unit based on its count.
         if (unit.count <= 0) {
-            // console.log("Hiding unit.");
+            // if (debug) console.log("Hiding unit.");
             document.getElementById(node).setAttribute("class", "t_np");
 
             // make the troop count hidden as well
@@ -741,10 +743,10 @@ class GameUI {
             }
         }
         else if (unit.count > 0){
-            // console.log("Revealing unit.");
+            // if (debug) console.log("Revealing unit.");
             document.getElementById(node).setAttribute("class", "t " + unit.side);
 
-            // console.log(".tc_h." + getBestTroopCountSymbol(unit.count));
+            // if (debug) console.log(".tc_h." + getBestTroopCountSymbol(unit.count));
 
             // If the troop already existed, remove its old count indicator first
             let sz0 = document.getElementById(node).querySelector(".tc");
@@ -784,7 +786,7 @@ class GameUI {
             if (!(node.classList.contains("t_np")))
             {
                 let target = destinationForce.side + "_" + destinationForce.region + "_" + unit;
-                console.log("Target: " + target);
+                if (debug) console.log("Target: " + target);
                     target = document.getElementById(target);
                     target = target.getBBox();
 
@@ -812,7 +814,7 @@ class GameUI {
             if (!(node.classList.contains("t_np")))
             {
                 let target = originForce.side + "_" + originForce.region + "_" + unit;
-                console.log("Target: " + target);
+                if (debug) console.log("Target: " + target);
                     target = document.getElementById(target);
                     target = target.getBBox();
 
@@ -1270,7 +1272,7 @@ class GameUI {
         let fields = [];
         // let inputs = [];
         
-        console.log(unit_cts);
+        if (debug) console.log(unit_cts);
         content.innerHTML = "";
 
         for ( let i = 0; i < troop_type_names.length; i++ )
@@ -1390,8 +1392,8 @@ class GameUI {
                 let ref_class = icon.getAttribute("class");
                 icon.innerHTML = icon.innerHTML.replace(/<circle.*\<\/circle\>/i, "");
 
-                console.log(id);
-                console.log(icon);
+                if (debug) console.log(id);
+                if (debug) console.log(icon);
 
                 if (icon.classList.contains("hq_np"))
                 {
@@ -1520,10 +1522,8 @@ class GameUI {
      * @param {Number} cnt 
      */
 	alterUnits(cnt){
-        // console.log("Adding " + cnt + " to " + this._id);
+        // if (debug) console.log("Adding " + cnt + " to " + this._id);
 		this._health += (this.hpMod * cnt);
-        if (document.getElementById(this._id) == null)
-            debugger;
         document.getElementById(this._id).setAttribute("data-count", this.count);
 	}
 }
@@ -1805,7 +1805,7 @@ class Battle {
                 }
             }
         }
-        // console.log(this.terrain);
+        // if (debug) console.log(this.terrain);
 
         // Set tick counter
         this._ticks = 0;
@@ -2009,7 +2009,7 @@ class Battle {
     _tick()
     {
 
-        console.log("Tick #" + this._ticks);
+        if (debug) console.log("Tick #" + this._ticks);
         this._ticks++;
         this._drawProgress();
         let fl = ["left", "middle", "right"];
@@ -2045,11 +2045,11 @@ class Battle {
             {
                 mvTo = this._findCandidateFlank( f, "defender" );
                 mvFm = this._flanks[f]["defender"];
-                console.log("Moving defender from " + f + " flank to " + mvTo );
+                if (debug) console.log("Moving defender from " + f + " flank to " + mvTo );
             } else if ( attacker_sz > 0 && defender_sz == 0 ) {
                 mvTo = this._findCandidateFlank( f, "attacker" );
                 mvFm = this._flanks[f]["attacker"];
-                console.log("Moving attacker from " + f + " flank to " + mvTo );
+                if (debug) console.log("Moving attacker from " + f + " flank to " + mvTo );
             }
 
             if ( mvTo != "" && mvTo != f )
@@ -2060,7 +2060,7 @@ class Battle {
                     mvTo[e] += mvFm[e];
                     mvFm[e] = 0;
                 }
-                console.log(this._flanks);
+                if (debug) console.log(this._flanks);
             }
         }
 
@@ -2098,7 +2098,6 @@ class Battle {
                 oref[i].push( off[e] );
                 dref[i].push( def[e] );
 
-                // debugger;
                 if (this._off[troop_type_names[e]] != null) {
                     omax[i] += def[e] * this._off[troop_type_names[e]].hpMod;
                     dmgo[i] += Math.min(off[e], troop_combat_width[e]) * 
@@ -2120,8 +2119,8 @@ class Battle {
             if (dmgo[i] > dmax[i]) 
                 dmgo[i] = dmax[i];
 
-            console.log("Attacker " + f + " Deals Dmg: " + dmgo[i]);
-            console.log("Defender " + f + " Deals Dmg: " + dmgd[i]);
+            if (debug) console.log("Attacker " + f + " Deals Dmg: " + dmgo[i]);
+            if (debug) console.log("Defender " + f + " Deals Dmg: " + dmgd[i]);
 
             this._off.distributeDamage(dmgd[i]);
             this._def.distributeDamage(dmgo[i]);
@@ -2318,7 +2317,7 @@ class Battle {
             {
                 if (side[troop_type_names[i] + "Count"] > 0)
                 {
-                    // console.log(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
+                    // if (debug) console.log(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
                     let icon = document.getElementById(prefix + "_a" + tt_ct + "_" + troop_type_names[i] + "_" + side.side );
                                document.getElementById(prefix + "_alloc_" + tt_ct).innerHTML = icon.outerHTML;
                     
@@ -2330,7 +2329,7 @@ class Battle {
                         icon.classList.toggle("available", true);
                     icon.setAttribute("data-type", troop_type_names[i]);
                     icon.setAttribute("data-count", side[troop_type_names[i] + "Count"]);
-                    // console.log(prefix + "_alloc_" + tt_ct + "_text");
+                    // if (debug) console.log(prefix + "_alloc_" + tt_ct + "_text");
                     let text = document.getElementById(prefix + "_alloc_" + tt_ct + "_text");
                         text.innerHTML = "<b>" + troop_type_names[i] + "</b><br/>"; 
                     if (prefix[0] == "o") {
@@ -2477,7 +2476,7 @@ class Battle {
      */
     static promptAllocCb( e )
     {
-        console.log(e);
+        if (debug) console.log(e);
 
         let battle = e.currentTarget.obj;
         let icon = e.currentTarget.toAdd;
@@ -2545,8 +2544,8 @@ class Battle {
      */
     static applyIndep( unit_cts, params )
     {
-        console.log(unit_cts);
-        console.log(params);
+        if (debug) console.log(unit_cts);
+        if (debug) console.log(params);
 
         let battle = params[0];
         let icon = params[1];
@@ -2620,8 +2619,6 @@ class Battle {
             fr: []
         };
 
-        debugger;
-
         // Ignore if not all troops have been allocated.
         let allocCheck = document.getElementsByClassName("available");
         if (allocCheck.length > 0)
@@ -2656,12 +2653,12 @@ class Battle {
      */
     setAttackerFlanks( flanks )
     {
-        console.log(flanks);
+        if (debug) console.log(flanks);
 
         ["left", "middle", "right"].forEach((flank) => {
             this._flanks[flank]["attacker"] = flanks["f" + flank[0]];
         });
-        console.log(this);
+        if (debug) console.log(this);
         this.start();
     }
 
@@ -2889,12 +2886,17 @@ class Game
 
         this._currentPlayerForces = 0;
 
-        this.forces.forEach((force) => {
-            if (force.side == this._currentPlayerTurn) {
-                document.getElementById(force.region).classList.toggle("cpt", false);
-                this._currentPlayerForces++;
+        // If the player ended their turn without reinforcing, remove the reinforceable class
+        if (this._state == "reinforcing")
+        {
+            let rc = document.getElementsByClassName("reinforceable");
+            for (let i = rc.length-1; i >= 0; i--)
+            {
+                rc[i].removeEventListener("click", Game.reinforcements_cb, [false, false]);
+                rc[i].classList.remove("reinforceable");
             }
-        });
+            this._state = "initial";
+        }
         
         // Apply queued moves from previous turn
         this._handlePlayerActions();
@@ -2939,41 +2941,48 @@ class Game
      */
     _rotateTurn()
     {
-                // Rotate turns
-                if(this._currentPlayerTurn == "bf"){
-                    this._currentPlayerTurn = "of";
-                    document.getElementById("turn-indicator").setAttribute("class", "opfor");
-                    document.getElementById("team").innerHTML = "OPFOR (PACT)";
-                }else if(this._currentPlayerTurn == "of"){
-                    this._currentPlayerTurn = "bf";
-                    document.getElementById("turn-indicator").setAttribute("class", "blufor");
-                    document.getElementById("team").innerHTML = "BLUFOR (NATO)";
-                }
-        
-                // Highlight current player's own forces
-                this.forces.forEach((force) => {
-                    if (force.side == this._currentPlayerTurn)
-                        {
-                            document.getElementById(force.region).classList.toggle("cpt", true);
-                        }
-                });
-        
-        
-                // Apply fog-of-war
-                this._applyFogOfWar();
-        
-                // Apply reinforcements
-                // Skip first two turns used to initialize the game
-                if (turn_ct > 2)
-                   this._applyReinforcements();
-        
-        
-                // need to make sure that this only happens after battles end
-                let bc = document.getElementsByClassName("cbtFire");
-                while (bc.length > 0)
+        // Rotate turns
+        if(this._currentPlayerTurn == "bf"){
+            this._currentPlayerTurn = "of";
+            document.getElementById("turn-indicator").setAttribute("class", "opfor");
+            document.getElementById("team").innerHTML = "OPFOR (PACT)";
+        }else if(this._currentPlayerTurn == "of"){
+            this._currentPlayerTurn = "bf";
+            document.getElementById("turn-indicator").setAttribute("class", "blufor");
+            document.getElementById("team").innerHTML = "BLUFOR (NATO)";
+        }
+
+        // Apply cpt style and calcuate currentPlayerForces
+        this.forces.forEach((force) => {
+            if (force.side == this._currentPlayerTurn) {
+                document.getElementById(force.region).classList.toggle("cpt", false);
+                this._currentPlayerForces++;
+            }
+        });
+
+        // Highlight current player's own forces
+        this.forces.forEach((force) => {
+            if (force.side == this._currentPlayerTurn)
                 {
-                    bc[0].remove();
+                    document.getElementById(force.region).classList.toggle("cpt", true);
                 }
+        });
+
+        // Apply fog-of-war
+        this._applyFogOfWar();
+
+        // Apply reinforcements
+        // Skip first two turns used to initialize the game
+        if (turn_ct > 2)
+            this._applyReinforcements();
+
+
+        // need to make sure that this only happens after battles end
+        let bc = document.getElementsByClassName("cbtFire");
+        while (bc.length > 0)
+        {
+            bc[0].remove();
+        }
 
     }
 
@@ -2982,6 +2991,8 @@ class Game
      */
     _applyReinforcements()
     {
+        this._state = "reinforcing";
+
         this._cptReinforcements = [0,0,0];
 
         for (let i = 0; i < regions_capitals.length; i++)
@@ -3099,7 +3110,7 @@ class Game
                 troop_type_names.forEach((troop_type) => {
                     if (force[troop_type] != null)
                     {
-                        console.log(force[troop_type].id);
+                        if (debug) console.log(force[troop_type].id);
                         document.getElementById(force[troop_type].id).classList.add("fow");
                     }
                 });
@@ -3155,6 +3166,17 @@ class Game
         // If the force has already been moved, don't allow it to be moved again
         if (realtarget.classList.contains("moved"))
             return;
+
+        // Dont allow moving empty region
+        console.log(realtarget);
+        if (isCapitalRegion(realtarget.id) && this._state != "reinforcing")
+        {
+            if (this.getRegionForce(realtarget.id).totalCount == 0)
+            {
+                console.log("Skipping");
+                return;
+            }
+        }    
 
         // validate that the region is for the current player;
         // if not, return
@@ -3297,16 +3319,16 @@ class Game
         document.getElementById("turn-indicator").addEventListener("click", Game.changeTurn_cb, [false, false]);
         document.getElementById("turn-indicator").style.color = "white";
 
-        // console.log("Removed OTU event listener for " + e.currentTarget.oc + " click-to-cancel");
+        // if (debug) console.log("Removed OTU event listener for " + e.currentTarget.oc + " click-to-cancel");
         document.getElementById(e.currentTarget.oc).removeEventListener(
             "click",
             Game.moveCancelCb,
             [false, true]
         );
 
-        //console.log(e.currentTarget.id);
-        console.log("dst: " + e.currentTarget.id);
-        console.log("src: " + e.currentTarget.oc);
+        //if (debug) console.log(e.currentTarget.id);
+        if (debug) console.log("dst: " + e.currentTarget.id);
+        if (debug) console.log("src: " + e.currentTarget.oc);
 
         // draw mvmt arrow: 
         GameUI.drawMovementArrow(srcForce.side, e.currentTarget.oc, e.currentTarget.id);
@@ -3321,14 +3343,16 @@ class Game
             // let force = document.getElementById(regions_capitals[i]);
             let force = this.getRegionForce( regions_capitals[i] );
             if ( ( force.side == this._currentPlayerTurn ) && ( force.totalCount == 0 ) )
+            {
                 tf_ct--;
-        
+            }
+
         }
+
         if (this["_queuedActions_" + this._currentPlayerTurn].length >= Math.min(3, tf_ct))
         {
-            // debugger;
-            console.log("tf_ct: " + tf_ct);
-            console.log("cpfs:" + this._currentPlayerForces );
+            if (debug) console.log("tf_ct: " + tf_ct);
+            if (debug) console.log("cpfs:" + this._currentPlayerForces );
             this._changeTurn();
         }
     }
@@ -3449,7 +3473,7 @@ class Game
             let srcForce = this["_queuedActions_" + this._currentPlayerTurn][0][1];
             let dstForce = this["_queuedActions_" + this._currentPlayerTurn][0][2];
             this["_queuedActions_" + this._currentPlayerTurn].shift();
-            let battle = new Battle(dstForce, srcForce);
+            new Battle(dstForce, srcForce);
         } else {
             this.battleEndCb();
         }
