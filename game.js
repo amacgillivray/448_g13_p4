@@ -1523,7 +1523,6 @@ class GameUI {
         // console.log("Adding " + cnt + " to " + this._id);
 		this._health += (this.hpMod * cnt);
         if (document.getElementById(this._id) == null)
-            debugger;
         document.getElementById(this._id).setAttribute("data-count", this.count);
 	}
 }
